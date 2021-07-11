@@ -1,0 +1,16 @@
+{
+	"name": "guild:hostile_mobs",
+	"data": [
+		{
+			"type": "entity",
+			"name": "minecraft:creeper",
+			"range": {
+				"min": 1,
+				"max": 15
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"weight": 100
+		}
+	]
+}

@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "guild",
+	"version": "${version}",
+	"name": "Guild",
+	"description": "",
+	"authors": [
+		"Fulmineo"
+	],
+	"contributors": [],
+	"contact": {
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/guild",
+		"sources": "https://github.com/Fulmineo64/Guild",
+		"issues": "https://github.com/Fulmineo64/Guild/issues"
+	},
+	"license": "https://github.com/Fulmineo64/Guild/blob/master/LICENSE",
+	"icon": "assets/guild/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"dev.fulmineo.guild.Guild"
+		],
+		"client": [
+			"dev.fulmineo.guild.GuildClient"
+		],
+		"server": []
+	},
+	"mixins": [
+		"guild.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.11.3",
+		"minecraft": "1.17.x",
+		"java": ">=16"
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"name": "guild:guard",
+	"task_pools": [
+		"guild:hostile_mobs"
+	],
+	"reward_pools": [
+		"guild:common_rewards",
+		"guild:guard_rewards"
+	]
+}

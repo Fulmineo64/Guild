@@ -1,0 +1,44 @@
+# # # Fulmineo's Mods License # # #
+
+Copyright (c) 2021 Fulmineo64
+
+"Mod" (plural "Mods") shall refer to a game modification
+"Modpack" (plural "Modpacks") shall refer to a collection of "mods"
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+Summary
+
+You are allowed to                                                     You are NOT allowed to
+
+✔ Use this mod                                                         ✘ Redistribute this mod (without permission)
+✔ Add this mod to your modpacks                                        ✘ Claim this mod as yours
+✔ Add integrations for this mod
+✔ Use ideas present in this mod
+✔ Contribute to this mod (through approval)
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+Details
+
+1. Limitations and ownership
+
+This mod is to be considered an intellectual property of Fulmineo64, whom, from now on, will we be referred as the mod's owner.
+The compiled version of this mod shall only be published by its owner; exceptions can be obtained with written permission from the mod's owner.
+Unauthorized distribution of this mod is strictly prohibited and a violation of copyright.
+Any code, used or referenced, in this mod that belongs to other authors falls under their respective licenses and copyright statements.
+
+2. Permissions
+
+This mod can be used in modpacks; modpacks containing this mod do not fall under the limitations of publishing expressed earlier.
+When used in a modpack it is recommended to have the included mod credited with the mod name and a link to the curseforge or modrinth mod page.
+Other developers can use ideas present in this mod without prior consent, as long as the implementation of the idea is different.
+
+3. Integrations and contributions
+
+Developers can integrate this mod into their own, making sure to not undermine the functionality of the integrated mod.
+Contributions are welcome, but will only be added if approved by the mod's owner.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+THE MOD IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE MOD OR THE USE OR OTHER DEALINGS IN THE MOD.

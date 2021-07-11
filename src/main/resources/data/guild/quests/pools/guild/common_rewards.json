@@ -1,0 +1,15 @@
+{
+	"name": "guild:common_rewards",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:emerald",
+			"range": {
+				"min": 1,
+				"max": 15
+			},
+			"unit_worth": 100,
+			"weight": 100
+		}
+	]
+}
