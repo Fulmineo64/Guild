@@ -1,43 +1,28 @@
-package dev.fulmineo.guild.item;
+package dev.fulmineo.guild.data;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.jetbrains.annotations.Nullable;
-
-import dev.fulmineo.guild.Guild;
-import dev.fulmineo.guild.data.QuestPoolData;
-import dev.fulmineo.guild.data.QuestProfession;
-import dev.fulmineo.guild.helper.WeightedItemHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
 
-public class QuestScrollItem extends Item {
+public class Quest {
 	public static int TASK_ROLLS = 2;
+	protected NbtCompound nbt;
 
-	public QuestScrollItem(Settings settings) {
-		super(settings);
+	public Quest() {
+		this.nbt = new NbtCompound();
 	}
 
-	public static ItemStack create(QuestProfession profession) {
-		ItemStack questScroll = new ItemStack(Guild.QUEST_SCROLL);
-		NbtCompound tag = questScroll.getOrCreateTag();
+	public static Quest create(QuestProfession profession, long currentTime) {
 		List<QuestPoolData> tasks = WeightedItemHelper.getWeightedItems(profession.tasks, TASK_ROLLS);
 
 		NbtList items = new NbtList();
@@ -100,17 +85,31 @@ public class QuestScrollItem extends Item {
 			rewardsCopy.remove(reward);
 		}
 
-		tag.putInt("Time", time);
-		tag.put("Entities", entities);
-		tag.put("Items", items);
-		tag.put("Rewards", rewards);
-		return questScroll;
+		NbtCompound nbt = new NbtCompound();
+		nbt.putLong("ExpiresAt", currentTime + 24000);
+		nbt.putInt("Time", time);
+		nbt.put("Entities", entities);
+		nbt.put("Items", items);
+		nbt.put("Rewards", rewards);
+		return fromNbt(nbt);
 	}
 
-	public static void updateItems(ItemStack questItemStack, ItemStack obtainedItemStack, PlayerEntity player) {
-		NbtCompound tag = questItemStack.getOrCreateTag();
-		if (tag.contains("Items") && !tag.getBoolean("Complete")) {
-			NbtList items = tag.getList("Items", NbtElement.COMPOUND_TYPE);
+	public static Quest fromNbt(NbtCompound nbt){
+		Quest quest = new Quest();
+		quest.nbt = nbt;
+		return quest;
+	}
+
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		for (String key: this.nbt.getKeys()) {
+			nbt.put(key, this.nbt.get(key));
+		}
+		return nbt;
+	}
+
+	public void updateItems(ItemStack obtainedItemStack, PlayerEntity player) {
+		if (this.nbt.contains("Items") && !this.nbt.getBoolean("Complete")) {
+			NbtList items = this.nbt.getList("Items", NbtElement.COMPOUND_TYPE);
 			String itemIdentifier = Registry.ITEM.getId(obtainedItemStack.getItem()).toString();
 			for (NbtElement elem : items) {
 				NbtCompound entry = (NbtCompound)elem;
@@ -123,7 +122,7 @@ public class QuestScrollItem extends Item {
 					int updatedCount = entry.getInt("Count") + diff;
 					entry.putInt("Count", updatedCount);
 					if (updatedCount == entry.getInt("Needed")) {
-						checkComplete(questItemStack, player);
+						this.checkComplete(player);
 					}
 					break;
 				}
@@ -131,10 +130,9 @@ public class QuestScrollItem extends Item {
 		}
 	}
 
-	public static void updateEntities(ItemStack questItemStack, LivingEntity killedEntity, PlayerEntity player) {
-		NbtCompound tag = questItemStack.getOrCreateTag();
-		if (tag.contains("Entities") && !tag.getBoolean("Complete")) {
-			NbtList entities = tag.getList("Entities", NbtElement.COMPOUND_TYPE);
+	public void updateEntities(LivingEntity killedEntity, PlayerEntity player) {
+		if (this.nbt.contains("Entities") && !this.nbt.getBoolean("Complete")) {
+			NbtList entities = this.nbt.getList("Entities", NbtElement.COMPOUND_TYPE);
 			String entityIdentifier = EntityType.getId(killedEntity.getType()).toString();
 			for (NbtElement elem : entities) {
 				NbtCompound entry = (NbtCompound)elem;
@@ -142,7 +140,7 @@ public class QuestScrollItem extends Item {
 					int updatedCount = entry.getInt("Count") + 1;
 					entry.putInt("Count", updatedCount);
 					if (updatedCount == entry.getInt("Needed")) {
-						checkComplete(questItemStack, player);
+						this.checkComplete(player);
 					}
 					break;
 				}
@@ -150,30 +148,34 @@ public class QuestScrollItem extends Item {
 		}
 	}
 
-	private static void checkComplete(ItemStack questItemStack, PlayerEntity player) {
-		NbtCompound tag = questItemStack.getTag();
-		NbtList entities = tag.getList("Entities", NbtElement.COMPOUND_TYPE);
+	public boolean isExpired(long time) {
+		return this.nbt.getLong("ExpiresAt") < time;
+	}
+
+	private void checkComplete(PlayerEntity player) {
+		NbtList entities = this.nbt.getList("Entities", NbtElement.COMPOUND_TYPE);
 		for (NbtElement elem : entities) {
 			NbtCompound entry = (NbtCompound)elem;
 			if (entry.getInt("Count") != entry.getInt("Needed")) return;
 		}
-		NbtList items = tag.getList("Items", NbtElement.COMPOUND_TYPE);
+		NbtList items = this.nbt.getList("Items", NbtElement.COMPOUND_TYPE);
 		for (NbtElement elem : items) {
 			NbtCompound entry = (NbtCompound)elem;
 			if (entry.getInt("Count") != entry.getInt("Needed")) return;
 		}
-		complete(questItemStack, player);
+		this.complete(player);
 	}
 
-	private static void complete(ItemStack questItemStack, PlayerEntity player) {
-		NbtCompound tag = questItemStack.getTag();
-		tag.putBoolean("Complete", true);
+	private void complete(PlayerEntity player) {
+		this.nbt.putBoolean("Complete", true);
 		player.sendMessage(new TranslatableText("test"), false);
 	}
 
-	@Environment(EnvType.CLIENT)
+	// TODO: Move this to the custom GUI
+
+	/*@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		NbtCompound tag = stack.getTag();
+		NbtCompound tag = stack.getNbt();
 		if (tag == null) return;
 		tooltip.add(new TranslatableText("item.guild.quest_scroll.tasks").formatted(Formatting.BLUE));
 		if (tag.contains("Items")) {
@@ -214,5 +216,5 @@ public class QuestScrollItem extends Item {
 				);
 			}
 		}
-	}
+	}*/
 }

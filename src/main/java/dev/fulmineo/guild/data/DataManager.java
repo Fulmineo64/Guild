@@ -23,7 +23,7 @@ public class DataManager {
 
 	public static Map<String, QuestProfession> professions = new HashMap<>();
 
-	public static void listen(){
+	public static void init(){
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
 			@Override
 			public Identifier getFabricId() {

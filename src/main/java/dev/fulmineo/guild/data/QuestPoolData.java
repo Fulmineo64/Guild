@@ -1,6 +1,5 @@
 package dev.fulmineo.guild.data;
 
-import dev.fulmineo.guild.helper.WeightedItem;
 import net.minecraft.nbt.NbtCompound;
 
 public class QuestPoolData implements WeightedItem {

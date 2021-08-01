@@ -1,4 +1,4 @@
-package dev.fulmineo.guild.helper;
+package dev.fulmineo.guild.data;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,7 +5,9 @@
     "compatibilityLevel": "JAVA_16",
     "mixins": [
 		"ServerPlayerEntityMixin",
-		"PlayerInventoryMixin"
+		"PlayerInventoryMixin",
+		"StructurePoolsMixin",
+		"StructurePoolAccess"
 	],
     "client": [],
     "server": [],

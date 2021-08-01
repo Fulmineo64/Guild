@@ -2,5 +2,7 @@
 	"itemGroup.guild.group": "The Guild",
 	"item.guild.quest_scroll": "Quest Scroll",
 	"item.guild.quest_scroll.tasks": "Tasks",
-	"item.guild.quest_scroll.rewards": "Rewards"
+	"item.guild.quest_scroll.rewards": "Rewards",
+	"key.guild.guild_screen": "Open Guild Screen",
+	"category.guild.guild": "The Guild"
 }

@@ -6,7 +6,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import dev.fulmineo.guild.data.DataManager;
-import dev.fulmineo.guild.item.QuestScrollItem;
+import dev.fulmineo.guild.data.Quest;
+import dev.fulmineo.guild.data.GuildServerPlayerEntity;
 
 public class GuildCommands {
 	public static void init(){
@@ -18,7 +19,7 @@ public class GuildCommands {
 					ServerCommandSource source = context.getSource();
 					if (source != null) {
 						ServerPlayerEntity player = source.getPlayer();
-						player.giveItemStack(QuestScrollItem.create(DataManager.professions.get("guild:guard")));
+						((GuildServerPlayerEntity)player).acceptQuest(Quest.create(DataManager.professions.get("guild:guard"), player.world.getTime()));
 					}
 					return 1;
 				})
