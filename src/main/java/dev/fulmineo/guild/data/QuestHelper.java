@@ -66,25 +66,31 @@ public class QuestHelper {
 				}
 			}
 		}
-		long lastGenTime = guildPlayer.getLastQuestGenTime();
-		long lastGenTimeFrame = lastGenTime % QUEST_GENERATION_TICKS;
-		long currentGenTimeFrame = time % QUEST_GENERATION_TICKS;
 
-		int questsToGenerate = Math.min((int)(((time - currentGenTimeFrame) - (lastGenTime - lastGenTimeFrame)) / QUEST_GENERATION_TICKS), MAX_QUEST_TO_GENERATE);
-		for (int i = 0; i < questsToGenerate; i++){
-			int professionIndex = player.world.random.nextInt(professions.size());
-			QuestProfession profession = professions.get(professionIndex);
-			List<Quest> quests;
-			if (availableQuests.containsKey(profession.name)) {
-				quests = availableQuests.get(profession.name);
-			} else {
-				quests = new ArrayList<>();
+		if (availableQuests.size() < 7) {
+			long lastGenTime = guildPlayer.getLastQuestGenTime();
+			long lastGenTimeFrame = lastGenTime % QUEST_GENERATION_TICKS;
+			long currentGenTimeFrame = time % QUEST_GENERATION_TICKS;
+
+			int questsToGenerate = Math.min((int)(((time - currentGenTimeFrame) - (lastGenTime - lastGenTimeFrame)) / QUEST_GENERATION_TICKS), MAX_QUEST_TO_GENERATE);
+			if (questsToGenerate > 7 - availableQuests.size()) {
+				questsToGenerate = 7 - availableQuests.size();
 			}
-			quests.add(Quest.create(profession, time));
-			availableQuests.put(profession.name, quests);
-		}
+			for (int i = 0; i < questsToGenerate; i++){
+				int professionIndex = player.world.random.nextInt(professions.size());
+				QuestProfession profession = professions.get(professionIndex);
+				List<Quest> quests;
+				if (availableQuests.containsKey(profession.name)) {
+					quests = availableQuests.get(profession.name);
+				} else {
+					quests = new ArrayList<>();
+				}
+				quests.add(Quest.create(profession, time));
+				availableQuests.put(profession.name, quests);
+			}
 
-		guildPlayer.setLastQuestGenTime(time);
+			guildPlayer.setLastQuestGenTime(time);
+		}
 	}
 
     public static NbtCompound writeMapNbt(NbtCompound nbt, Map<String, List<Quest>> availableQuests) {
@@ -112,5 +118,17 @@ public class QuestHelper {
 			availableQuests.put(professionName, quests);
 		}
 		return availableQuests;
+	}
+
+	public static int getCurrentLevel(List<QuestLevel> levels, int exp) {
+		if (exp >= levels.get(levels.size()-1).exp) {
+			return levels.size();
+		}
+		for (int i = 0; i < levels.size(); i++) {
+			if (levels.get(i).exp <= exp) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }

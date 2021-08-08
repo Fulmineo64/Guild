@@ -7,7 +7,10 @@ import java.util.Optional;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.fulmineo.guild.Guild;
+import dev.fulmineo.guild.data.DataManager;
 import dev.fulmineo.guild.data.Quest;
+import dev.fulmineo.guild.data.QuestHelper;
+import dev.fulmineo.guild.data.QuestLevel;
 import dev.fulmineo.guild.data.QuestProfession;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -36,15 +39,18 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 	private QuestButton[] available = new QuestButton[7];
 	private QuestButton[] accepted = new QuestButton[7];
 	int indexStartOffset;
+	private String professionName;
 	private List<Quest> professionQuests;
-	private String selectedProfession;
+	private List<QuestLevel> professionLevels;
+	private int professionLevel;
+	private boolean maxLevelReached;
+	private int professionLevelPerc;
 
    	public GuildScreen(GuildScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 		this.passEvents = false;
 		this.backgroundWidth = 276;
-		this.selectedProfession = handler.professions.get(0).name;
-		this.professionQuests = handler.availableQuests.get(this.selectedProfession);
+		this.backgroundHeight = 196;
 		if (this.professionQuests == null) {
 			this.professionQuests = new ArrayList<>();
 		}
@@ -52,34 +58,39 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 
 	protected void init() {
 		super.init();
+		this.selectProfession(0);
 		this.initButtons();
 	}
 
 	private void initButtons() {
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
-		int y = h + 16 + 2;
+		int y = h + 38;
 		int profNum = this.handler.professions.size();
-		int x = (this.width / 2) - (((profNum * 20) - ((profNum-1) * 2)) / 2);
+		int x = (this.width / 2) - (((profNum * 20) + ((profNum-1) * 2)) / 2);
 		for(int i = 0; i < profNum; ++i) {
-			this.professions[i] = this.addDrawableChild(new ProfessionButton(x, y - 20, i, (button) -> {
-				this.selectedProfession = this.handler.professions.get(((ProfessionButton)button).index).name;
-				this.professionQuests = handler.availableQuests.get(this.selectedProfession);
+			this.professions[i] = this.addDrawableChild(new ProfessionButton(x, y - 25, i, (button) -> {
+				if (!button.active) return;
+				this.selectProfession(((ProfessionButton)button).index);
 				this.initButtons();
 			}));
+			this.professions[i].active = this.handler.professions.get(i).name != this.professionName;
 			x += 22;
 		}
+		y = h + 48;
 		for(int i = 0; i < 7; ++i) {
 			this.available[i] = this.addDrawableChild(new AvailableQuestButton(w + 5, y, i, (button) -> {
-				this.handler.acceptQuest(this.selectedProfession, ((AvailableQuestButton)button).index);
-				this.professionQuests = handler.availableQuests.get(this.selectedProfession);
+				if (!button.active) return;
+				this.handler.acceptQuest(this.professionName, ((AvailableQuestButton)button).index);
+				this.professionQuests = handler.availableQuests.get(this.professionName);
 				this.initButtons();
 			}));
+			this.available[i].active = this.handler.acceptedQuests.size() < 7;
 			y += 20;
 		}
-		y = h + 16 + 2;
+		y = h + 48;
 		for(int i = 0; i < this.handler.acceptedQuests.size(); i++){
-			this.accepted[i] = this.addDrawableChild(new AcceptedQuestButton(w + 174, y, i, (button) -> {
+			this.accepted[i] = this.addDrawableChild(new AcceptedQuestButton(w + 144, y, i, (button) -> {
 				this.handler.tryCompleteQuest(((AcceptedQuestButton)button).index);
 				this.initButtons();
 			}));
@@ -141,11 +152,32 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		int i = (this.width - this.backgroundWidth) / 2;
 		int j = (this.height - this.backgroundHeight) / 2;
 
-		this.renderScrollbar(matrices, i, j, this.available.length);
+		// this.renderScrollbar(matrices, i, j, this.available.length);
 		// this.renderScrollbar(matrices, i, j, this.accepted.length);
+
+		this.drawLevelInfo(matrices, i, j);
 	}
 
-	private void renderScrollbar(MatrixStack matrices, int x, int y, int size) {
+	private void drawLevelInfo(MatrixStack matrices, int x, int y) {
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, TEXTURE);
+		drawTexture(matrices, x + 85, y + 40, this.getZOffset(), 0.0F, 216.0F, 102, 5, 256, 512);
+		if (!this.maxLevelReached) {
+			drawTexture(matrices, x + 85, y + 40, this.getZOffset(), 0.0F, 221.0F, this.professionLevelPerc + 1, 5, 256, 512);
+		}
+
+		int tx = x + 135;
+		int ty = y + 34;
+		String val = String.valueOf(this.professionLevel + 1);
+
+		this.textRenderer.draw(matrices, val, (float)(tx + 1), (float)ty, 0);
+		this.textRenderer.draw(matrices, val, (float)(tx - 1), (float)ty, 0);
+		this.textRenderer.draw(matrices, val, (float)tx, (float)(ty + 1), 0);
+		this.textRenderer.draw(matrices, val, (float)tx, (float)(ty - 1), 0);
+		this.textRenderer.draw(matrices, val, (float)tx, (float)ty, 8453920);
+	}
+
+	/*private void renderScrollbar(MatrixStack matrices, int x, int y, int size) {
 		int i = size + 1 - 7;
 		if (i > 1) {
 			int j = 139 - (27 + (i - 1) * 139 / i);
@@ -159,6 +191,20 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		} else {
 		   	drawTexture(matrices, x + 94, y + 18, this.getZOffset(), 6.0F, 199.0F, 6, 27, 256, 512);
 		}
+	}*/
+
+	private void selectProfession(int index) {
+		QuestProfession profession = this.handler.professions.get(index);
+		this.professionName = profession.name;
+		this.professionLevels = DataManager.levels.get(profession.levels);
+		this.professionQuests = handler.availableQuests.get(this.professionName);
+		if (this.professionQuests == null) this.professionQuests = new ArrayList<>();
+		this.professionLevel = QuestHelper.getCurrentLevel(this.professionLevels, this.handler.professionsExp.get(profession.name));
+		this.maxLevelReached = this.professionLevel == this.professionLevels.size()-1;
+		int exp = this.handler.professionsExp.get(this.professionName);
+		QuestLevel currentLevel = this.professionLevels.get(this.professionLevel);
+		QuestLevel nextLevel = this.professionLevels.get(this.professionLevel+1);
+		this.professionLevelPerc = (int)(((float)(exp - currentLevel.exp) / (float)(nextLevel.exp - currentLevel.exp)) * 100);
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -224,7 +270,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		final int index;
 
 		public QuestButton(int x, int y, int index, ButtonWidget.PressAction onPress) {
-			super(x, y, 89, 20, LiteralText.EMPTY, onPress);
+			super(x, y, 119, 20, LiteralText.EMPTY, onPress);
 			this.index = index;
 			this.visible = false;
 		}
@@ -243,7 +289,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 			super.renderButton(matrices, mouseX, mouseY, delta);
 			GuildScreen.this.itemRenderer.zOffset = 100.0F;
 
-			int xi = this.x;
+			int xi = this.x + 1;
 			int yi = this.y + 1;
 
 			// TODO: Remove Registry calls from the render cycle!
@@ -270,7 +316,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 				xi += 18;
 			}
 
-			xi = x + 4 + 65;
+			xi = x + 99;
 			NbtList rewards = quest.getRewards();
 			for (NbtElement elm: rewards) {
 				NbtCompound reward = (NbtCompound)elm;

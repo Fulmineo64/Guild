@@ -7,7 +7,9 @@ public class QuestPoolData implements WeightedItem {
 	public String name;
 	public QuestPoolRange range;
 	public int unitWorth;
+	// TODO: use unitTime and unitExp
 	public int unitTime;
+	public int unitExp;
 	public int weight;
 
 	public int getWeight() {

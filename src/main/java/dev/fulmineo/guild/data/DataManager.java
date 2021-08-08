@@ -2,6 +2,7 @@ package dev.fulmineo.guild.data;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.FieldNamingPolicy;
@@ -21,6 +22,7 @@ public class DataManager {
     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
     .create();
 
+	public static Map<String, List<QuestLevel>> levels = new HashMap<>();
 	public static Map<String, QuestProfession> professions = new HashMap<>();
 
 	public static void init(){
@@ -34,9 +36,24 @@ public class DataManager {
 			public void reload(ResourceManager manager) {
 				Guild.info("reload");
 
+				levels.clear();
 				professions.clear();
 
 				Map<String, QuestPool> pools = new HashMap<>();
+
+				for(Identifier id : manager.findResources("quests/levels", path -> path.endsWith(".json"))) {
+					Guild.info(id.toString());
+					try(InputStream stream = manager.getResource(id).getInputStream()) {
+						try {
+							QuestLevels data = (QuestLevels)GSON.fromJson(new String(stream.readAllBytes()), QuestLevels.class);
+							levels.put(data.name, data.levels);
+						} catch (Exception e) {
+							Guild.LOGGER.error((String)"Couldn't parse quest level {}", (Object)id, (Object)e);
+						}
+					} catch(Exception e) {
+						Guild.LOGGER.error("Error occurred while loading resource json " + id.toString(), e);
+					}
+				}
 
 				for(Identifier id : manager.findResources("quests/professions", path -> path.endsWith(".json"))) {
 					Guild.info(id.toString());

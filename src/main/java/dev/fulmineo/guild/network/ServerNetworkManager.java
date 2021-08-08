@@ -47,6 +47,8 @@ public class ServerNetworkManager {
 								NbtCompound tag = new NbtCompound();
 								tag.putString("Name", profession.name);
 								tag.putString("Icon", profession.icon);
+								tag.putString("Levels", profession.levels);
+								tag.putInt("Exp", guildPlayer.getProfessionExp(profession.name));
 								professionsInfo.add(tag);
 							}
 							nbt.put("Professions", professionsInfo);
@@ -81,12 +83,14 @@ public class ServerNetworkManager {
 		ServerPlayNetworking.registerGlobalReceiver(Guild.TRY_COMPLETE_QUEST_PACKET_ID, (server, player, handler, buf, responseSender) -> {
 			int index = buf.readInt();
 			List<Quest> acceptedQuests = ((GuildServerPlayerEntity)player).getAcceptedQuests();
-			// TODO: Here check if the player has all the requirements
 			Quest quest = acceptedQuests.get(index);
 			boolean ok = quest.tryComplete(player);
-			if (ok) acceptedQuests.remove(index);
 			PacketByteBuf buffer = PacketByteBufs.create();
 			buffer.writeBoolean(ok);
+			if (ok) {
+				acceptedQuests.remove(index);
+				buffer.writeInt(((GuildServerPlayerEntity)player).getProfessionExp(quest.getProfessionName()));
+			}
 			responseSender.sendPacket(Guild.TRY_COMPLETE_QUEST_PACKET_ID, buffer);
 		});
 	}

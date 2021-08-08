@@ -38,6 +38,7 @@ public class Quest {
 
 		int time = 0;
 		int worth = 0;
+		int exp = 0;
 
 		Map<String, QuestPoolData> groupedTasks = new HashMap<>();
 		for (QuestPoolData task : tasks) {
@@ -58,6 +59,7 @@ public class Quest {
 			nbt.putInt("Needed", needed);
 			time += needed * task.unitTime;
 			worth += needed * task.unitWorth;
+			exp += needed * task.unitExp;
 			switch (task.type) {
 				case "item": {
 					items.add(nbt);
@@ -74,6 +76,7 @@ public class Quest {
 			int timeVariationPercentage = ((new Random()).nextInt(30) + 1 - 15) / 100;
 			time = time * (1 + timeVariationPercentage);
 			worth = worth * (1 + (timeVariationPercentage * -1));
+			exp = exp * (1 + (timeVariationPercentage * -1));
 		}
 
 		List<QuestPoolData> rewardsCopy = new ArrayList<>(profession.rewards);
@@ -105,8 +108,10 @@ public class Quest {
 		}
 
 		NbtCompound nbt = new NbtCompound();
+		nbt.putString("Profession", profession.name);
 		nbt.putLong("ExpiresAt", currentTime + 24000);
 		nbt.putInt("Time", time);
+		nbt.putInt("Exp", exp);
 		nbt.put("Entities", entities);
 		nbt.put("Items", items);
 		nbt.put("Rewards", rewards);
@@ -128,6 +133,11 @@ public class Quest {
 			nbt.put(key, this.nbt.get(key));
 		}
 		return nbt;
+	}
+
+
+	public String getProfessionName() {
+		return this.nbt.getString("Profession");
 	}
 
 	public NbtList getItems() {
@@ -236,6 +246,18 @@ public class Quest {
 			}
 			if (needed > 0) return false;
 		}
+
+		GuildServerPlayerEntity guildPlayer = ((GuildServerPlayerEntity)player);
+		String professionName = this.getProfessionName();
+		QuestProfession profession = DataManager.professions.get(professionName);
+		List<QuestLevel> levels = DataManager.levels.get(profession.levels);
+		int exp = guildPlayer.getProfessionExp(professionName);
+		exp += this.nbt.getInt("Exp");
+		QuestLevel lastLevel = levels.get(levels.size()-1);
+		if (exp > lastLevel.exp) {
+			exp = lastLevel.exp;
+		}
+		guildPlayer.setProfessionExp(professionName, exp);
 
 		this.giveRewards(player);
 		return true;

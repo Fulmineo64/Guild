@@ -1,6 +1,7 @@
 {
 	"name": "guild:guard",
 	"icon": "minecraft:chainmail_helmet",
+	"levels": "guild:common_levels",
 	"task_pools": [
 		"guild:hostile_mobs",
 		"guild:mob_drops"

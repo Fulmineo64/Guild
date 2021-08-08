@@ -1,6 +1,7 @@
 package dev.fulmineo.guild.network;
 
 import java.util.List;
+import java.util.Map;
 
 import dev.fulmineo.guild.Guild;
 import dev.fulmineo.guild.data.Quest;
@@ -20,13 +21,13 @@ public class ClientNetworkManager {
 		ClientPlayNetworking.send(Guild.ACCEPT_QUEST_PACKET_ID, buf);
 	}
 
-	public static void tryCompleteQuest(List<Quest> acceptedQuests, int index) {
+	public static void tryCompleteQuest(List<Quest> acceptedQuests, Map<String, Integer> professionsExp, int index) {
 		PacketByteBuf buf = PacketByteBufs.create();
 		buf.writeInt(index);
 		ClientPlayNetworking.registerReceiver(Guild.TRY_COMPLETE_QUEST_PACKET_ID, (client, player, buffer, responseSender) -> {
 			if (buffer.readBoolean()) {
-				Guild.info("ciao");
-				acceptedQuests.remove(index);
+				Quest quest = acceptedQuests.remove(index);
+				professionsExp.put(quest.getProfessionName(), buffer.readInt());
 			}
 			ClientPlayNetworking.unregisterReceiver(Guild.TRY_COMPLETE_QUEST_PACKET_ID);
 		});

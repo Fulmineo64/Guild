@@ -1,6 +1,7 @@
 package dev.fulmineo.guild.screen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ public class GuildScreenHandler extends ScreenHandler {
 	public Map<String, List<Quest>> availableQuests;
 	public List<Quest> acceptedQuests;
 	public List<QuestProfession> professions;
+	public Map<String, Integer> professionsExp;
 
 	public GuildScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf){
         this(syncId, playerInventory);
@@ -32,12 +34,15 @@ public class GuildScreenHandler extends ScreenHandler {
 		this.availableQuests = QuestHelper.fromMapNbt(nbt);
 		this.acceptedQuests = QuestHelper.fromNbt(nbt);
 		this.professions = new ArrayList<>();
+		this.professionsExp = new HashMap<>();
 		NbtList professionsInfo = nbt.getList("Professions", NbtElement.COMPOUND_TYPE);
 		for (NbtElement entry: professionsInfo) {
 			NbtCompound professionInfo = (NbtCompound)entry;
 			QuestProfession profession = new QuestProfession();
 			profession.name = professionInfo.getString("Name");
 			profession.icon = professionInfo.getString("Icon");
+			profession.levels = professionInfo.getString("Levels");
+			this.professionsExp.put(profession.name, professionInfo.getInt("Exp"));
 			this.professions.add(profession);
 		}
     }
@@ -61,6 +66,6 @@ public class GuildScreenHandler extends ScreenHandler {
 
 	@Environment(EnvType.CLIENT)
 	public void tryCompleteQuest(int index) {
-		ClientNetworkManager.tryCompleteQuest(this.acceptedQuests, index);
+		ClientNetworkManager.tryCompleteQuest(this.acceptedQuests, this.professionsExp, index);
 	}
 }

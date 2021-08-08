@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.mojang.authlib.GameProfile;
 
@@ -31,6 +32,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	protected List<Quest> acceptedQuests = new ArrayList<>();
 	protected Map<String, List<Quest>> availableQuests = new HashMap<>();
 	private long lastQuestGenTime;
+	private List<String> professions = new ArrayList<>();
+	private Map<String, Integer> professionsExp = new HashMap<>();
 
 	public ServerPlayerEntityMixin(MinecraftServer server, ServerWorld world, GameProfile profile) {
 		super(world, world.getSpawnPos(), world.getSpawnAngle(), profile);
@@ -81,21 +84,53 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	public List<QuestProfession> getQuestProfessions() {
 		// TODO: Handle the professions correctly
 		List<QuestProfession> professions = new ArrayList<>();
-		for (QuestProfession profession: DataManager.professions.values()){
-			professions.add(profession);
+		for (String professionName: this.professions) {
+			QuestProfession profession = DataManager.professions.get(professionName);
+			if (profession != null) professions.add(profession);
 		}
 		return professions;
+	}
+
+	public boolean addQuestProfession(String professionName) {
+		boolean found = this.professions.contains(professionName);
+		if (!found) this.professions.add(professionName);
+		return !found;
+	}
+
+	public boolean removeQuestProfession(String professionName) {
+		boolean found = this.professions.contains(professionName);
+		if (found) this.professions.remove(professionName);
+		return found;
+	}
+
+	public int getProfessionExp(String professionName) {
+		Integer val = this.professionsExp.get(professionName);
+		return val != null ? val : 0;
+	}
+
+	public void setProfessionExp(String professionName, int exp) {
+		this.professionsExp.put(professionName, exp);
 	}
 
 	@Inject(at = @At("TAIL"), method = "writeCustomDataToNbt(Lnet/minecraft/nbt/NbtCompound;)V")
 	public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo info) {
 		QuestHelper.writeMapNbt(nbt, this.availableQuests);
 		QuestHelper.writeNbt(nbt, this.acceptedQuests);
+		NbtCompound professionsExp = new NbtCompound();
+		for (Entry<String, Integer> entry: this.professionsExp.entrySet()) {
+			Integer val = entry.getValue();
+			professionsExp.putInt(entry.getKey(), val != null ? val : 0);
+		}
+		nbt.put("Professions", professionsExp);
 	}
 
 	@Inject(at = @At("TAIL"), method = "readCustomDataFromNbt(Lnet/minecraft/nbt/NbtCompound;)V")
 	public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
 		this.availableQuests = QuestHelper.fromMapNbt(nbt);
 		this.acceptedQuests = QuestHelper.fromNbt(nbt);
+		NbtCompound professionsExp = nbt.getCompound("Professions");
+		for (String key: professionsExp.getKeys()) {
+			this.professionsExp.put(key, professionsExp.getInt(key));
+		}
 	}
 }

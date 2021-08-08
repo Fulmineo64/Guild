@@ -1,0 +1,41 @@
+{
+	"name": "guild:fisherman_pool",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:cod",
+			"range": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 3,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:salmon",
+			"range": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 3,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:tropical_fish",
+			"range": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 3,
+			"weight": 100
+		}
+	]
+}

@@ -10,6 +10,7 @@
 			},
 			"unit_worth": 50,
 			"unit_time": 100,
+			"unit_exp": 10,
 			"weight": 100
 		},
 		{
@@ -21,6 +22,7 @@
 			},
 			"unit_worth": 40,
 			"unit_time": 80,
+			"unit_exp": 8,
 			"weight": 100
 		},
 		{
@@ -32,6 +34,7 @@
 			},
 			"unit_worth": 30,
 			"unit_time": 70,
+			"unit_exp": 7,
 			"weight": 100
 		}
 	]
