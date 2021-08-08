@@ -1,9 +1,9 @@
 {
-	"name": "guild:hostile_mobs",
+	"name": "guild:mob_drops",
 	"data": [
 		{
-			"type": "entity",
-			"name": "minecraft:creeper",
+			"type": "item",
+			"name": "minecraft:gunpowder",
 			"range": {
 				"min": 3,
 				"max": 9
@@ -13,8 +13,8 @@
 			"weight": 100
 		},
 		{
-			"type": "entity",
-			"name": "minecraft:skeleton",
+			"type": "item",
+			"name": "minecraft:bone",
 			"range": {
 				"min": 4,
 				"max": 12
@@ -24,8 +24,8 @@
 			"weight": 100
 		},
 		{
-			"type": "entity",
-			"name": "minecraft:zombie",
+			"type": "item",
+			"name": "minecraft:rotten_flesh",
 			"range": {
 				"min": 5,
 				"max": 15

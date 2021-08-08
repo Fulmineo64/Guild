@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -14,17 +15,18 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
 public class QuestHelper {
-	private static int QUEST_GENERATION_TICKS = 200;
+	private static int QUEST_GENERATION_TICKS = 6000;
 	private static int MAX_QUEST_TO_GENERATE = 10;
 
 	public static void updateQuestEntities(PlayerEntity player, LivingEntity killedEntity) {
 		List<Quest> guildQuests = ((GuildServerPlayerEntity)player).getAcceptedQuests();
+		String entityIdentifier = EntityType.getId(killedEntity.getType()).toString();
 		for (Quest quest: guildQuests) {
-			quest.updateEntities(killedEntity, player);
+			quest.updateEntities(entityIdentifier, player);
 		}
 	}
 
-	public static NbtElement writeNbt(NbtCompound nbt, List<Quest> guildQuests) {
+	public static NbtCompound writeNbt(NbtCompound nbt, List<Quest> guildQuests) {
 		NbtList questData = new NbtList();
 		for (Quest quest: guildQuests) {
 			questData.add(quest.writeNbt(new NbtCompound()));
@@ -68,7 +70,7 @@ public class QuestHelper {
 		long lastGenTimeFrame = lastGenTime % QUEST_GENERATION_TICKS;
 		long currentGenTimeFrame = time % QUEST_GENERATION_TICKS;
 
-		int questsToGenerate = Math.min((int)(((time - currentGenTimeFrame) - (lastGenTime - lastGenTimeFrame)) / 200), MAX_QUEST_TO_GENERATE);
+		int questsToGenerate = Math.min((int)(((time - currentGenTimeFrame) - (lastGenTime - lastGenTimeFrame)) / QUEST_GENERATION_TICKS), MAX_QUEST_TO_GENERATE);
 		for (int i = 0; i < questsToGenerate; i++){
 			int professionIndex = player.world.random.nextInt(professions.size());
 			QuestProfession profession = professions.get(professionIndex);
@@ -103,7 +105,7 @@ public class QuestHelper {
 		NbtCompound professionsData = nbt.getCompound("QuestMap");
 		for (String professionName: professionsData.getKeys()) {
 			List<Quest> quests = new ArrayList<>();
-			NbtList questsData = nbt.getList(professionName, NbtElement.COMPOUND_TYPE);
+			NbtList questsData = professionsData.getList(professionName, NbtElement.COMPOUND_TYPE);
 			for (NbtElement questData: questsData) {
 				quests.add(Quest.fromNbt((NbtCompound)questData));
 			}

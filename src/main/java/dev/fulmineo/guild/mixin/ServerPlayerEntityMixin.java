@@ -81,17 +81,21 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	public List<QuestProfession> getQuestProfessions() {
 		// TODO: Handle the professions correctly
 		List<QuestProfession> professions = new ArrayList<>();
-		professions.add(DataManager.professions.get("guild:guard"));
+		for (QuestProfession profession: DataManager.professions.values()){
+			professions.add(profession);
+		}
 		return professions;
 	}
 
 	@Inject(at = @At("TAIL"), method = "writeCustomDataToNbt(Lnet/minecraft/nbt/NbtCompound;)V")
 	public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo info) {
+		QuestHelper.writeMapNbt(nbt, this.availableQuests);
 		QuestHelper.writeNbt(nbt, this.acceptedQuests);
 	}
 
 	@Inject(at = @At("TAIL"), method = "readCustomDataFromNbt(Lnet/minecraft/nbt/NbtCompound;)V")
 	public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
+		this.availableQuests = QuestHelper.fromMapNbt(nbt);
 		this.acceptedQuests = QuestHelper.fromNbt(nbt);
 	}
 }

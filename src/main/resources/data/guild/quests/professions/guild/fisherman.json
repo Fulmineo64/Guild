@@ -1,0 +1,10 @@
+{
+	"name": "guild:fisherman",
+	"icon": "minecraft:fishing_rod",
+	"task_pools": [
+		"guild:mob_drops"
+	],
+	"reward_pools": [
+		"guild:common_rewards"
+	]
+}

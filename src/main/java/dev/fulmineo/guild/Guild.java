@@ -27,6 +27,8 @@ public class Guild implements ModInitializer {
 
     public static final String MOD_ID = "guild";
 	public static final Identifier OPEN_GUILD_SCREEN_PACKET_ID = new Identifier(MOD_ID, "guild_screen_packet");
+    public static final Identifier ACCEPT_QUEST_PACKET_ID = new Identifier(MOD_ID, "accept_quest_packet");
+    public static final Identifier TRY_COMPLETE_QUEST_PACKET_ID = new Identifier(MOD_ID, "complete_quest_packet");
     public static final ScreenHandlerType<GuildScreenHandler> GUILD_SCREEN_HANDLER = ScreenHandlerRegistry.registerExtended(new Identifier(MOD_ID, "guild_screen"), GuildScreenHandler::new);
 
 	// Items
