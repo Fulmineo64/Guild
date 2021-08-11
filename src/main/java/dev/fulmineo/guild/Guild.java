@@ -2,7 +2,9 @@ package dev.fulmineo.guild;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -15,7 +17,8 @@ import org.apache.logging.log4j.Logger;
 
 import dev.fulmineo.guild.command.GuildCommands;
 import dev.fulmineo.guild.data.DataManager;
-
+import dev.fulmineo.guild.item.QuestProfessionLicence;
+import dev.fulmineo.guild.item.QuestProfessionResignment;
 import dev.fulmineo.guild.network.ServerNetworkManager;
 import dev.fulmineo.guild.screen.GuildScreenHandler;
 
@@ -34,9 +37,18 @@ public class Guild implements ModInitializer {
 	// Items
 
 	public static final ItemGroup GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID,"group"), () -> new ItemStack(Registry.ITEM.get(new Identifier(MOD_ID, "quest_scroll"))));
+    public static final Item QUEST_PROFESSION_LICENCE_ITEM = new QuestProfessionLicence(new FabricItemSettings().group(GROUP));
+    public static final Item QUEST_PROFESSION_RESIGNMENT_ITEM = new QuestProfessionResignment(new FabricItemSettings().group(GROUP));
 
     @Override
     public void onInitialize() {
+		// Items
+
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "profession_licence"), QUEST_PROFESSION_LICENCE_ITEM);
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "profession_resignment"), QUEST_PROFESSION_RESIGNMENT_ITEM);
+
+		// Data
+
 		DataManager.init();
 		GuildCommands.init();
 

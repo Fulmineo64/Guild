@@ -58,7 +58,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 
 	protected void init() {
 		super.init();
-		this.selectProfession(0);
+		if (this.handler.professions.size() > 0) this.selectProfession(0);
 		this.initButtons();
 	}
 
@@ -196,7 +196,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 	private void selectProfession(int index) {
 		QuestProfession profession = this.handler.professions.get(index);
 		this.professionName = profession.name;
-		this.professionLevels = DataManager.levels.get(profession.levels);
+		this.professionLevels = DataManager.levels.get(profession.levelsPool);
 		this.professionQuests = handler.availableQuests.get(this.professionName);
 		if (this.professionQuests == null) this.professionQuests = new ArrayList<>();
 		this.professionLevel = QuestHelper.getCurrentLevel(this.professionLevels, this.handler.professionsExp.get(profession.name));

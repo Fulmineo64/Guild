@@ -29,6 +29,11 @@ public class ServerNetworkManager {
 		ServerPlayNetworking.registerGlobalReceiver(Guild.OPEN_GUILD_SCREEN_PACKET_ID, (server, player, handler, buf, responseSender) -> {
 			server.execute(new Runnable() {
 				public void run(){
+					if (((GuildServerPlayerEntity)player).getQuestProfessions().size() == 0) {
+						player.sendMessage(new TranslatableText("profession.missing"), false);
+						return;
+					}
+
 					player.openHandledScreen(new ExtendedScreenHandlerFactory() {
 						@Override
 						public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
@@ -47,7 +52,7 @@ public class ServerNetworkManager {
 								NbtCompound tag = new NbtCompound();
 								tag.putString("Name", profession.name);
 								tag.putString("Icon", profession.icon);
-								tag.putString("Levels", profession.levels);
+								tag.putString("Levels", profession.levelsPool);
 								tag.putInt("Exp", guildPlayer.getProfessionExp(profession.name));
 								professionsInfo.add(tag);
 							}

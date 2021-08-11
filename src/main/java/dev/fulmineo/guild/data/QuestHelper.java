@@ -67,7 +67,7 @@ public class QuestHelper {
 			}
 		}
 
-		if (availableQuests.size() < 7) {
+		if (professions.size() > 0 && availableQuests.size() < 7) {
 			long lastGenTime = guildPlayer.getLastQuestGenTime();
 			long lastGenTimeFrame = lastGenTime % QUEST_GENERATION_TICKS;
 			long currentGenTimeFrame = time % QUEST_GENERATION_TICKS;

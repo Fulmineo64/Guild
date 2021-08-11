@@ -41,7 +41,7 @@ public class GuildScreenHandler extends ScreenHandler {
 			QuestProfession profession = new QuestProfession();
 			profession.name = professionInfo.getString("Name");
 			profession.icon = professionInfo.getString("Icon");
-			profession.levels = professionInfo.getString("Levels");
+			profession.levelsPool = professionInfo.getString("Levels");
 			this.professionsExp.put(profession.name, professionInfo.getInt("Exp"));
 			this.professions.add(profession);
 		}
@@ -52,8 +52,7 @@ public class GuildScreenHandler extends ScreenHandler {
 	}
 
 	public boolean canUse(PlayerEntity player) {
-		// TODO: Check if the player has at least 1 guild
-        return true;
+		return true;
     }
 
 	@Environment(EnvType.CLIENT)

@@ -22,6 +22,9 @@ import dev.fulmineo.guild.data.QuestProfession;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -82,7 +85,6 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	}
 
 	public List<QuestProfession> getQuestProfessions() {
-		// TODO: Handle the professions correctly
 		List<QuestProfession> professions = new ArrayList<>();
 		for (String professionName: this.professions) {
 			QuestProfession profession = DataManager.professions.get(professionName);
@@ -116,19 +118,28 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo info) {
 		QuestHelper.writeMapNbt(nbt, this.availableQuests);
 		QuestHelper.writeNbt(nbt, this.acceptedQuests);
+		NbtList professions = new NbtList();
+		for (String profession: this.professions) {
+			professions.add(NbtString.of(profession));
+		}
 		NbtCompound professionsExp = new NbtCompound();
 		for (Entry<String, Integer> entry: this.professionsExp.entrySet()) {
 			Integer val = entry.getValue();
 			professionsExp.putInt(entry.getKey(), val != null ? val : 0);
 		}
-		nbt.put("Professions", professionsExp);
+		nbt.put("ProfessionsExp", professionsExp);
 	}
 
 	@Inject(at = @At("TAIL"), method = "readCustomDataFromNbt(Lnet/minecraft/nbt/NbtCompound;)V")
 	public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
 		this.availableQuests = QuestHelper.fromMapNbt(nbt);
 		this.acceptedQuests = QuestHelper.fromNbt(nbt);
-		NbtCompound professionsExp = nbt.getCompound("Professions");
+		NbtList professions = nbt.getList("Professions", NbtElement.STRING_TYPE);
+		for (NbtElement professionName: professions) {
+			NbtString name = (NbtString)professionName;
+			this.professions.add(name.asString());
+		}
+		NbtCompound professionsExp = nbt.getCompound("ProfessionsExp");
 		for (String key: professionsExp.getKeys()) {
 			this.professionsExp.put(key, professionsExp.getInt(key));
 		}

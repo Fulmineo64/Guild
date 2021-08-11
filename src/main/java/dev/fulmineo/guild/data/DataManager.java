@@ -103,6 +103,8 @@ public class DataManager {
 						}
 					}
 				}
+
+				VillagerData.refreshTrades(professions);
 			}
 		});
 	}

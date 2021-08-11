@@ -7,7 +7,8 @@ import java.util.List;
 public class QuestProfession {
 	public String name;
 	public String icon;
-	public String levels;
+	public int guildMasterLevel;
+	public String levelsPool;
 	public String[] taskPools;
 	public String[] rewardPools;
 	public List<QuestPoolData> tasks = new ArrayList<>();

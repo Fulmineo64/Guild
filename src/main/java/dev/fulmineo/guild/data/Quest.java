@@ -250,7 +250,7 @@ public class Quest {
 		GuildServerPlayerEntity guildPlayer = ((GuildServerPlayerEntity)player);
 		String professionName = this.getProfessionName();
 		QuestProfession profession = DataManager.professions.get(professionName);
-		List<QuestLevel> levels = DataManager.levels.get(profession.levels);
+		List<QuestLevel> levels = DataManager.levels.get(profession.levelsPool);
 		int exp = guildPlayer.getProfessionExp(professionName);
 		exp += this.nbt.getInt("Exp");
 		QuestLevel lastLevel = levels.get(levels.size()-1);

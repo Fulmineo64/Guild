@@ -3,6 +3,12 @@
 	"item.guild.quest_scroll": "Quest Scroll",
 	"item.guild.quest_scroll.tasks": "Tasks",
 	"item.guild.quest_scroll.rewards": "Rewards",
+	"item.guild.profession_licence": "Profession Licence",
+	"item.guild.profession_resignment": "Profession Resignment",
 	"key.guild.guild_screen": "Open Guild Screen",
-	"category.guild.guild": "The Guild"
+	"category.guild.guild": "The Guild",
+	"entity.minecraft.villager.guild_master": "Guild master",
+	"profession.missing": "You need a profession before opening the Guild screen.\nGo visit the Guild Master!",
+	"profession.profession": "Profession",
+	"profession.guild.guard": "Guard"
 }

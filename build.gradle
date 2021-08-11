@@ -32,6 +32,10 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
+loom {
+    accessWidener = file("src/main/resources/guild.accesswidener")
+}
+
 processResources {
 	inputs.property "version", project.version
 

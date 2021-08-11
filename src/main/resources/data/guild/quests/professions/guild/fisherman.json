@@ -1,7 +1,8 @@
 {
 	"name": "guild:fisherman",
 	"icon": "minecraft:fishing_rod",
-	"levels": "guild:common_levels",
+	"guild_master_level": 2,
+	"levels_pool": "guild:common_levels",
 	"task_pools": [
 		"guild:fisherman_pool"
 	],
