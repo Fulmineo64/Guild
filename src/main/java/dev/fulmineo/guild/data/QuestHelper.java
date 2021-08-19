@@ -2,7 +2,6 @@ package dev.fulmineo.guild.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,6 +16,7 @@ import net.minecraft.nbt.NbtList;
 public class QuestHelper {
 	private static int QUEST_GENERATION_TICKS = 6000;
 	private static int MAX_QUEST_TO_GENERATE = 10;
+	private static int MAX_QUESTS_BY_PROFESSION = 7;
 
 	public static void updateQuestEntities(PlayerEntity player, LivingEntity killedEntity) {
 		List<Quest> guildQuests = ((GuildServerPlayerEntity)player).getAcceptedQuests();
@@ -57,28 +57,27 @@ public class QuestHelper {
 		long time = player.world.getTime();
 		GuildServerPlayerEntity guildPlayer = (GuildServerPlayerEntity)player;
 		Map<String, List<Quest>> availableQuests = guildPlayer.getAvailableQuests();
-		for (Entry<String, List<Quest>> professionQuests: availableQuests.entrySet()) {
-			List<Quest> quests = professionQuests.getValue();
-			for (Iterator<Quest> iterator = quests.iterator(); iterator.hasNext();) {
-				Quest quest = iterator.next();
-				if (quest.isExpired(time)) {
-					iterator.remove();
-				}
-			}
-		}
 
-		if (professions.size() > 0 && availableQuests.size() < 7) {
+		if (professions.size() > 0) {
 			long lastGenTime = guildPlayer.getLastQuestGenTime();
 			long lastGenTimeFrame = lastGenTime % QUEST_GENERATION_TICKS;
 			long currentGenTimeFrame = time % QUEST_GENERATION_TICKS;
 
 			int questsToGenerate = Math.min((int)(((time - currentGenTimeFrame) - (lastGenTime - lastGenTimeFrame)) / QUEST_GENERATION_TICKS), MAX_QUEST_TO_GENERATE);
-			if (questsToGenerate > 7 - availableQuests.size()) {
-				questsToGenerate = 7 - availableQuests.size();
+
+			List<QuestProfession> availableProfessions = new ArrayList<>();
+			for (QuestProfession profession: professions) {
+				List<Quest> professionsQuest = availableQuests.get(profession.name);
+				if (professionsQuest != null && professionsQuest.size() < MAX_QUESTS_BY_PROFESSION) {
+					availableProfessions.add(profession);
+				}
 			}
-			for (int i = 0; i < questsToGenerate; i++){
-				int professionIndex = player.world.random.nextInt(professions.size());
-				QuestProfession profession = professions.get(professionIndex);
+
+			int i;
+			for (i = 0; i < questsToGenerate; i++){
+				if (availableProfessions.size() == 0) break;
+				int professionIndex = player.world.random.nextInt(availableProfessions.size());
+				QuestProfession profession = availableProfessions.get(professionIndex);
 				List<Quest> quests;
 				if (availableQuests.containsKey(profession.name)) {
 					quests = availableQuests.get(profession.name);
@@ -87,9 +86,11 @@ public class QuestHelper {
 				}
 				quests.add(Quest.create(profession, time));
 				availableQuests.put(profession.name, quests);
+				if (quests.size() == MAX_QUESTS_BY_PROFESSION) {
+					availableProfessions.remove(professionIndex);
+				}
 			}
-
-			guildPlayer.setLastQuestGenTime(time);
+			if (i > 0) guildPlayer.setLastQuestGenTime(time);
 		}
 	}
 
@@ -121,14 +122,11 @@ public class QuestHelper {
 	}
 
 	public static int getCurrentLevel(List<QuestLevel> levels, int exp) {
-		if (exp >= levels.get(levels.size()-1).exp) {
-			return levels.size();
-		}
-		for (int i = 0; i < levels.size(); i++) {
+		for (int i = levels.size() - 1; i >= 0; i--) {
 			if (levels.get(i).exp <= exp) {
 				return i;
 			}
 		}
-		return -1;
+		return levels.size() - 1;
 	}
 }

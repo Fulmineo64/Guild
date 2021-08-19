@@ -81,6 +81,7 @@ public class ServerNetworkManager {
 			Map<String, List<Quest>> availableQuests = guildPlayer.getAvailableQuests();
 			List<Quest> quests = availableQuests.get(profession);
 			Quest quest = quests.remove(index);
+			quest.accept(player.world.getTime());
 			List<Quest> acceptedQuests = guildPlayer.getAcceptedQuests();
 			acceptedQuests.add(quest);
 		});
@@ -97,6 +98,14 @@ public class ServerNetworkManager {
 				buffer.writeInt(((GuildServerPlayerEntity)player).getProfessionExp(quest.getProfessionName()));
 			}
 			responseSender.sendPacket(Guild.TRY_COMPLETE_QUEST_PACKET_ID, buffer);
+		});
+
+		ServerPlayNetworking.registerGlobalReceiver(Guild.DELETE_ACCEPTED_QUEST_PACKET_ID, (server, player, handler, buf, responseSender) -> {
+			((GuildServerPlayerEntity)player).getAcceptedQuests().remove(buf.readInt());
+		});
+
+		ServerPlayNetworking.registerGlobalReceiver(Guild.DELETE_AVAILABLE_QUEST_PACKET_ID, (server, player, handler, buf, responseSender) -> {
+			((GuildServerPlayerEntity)player).getAvailableQuests().get(buf.readString()).remove(buf.readInt());
 		});
 	}
 }

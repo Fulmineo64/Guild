@@ -18,7 +18,6 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.village.TradeOffer;
@@ -28,7 +27,7 @@ import net.minecraft.world.poi.PointOfInterestType;
 
 public class VillagerData {
 	// Points of Interest
-	public static final PointOfInterestType GUILD_MASTER_POI = PointOfInterestType.register("guild_master", PointOfInterestType.getAllStatesOf(Blocks.BIRCH_TRAPDOOR), 1, 1);
+	public static final PointOfInterestType GUILD_MASTER_POI = PointOfInterestType.register("guild_master", PointOfInterestType.getAllStatesOf(Guild.GUILD_MASTER_TABLE), 1, 1);
 
 	// Villager Professions
 	public static final VillagerProfession GUILD_MASTER = VillagerProfession.register("guild_master", GUILD_MASTER_POI, SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER);

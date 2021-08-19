@@ -27,6 +27,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -45,6 +46,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 	private int professionLevel;
 	private boolean maxLevelReached;
 	private int professionLevelPerc;
+	private boolean deleteMode;
 
    	public GuildScreen(GuildScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
@@ -59,13 +61,25 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 	protected void init() {
 		super.init();
 		if (this.handler.professions.size() > 0) this.selectProfession(0);
+		int w = (this.width - this.backgroundWidth) / 2;
+		int h = (this.height - this.backgroundHeight) / 2;
+		/*this.addDrawableChild(new ButtonWidget(w + 4, h + 27,  60, 20, new LiteralText("Refresh"), (button) -> {
+			ClientNetworkManager.openGuildScreen();
+		}));*/
+		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 66, h + 27, 60, 20, new LiteralText("Delete"), (button) -> {
+			this.deleteMode = !this.deleteMode;
+			button.setMessage(this.deleteMode ? new LiteralText("Cancel") : new LiteralText("Delete"));
+			for(int i = 0; i < 7; ++i) {
+				this.available[i].active = this.deleteMode ? true : this.handler.acceptedQuests.size() < 7;
+			}
+		}));
 		this.initButtons();
 	}
 
 	private void initButtons() {
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
-		int y = h + 38;
+		int y = h + 37;
 		int profNum = this.handler.professions.size();
 		int x = (this.width / 2) - (((profNum * 20) + ((profNum-1) * 2)) / 2);
 		for(int i = 0; i < profNum; ++i) {
@@ -80,10 +94,14 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		y = h + 48;
 		for(int i = 0; i < 7; ++i) {
 			this.available[i] = this.addDrawableChild(new AvailableQuestButton(w + 5, y, i, (button) -> {
-				if (!button.active) return;
-				this.handler.acceptQuest(this.professionName, ((AvailableQuestButton)button).index);
-				this.professionQuests = handler.availableQuests.get(this.professionName);
-				this.initButtons();
+				if (this.deleteMode) {
+					this.handler.deleteAvailableQuest(this.professionName, ((AvailableQuestButton)button).index);
+				} else {
+					if (!button.active) return;
+					this.handler.acceptQuest(this.professionName, ((AvailableQuestButton)button).index);
+					this.professionQuests = handler.availableQuests.get(this.professionName);
+					this.initButtons();
+				}
 			}));
 			this.available[i].active = this.handler.acceptedQuests.size() < 7;
 			y += 20;
@@ -91,7 +109,11 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		y = h + 48;
 		for(int i = 0; i < this.handler.acceptedQuests.size(); i++){
 			this.accepted[i] = this.addDrawableChild(new AcceptedQuestButton(w + 144, y, i, (button) -> {
-				this.handler.tryCompleteQuest(((AcceptedQuestButton)button).index);
+				if (this.deleteMode) {
+					this.handler.deleteAcceptedQuest(((AcceptedQuestButton)button).index);
+				} else {
+					this.handler.tryCompleteQuest(((AcceptedQuestButton)button).index);
+				}
 				this.initButtons();
 			}));
 			y += 20;
@@ -114,37 +136,6 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 	}
 
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		for(int i = 0; i < this.handler.professions.size(); ++i) {
-			ProfessionButton professionButton = this.professions[i];
-			if (professionButton != null) {
-				if (professionButton.isHovered()) {
-					professionButton.renderTooltip(matrices, mouseX, mouseY);
-				}
-
-				professionButton.visible = professionButton.index < 7;
-			}
-		}
-
-		for(int i = 0; i < Math.min(this.professionQuests.size(), 7); ++i) {
-			QuestButton questButton = this.available[i];
-			if (questButton != null) {
-				if (questButton.isHovered()) {
-					questButton.renderTooltip(matrices, mouseX, mouseY);
-				}
-
-				questButton.visible = questButton.index < 7;
-			}
-		}
-
-		for(int i = 0; i < this.handler.acceptedQuests.size(); ++i) {
-			QuestButton questButton = this.accepted[i];
-			if (questButton.isHovered()) {
-				questButton.renderTooltip(matrices, mouseX, mouseY);
-			}
-
-			questButton.visible = questButton.index < 7;
-		}
-
 		this.renderBackground(matrices);
 		super.render(matrices, mouseX, mouseY, delta);
 		this.drawMouseoverTooltip(matrices, mouseX, mouseY);
@@ -199,9 +190,9 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		this.professionLevels = DataManager.levels.get(profession.levelsPool);
 		this.professionQuests = handler.availableQuests.get(this.professionName);
 		if (this.professionQuests == null) this.professionQuests = new ArrayList<>();
-		this.professionLevel = QuestHelper.getCurrentLevel(this.professionLevels, this.handler.professionsExp.get(profession.name));
-		this.maxLevelReached = this.professionLevel == this.professionLevels.size()-1;
 		int exp = this.handler.professionsExp.get(this.professionName);
+		this.professionLevel = QuestHelper.getCurrentLevel(this.professionLevels, exp);
+		this.maxLevelReached = this.professionLevel == this.professionLevels.size()-1;
 		QuestLevel currentLevel = this.professionLevels.get(this.professionLevel);
 		QuestLevel nextLevel = this.professionLevels.get(this.professionLevel+1);
 		this.professionLevelPerc = (int)(((float)(exp - currentLevel.exp) / (float)(nextLevel.exp - currentLevel.exp)) * 100);
@@ -210,10 +201,10 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 	@Environment(EnvType.CLIENT)
 	class ProfessionButton extends ButtonWidget {
 		final int index;
+		private Item item;
 		public ProfessionButton(int x, int y, int index, ButtonWidget.PressAction onPress) {
 			super(x, y, 20, 20, LiteralText.EMPTY, onPress);
 			this.index = index;
-			this.visible = false;
 		}
 
 		public QuestProfession getQuestProfession() {
@@ -225,21 +216,20 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 			if (profession == null) return;
 			super.renderButton(matrices, mouseX, mouseY, delta);
 			GuildScreen.this.itemRenderer.zOffset = 100.0F;
-
-			// TODO: Remove Registry calls from the render cycle!
-			Item item = Registry.ITEM.get(new Identifier(profession.icon));
-			ItemStack stack = new ItemStack(item);
+			if (this.item == null) {
+				this.item = Registry.ITEM.get(new Identifier(profession.icon));
+			}
+			ItemStack stack = new ItemStack(this.item);
 			GuildScreen.this.itemRenderer.renderInGui(stack, this.x + 2, this.y + 2);
 		}
 
-		/*public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
+		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
-				QuestProfession profession = this.getQuestProfession();
-				tooltip.add(profession.name);
+				tooltip.add(new TranslatableText("profession."+this.getQuestProfession().name.replace(":", ".")).formatted(Formatting.GOLD));
 				GuildScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
-		}*/
+		}
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -262,8 +252,13 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		public Quest getQuest() {
 			return GuildScreen.this.handler.acceptedQuests.size() > this.index ? GuildScreen.this.handler.acceptedQuests.get(this.index) : null;
 		}
-	}
 
+		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+			Quest quest = this.getQuest();
+			if (quest == null) return;
+			super.renderButton(matrices, mouseX, mouseY, delta);
+		}
+	}
 
 	@Environment(EnvType.CLIENT)
 	abstract class QuestButton extends ButtonWidget {
@@ -272,7 +267,6 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		public QuestButton(int x, int y, int index, ButtonWidget.PressAction onPress) {
 			super(x, y, 119, 20, LiteralText.EMPTY, onPress);
 			this.index = index;
-			this.visible = false;
 		}
 
 		public int getIndex() {
@@ -336,47 +330,47 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 
 		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
 			if (this.hovered) {
+				Quest quest = this.getQuest();
+				if (quest == null) return;
 				List<Text> tooltip = new ArrayList<>();
-				tooltip.add(new TranslatableText("item.guild.quest_scroll.tasks").formatted(Formatting.BLUE));
+				MutableText text = new TranslatableText("item.guild.quest_scroll.tasks").formatted(Formatting.BLUE);
+				String time = quest.getRemainingTime(GuildScreen.this.handler.world.getTime());
+				if (time.length() > 0) {
+					text.append("            ").append(new LiteralText("⌚ "+time).formatted(time == "00:00" ? Formatting.RED : Formatting.GRAY));
+				}
+				tooltip.add(text);
 				// TODO: Remove Registry calls from the render cycle!
-				NbtCompound tag = this.getQuest().getNbt();
-				if (tag.contains("Items")) {
-					NbtList bounties = tag.getList("Items", NbtElement.COMPOUND_TYPE);
-					for (NbtElement elem : bounties) {
-						NbtCompound entry = (NbtCompound)elem;
-						tooltip.add(
-							new TranslatableText(Registry.ITEM.get(new Identifier(entry.getString("Name"))).getTranslationKey()).formatted(Formatting.GRAY)
-							.append(" ")
-							.append(String.valueOf(entry.getInt("Count")))
-							.append(" / ")
-							.append(String.valueOf(entry.getInt("Needed")))
-						);
-					}
+				NbtList items = quest.getItems();
+				for (NbtElement elem : items) {
+					NbtCompound entry = (NbtCompound)elem;
+					tooltip.add(
+						new TranslatableText(Registry.ITEM.get(new Identifier(entry.getString("Name"))).getTranslationKey()).formatted(Formatting.GRAY)
+						.append(" ")
+						.append(String.valueOf(entry.getInt("Count")))
+						.append(" / ")
+						.append(String.valueOf(entry.getInt("Needed")))
+					);
 				}
-				if (tag.contains("Entities")) {
-					NbtList bounties = tag.getList("Entities", NbtElement.COMPOUND_TYPE);
-					for (NbtElement elem : bounties) {
-						NbtCompound entry = (NbtCompound)elem;
-						tooltip.add(
-							new TranslatableText(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getTranslationKey()).formatted(Formatting.GRAY)
-							.append(" ")
-							.append(String.valueOf(entry.getInt("Count")))
-							.append(" / ")
-							.append(String.valueOf(entry.getInt("Needed")))
-						);
-					}
+				NbtList entities = quest.getEntities();
+				for (NbtElement elem : entities) {
+					NbtCompound entry = (NbtCompound)elem;
+					tooltip.add(
+						new TranslatableText(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getTranslationKey()).formatted(Formatting.GRAY)
+						.append(" ")
+						.append(String.valueOf(entry.getInt("Count")))
+						.append(" / ")
+						.append(String.valueOf(entry.getInt("Needed")))
+					);
 				}
-				if (tag.contains("Rewards")) {
-					tooltip.add(new TranslatableText("item.guild.quest_scroll.rewards").formatted(Formatting.GREEN));
-					NbtList bounties = tag.getList("Rewards", NbtElement.COMPOUND_TYPE);
-					for (NbtElement elem : bounties) {
-						NbtCompound entry = (NbtCompound)elem;
-						tooltip.add(
-							new TranslatableText(Registry.ITEM.get(new Identifier(entry.getString("Name"))).getTranslationKey()).formatted(Formatting.GRAY)
-							.append(" ")
-							.append(String.valueOf(entry.getInt("Count")))
-						);
-					}
+				tooltip.add(new TranslatableText("item.guild.quest_scroll.rewards").formatted(Formatting.GREEN));
+				NbtList rewards = quest.getRewards();
+				for (NbtElement elem : rewards) {
+					NbtCompound entry = (NbtCompound)elem;
+					tooltip.add(
+						new TranslatableText(Registry.ITEM.get(new Identifier(entry.getString("Name"))).getTranslationKey()).formatted(Formatting.GRAY)
+						.append(" ")
+						.append(String.valueOf(entry.getInt("Count")))
+					);
 				}
 				GuildScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}

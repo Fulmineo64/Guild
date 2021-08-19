@@ -9,6 +9,7 @@ import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
 
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -109,7 +110,6 @@ public class Quest {
 
 		NbtCompound nbt = new NbtCompound();
 		nbt.putString("Profession", profession.name);
-		nbt.putLong("ExpiresAt", currentTime + 24000);
 		nbt.putInt("Time", time);
 		nbt.putInt("Exp", exp);
 		nbt.put("Entities", entities);
@@ -150,6 +150,35 @@ public class Quest {
 
 	public NbtList getRewards() {
 		return this.nbt.getList("Rewards", NbtElement.COMPOUND_TYPE);
+	}
+
+	public String getRemainingTime(long currentTime) {
+		int seconds;
+		if (this.nbt.contains("ExpiresAt")) {
+			seconds = (int)((this.nbt.getLong("ExpiresAt") - currentTime) / 20);
+			if (seconds == 0) return "00:00";
+		} else {
+			seconds = this.nbt.getInt("Time");
+			if (seconds == 0) return "";
+		}
+		int minutes = seconds / 60;
+		seconds = seconds % 60;
+		return (minutes > 9 ? "" : "0") + minutes+":"+(seconds > 9 ? "" : "0")+seconds;
+	}
+
+	public void accept(long currentTime) {
+		if (this.nbt.contains("Time")) {
+			this.nbt.putLong("ExpiresAt", currentTime + this.nbt.getInt("Time") * 20);
+		}
+	}
+
+	public boolean tick() {
+		if (this.nbt.contains("Time")) {
+			int time = this.nbt.getInt("Time") - 1;
+			this.nbt.putInt("Time", time);
+			return time < 0;
+		}
+		return false;
 	}
 
 	public void updateItems(ItemStack obtainedItemStack, PlayerEntity player) {
@@ -197,7 +226,6 @@ public class Quest {
 	}
 
 	public boolean tryComplete(ServerPlayerEntity player) {
-		if (this.isExpired(player.world.getTime())) return false;
 		NbtList entities = this.nbt.getList("Entities", NbtElement.COMPOUND_TYPE);
 		for (NbtElement elem : entities) {
 			NbtCompound entry = (NbtCompound)elem;
@@ -264,10 +292,21 @@ public class Quest {
 	}
 
 	public void giveRewards(ServerPlayerEntity player) {
+		boolean expired = this.isExpired(player.world.getTime());
 		NbtList rewards = this.getRewards();
 		for (NbtElement entry: rewards) {
 			NbtCompound reward = (NbtCompound)entry;
-			player.giveItemStack(new ItemStack(Registry.ITEM.get(new Identifier(reward.getString("Name"))), reward.getInt("Count")));
+			int count = reward.getInt("Count");
+			if (expired) {
+				int cnt1 = player.world.random.nextInt(count + 1);
+				if (player.hasStatusEffect(StatusEffects.LUCK)) {
+					int cnt2 = player.world.random.nextInt(count + 1);
+					count = Math.max(cnt1, cnt2);
+				} else {
+					count = cnt1;
+				}
+			}
+			player.giveItemStack(new ItemStack(Registry.ITEM.get(new Identifier(reward.getString("Name"))), count));
 		}
 	}
 
@@ -287,7 +326,6 @@ public class Quest {
 
 	private void complete(PlayerEntity player) {
 		this.nbt.putBoolean("Complete", true);
-		// TODO: Translate this
 		player.sendMessage(new LiteralText("Quest completed"), true);
 	}*/
 }

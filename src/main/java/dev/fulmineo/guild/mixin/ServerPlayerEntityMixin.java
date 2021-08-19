@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import dev.fulmineo.guild.Guild;
 import dev.fulmineo.guild.data.DataManager;
 import dev.fulmineo.guild.data.GuildServerPlayerEntity;
 import dev.fulmineo.guild.data.Quest;
@@ -34,7 +33,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 
 	protected List<Quest> acceptedQuests = new ArrayList<>();
 	protected Map<String, List<Quest>> availableQuests = new HashMap<>();
-	private long lastQuestGenTime;
+	private long lastQuestGenTime = world.getTime();
 	private List<String> professions = new ArrayList<>();
 	private Map<String, Integer> professionsExp = new HashMap<>();
 
@@ -54,9 +53,6 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 
 	public void acceptQuest(Quest quest) {
 		this.acceptedQuests.add(quest);
-		for (Quest q: this.acceptedQuests){
-			Guild.info(q.toString());
-		}
 	}
 
 	public Map<String, List<Quest>> getAvailableQuests() {
@@ -122,6 +118,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 		for (String profession: this.professions) {
 			professions.add(NbtString.of(profession));
 		}
+		nbt.put("Professions", professions);
 		NbtCompound professionsExp = new NbtCompound();
 		for (Entry<String, Integer> entry: this.professionsExp.entrySet()) {
 			Integer val = entry.getValue();

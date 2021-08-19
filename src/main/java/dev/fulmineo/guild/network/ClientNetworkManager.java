@@ -33,4 +33,24 @@ public class ClientNetworkManager {
 		});
 		ClientPlayNetworking.send(Guild.TRY_COMPLETE_QUEST_PACKET_ID, buf);
 	}
+
+	public static void deleteAcceptedQuest(List<Quest> acceptedQuests, int index) {
+		if (acceptedQuests.size() > index) {
+			acceptedQuests.remove(index);
+			PacketByteBuf buf = PacketByteBufs.create();
+			buf.writeInt(index);
+			ClientPlayNetworking.send(Guild.DELETE_ACCEPTED_QUEST_PACKET_ID, buf);
+		}
+	}
+
+	public static void deleteAvailableQuest(Map<String, List<Quest>> availableQuest, String profession, int index) {
+		List<Quest> quests = availableQuest.get(profession);
+		if (quests.size() > index) {
+			quests.remove(index);
+			PacketByteBuf buf = PacketByteBufs.create();
+			buf.writeString(profession);
+			buf.writeInt(index);
+			ClientPlayNetworking.send(Guild.DELETE_AVAILABLE_QUEST_PACKET_ID, buf);
+		}
+	}
 }

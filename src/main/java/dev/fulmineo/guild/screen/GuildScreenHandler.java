@@ -19,6 +19,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.world.World;
 
 public class GuildScreenHandler extends ScreenHandler {
 	// private final Inventory inventory;
@@ -27,6 +28,7 @@ public class GuildScreenHandler extends ScreenHandler {
 	public List<Quest> acceptedQuests;
 	public List<QuestProfession> professions;
 	public Map<String, Integer> professionsExp;
+	public World world;
 
 	public GuildScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf){
         this(syncId, playerInventory);
@@ -45,6 +47,7 @@ public class GuildScreenHandler extends ScreenHandler {
 			this.professionsExp.put(profession.name, professionInfo.getInt("Exp"));
 			this.professions.add(profession);
 		}
+		this.world = playerInventory.player.world;
     }
 
     public GuildScreenHandler(int syncId, PlayerInventory playerInventory) {
@@ -59,6 +62,7 @@ public class GuildScreenHandler extends ScreenHandler {
 	public void acceptQuest(String profession, int index) {
 		List<Quest> professionsQuest = this.availableQuests.get(profession);
 		Quest quest = professionsQuest.remove(index);
+		quest.accept(this.world.getTime());
 		this.acceptedQuests.add(quest);
 		ClientNetworkManager.acceptQuest(profession, index);
 	}
@@ -66,5 +70,15 @@ public class GuildScreenHandler extends ScreenHandler {
 	@Environment(EnvType.CLIENT)
 	public void tryCompleteQuest(int index) {
 		ClientNetworkManager.tryCompleteQuest(this.acceptedQuests, this.professionsExp, index);
+	}
+
+	@Environment(EnvType.CLIENT)
+	public void deleteAcceptedQuest(int index) {
+		ClientNetworkManager.deleteAcceptedQuest(this.acceptedQuests, index);
+	}
+
+	@Environment(EnvType.CLIENT)
+	public void deleteAvailableQuest(String profession, int index) {
+		ClientNetworkManager.deleteAvailableQuest(this.availableQuests, profession, index);
 	}
 }

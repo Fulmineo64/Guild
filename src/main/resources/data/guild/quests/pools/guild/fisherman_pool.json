@@ -9,7 +9,7 @@
 				"max": 12
 			},
 			"unit_worth": 50,
-			"unit_time": 100,
+			"unit_time": 180,
 			"unit_exp": 3,
 			"weight": 100
 		},
@@ -21,7 +21,7 @@
 				"max": 12
 			},
 			"unit_worth": 50,
-			"unit_time": 100,
+			"unit_time": 180,
 			"unit_exp": 3,
 			"weight": 100
 		},
@@ -33,7 +33,7 @@
 				"max": 12
 			},
 			"unit_worth": 50,
-			"unit_time": 100,
+			"unit_time": 180,
 			"unit_exp": 3,
 			"weight": 100
 		}
