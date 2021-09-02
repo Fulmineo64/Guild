@@ -11,7 +11,9 @@ public interface GuildServerPlayerEntity {
 	public void setAvailableQuests(Map<String, List<Quest>> availableQuests);
 	public long getLastQuestGenTime();
 	public void setLastQuestGenTime(long time);
+	public List<String> getProfessions();
 	public List<QuestProfession> getQuestProfessions();
+	public Map<String, Integer> getProfessionExp();
 	public int getProfessionExp(String professionName);
 	public void setProfessionExp(String professionName, int exp);
 	public boolean addQuestProfession(String professionName);

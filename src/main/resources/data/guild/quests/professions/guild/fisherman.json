@@ -4,7 +4,7 @@
 	"guild_master_level": 2,
 	"levels_pool": "guild:common_levels",
 	"task_pools": [
-		"guild:fisherman_pool"
+		"guild:fishes"
 	],
 	"reward_pools": [
 		"guild:common_rewards"

@@ -10,9 +10,9 @@ import net.minecraft.client.util.InputUtil;
 
 public class KeyBindManager {
 	private static KeyBinding guildScreenKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-		"key.guild.guild_screen", // The translation key of the keybinding's name
+		"key.guild.quest_screen", // The translation key of the keybinding's name
 		InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
-		GLFW.GLFW_KEY_K, // The keycode of the key
+		GLFW.GLFW_KEY_J, // The keycode of the key
 		"category.guild.guild" // The translation key of the keybinding's category.
 	));
 

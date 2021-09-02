@@ -14,7 +14,6 @@ import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
-
 import dev.fulmineo.guild.Guild;
 
 public class DataManager {
@@ -42,13 +41,12 @@ public class DataManager {
 				Map<String, QuestPool> pools = new HashMap<>();
 
 				for(Identifier id : manager.findResources("quests/levels", path -> path.endsWith(".json"))) {
-					Guild.info(id.toString());
 					try(InputStream stream = manager.getResource(id).getInputStream()) {
 						try {
 							QuestLevels data = (QuestLevels)GSON.fromJson(new String(stream.readAllBytes()), QuestLevels.class);
 							levels.put(data.name, data.levels);
 						} catch (Exception e) {
-							Guild.LOGGER.error((String)"Couldn't parse quest level {}", (Object)id, (Object)e);
+							Guild.LOGGER.error("Couldn't parse quest level {}", (Object)id, (Object)e);
 						}
 					} catch(Exception e) {
 						Guild.LOGGER.error("Error occurred while loading resource json " + id.toString(), e);
@@ -56,13 +54,12 @@ public class DataManager {
 				}
 
 				for(Identifier id : manager.findResources("quests/professions", path -> path.endsWith(".json"))) {
-					Guild.info(id.toString());
 					try(InputStream stream = manager.getResource(id).getInputStream()) {
 						try {
 							QuestProfession profession = (QuestProfession)GSON.fromJson(new String(stream.readAllBytes()), QuestProfession.class);
 							professions.put(profession.name, profession);
 						} catch (Exception e) {
-							Guild.LOGGER.error((String)"Couldn't parse quest profession {}", (Object)id, (Object)e);
+							Guild.LOGGER.error("Couldn't parse quest profession {}", (Object)id, (Object)e);
 						}
 					} catch(Exception e) {
 						Guild.LOGGER.error("Error occurred while loading resource json " + id.toString(), e);
@@ -70,13 +67,18 @@ public class DataManager {
 				}
 
 				for(Identifier id : manager.findResources("quests/pools", path -> path.endsWith(".json"))) {
-					Guild.info(id.toString());
 					try(InputStream stream = manager.getResource(id).getInputStream()) {
 						try {
 							QuestPool pool = (QuestPool)GSON.fromJson(new String(stream.readAllBytes()), QuestPool.class);
-							pools.put(pool.name, pool);
+							String invalidKey = pool.validate();
+							if (invalidKey.length() == 0) {
+								pools.put(pool.name, pool);
+							} else {
+								// TODO: This message should be displayed to the player that issued the reload command
+								Guild.LOGGER.error("Invalid key {} in quest pool {}", (Object)invalidKey, (Object)id);
+							}
 						} catch (Exception e) {
-							Guild.LOGGER.error((String)"Couldn't parse quest pool {}", (Object)id, (Object)e);
+							Guild.LOGGER.error("Couldn't parse quest pool {}", (Object)id, (Object)e);
 						}
 					} catch(Exception e) {
 						Guild.LOGGER.error("Error occurred while loading resource json " + id.toString(), e);

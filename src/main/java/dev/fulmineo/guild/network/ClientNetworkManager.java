@@ -11,7 +11,7 @@ import net.minecraft.network.PacketByteBuf;
 
 public class ClientNetworkManager {
 	public static void openGuildScreen(){
-		ClientPlayNetworking.send(Guild.OPEN_GUILD_SCREEN_PACKET_ID, PacketByteBufs.empty());
+		ClientPlayNetworking.send(Guild.OPEN_QUESTS_SCREEN_PACKET_ID, PacketByteBufs.empty());
 	}
 
 	public static void acceptQuest(String profession, int index) {

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import dev.fulmineo.guild.Guild;
 import dev.fulmineo.guild.data.QuestProfession;
-import dev.fulmineo.guild.screen.GuildScreenHandler;
+import dev.fulmineo.guild.screen.QuestsScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -26,7 +26,7 @@ import dev.fulmineo.guild.data.QuestHelper;
 
 public class ServerNetworkManager {
 	public static void registerClientReceiver() {
-		ServerPlayNetworking.registerGlobalReceiver(Guild.OPEN_GUILD_SCREEN_PACKET_ID, (server, player, handler, buf, responseSender) -> {
+		ServerPlayNetworking.registerGlobalReceiver(Guild.OPEN_QUESTS_SCREEN_PACKET_ID, (server, player, handler, buf, responseSender) -> {
 			server.execute(new Runnable() {
 				public void run(){
 					if (((GuildServerPlayerEntity)player).getQuestProfessions().size() == 0) {
@@ -62,12 +62,12 @@ public class ServerNetworkManager {
 
 						@Override
 						public Text getDisplayName() {
-							return new TranslatableText("lang.guild.guild_screen");
+							return new TranslatableText("screen.guild.quests");
 						}
 
 						@Override
 						public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-							return new GuildScreenHandler(syncId, inv);
+							return new QuestsScreenHandler(syncId, inv);
 						}
 					});
 				}

@@ -14,7 +14,8 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
 public class QuestHelper {
-	private static int QUEST_GENERATION_TICKS = 6000;
+	// private static int QUEST_GENERATION_TICKS = 6000;
+	private static int QUEST_GENERATION_TICKS = 20;
 	private static int MAX_QUEST_TO_GENERATE = 10;
 	private static int MAX_QUESTS_BY_PROFESSION = 7;
 
@@ -68,7 +69,7 @@ public class QuestHelper {
 			List<QuestProfession> availableProfessions = new ArrayList<>();
 			for (QuestProfession profession: professions) {
 				List<Quest> professionsQuest = availableQuests.get(profession.name);
-				if (professionsQuest != null && professionsQuest.size() < MAX_QUESTS_BY_PROFESSION) {
+				if (professionsQuest == null || professionsQuest.size() < MAX_QUESTS_BY_PROFESSION) {
 					availableProfessions.add(profession);
 				}
 			}

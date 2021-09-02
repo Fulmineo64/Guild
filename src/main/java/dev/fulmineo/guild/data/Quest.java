@@ -1,6 +1,8 @@
 package dev.fulmineo.guild.data;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -81,7 +83,13 @@ public class Quest {
 		}
 
 		List<QuestPoolData> rewardsCopy = new ArrayList<>(profession.rewards);
-		List<QuestPoolData> primaryRewards = WeightedItemHelper.getWeightedItems(rewardsCopy, (new Random()).nextInt(5 - MAX_TASK_ROLLS) + 1);
+		Iterator<QuestPoolData> iterator = rewardsCopy.iterator();
+		while (iterator.hasNext()) {
+			if (iterator.next().getMinWorth() > worth) iterator.remove();
+		}
+
+		List<QuestPoolData> primaryRewards = WeightedItemHelper.getWeightedItems(rewardsCopy, 6 - MAX_TASK_ROLLS);
+		primaryRewards.sort(new MinWeightComparator());
 		for (QuestPoolData reward : primaryRewards){
 			if (reward.getMinWorth() <= worth) {
 				NbtCompound nbt = new NbtCompound();
@@ -93,20 +101,7 @@ public class Quest {
 			}
 			rewardsCopy.remove(reward);
 		}
-
-		int extraTries = Math.min(rewardsCopy.size(), 5);
-		for (int i = 0; i < extraTries; i++) {
-			QuestPoolData reward = WeightedItemHelper.getWeightedItems(rewardsCopy, 1).get(0);
-			if (reward.getMinWorth() <= worth) {
-				NbtCompound nbt = new NbtCompound();
-				nbt.putString("Name", reward.name);
-				int count = reward.getCountByWorth(worth);
-				nbt.putInt("Count", count);
-				rewards.add(nbt);
-				worth -= reward.unitWorth * count;
-			}
-			rewardsCopy.remove(reward);
-		}
+		Collections.reverse(rewards);
 
 		NbtCompound nbt = new NbtCompound();
 		nbt.putString("Profession", profession.name);
@@ -162,8 +157,14 @@ public class Quest {
 			if (seconds == 0) return "";
 		}
 		int minutes = seconds / 60;
+		int hours = minutes / 60;
 		seconds = seconds % 60;
-		return (minutes > 9 ? "" : "0") + minutes+":"+(seconds > 9 ? "" : "0")+seconds;
+		if (hours > 0){
+			minutes = minutes % 60;
+			return (hours > 9 ? "" : "0") + hours+":"+(minutes > 9 ? "" : "0") + minutes+":"+(seconds > 9 ? "" : "0")+seconds;
+		} else {
+			return (minutes > 9 ? "" : "0") + minutes+":"+(seconds > 9 ? "" : "0")+seconds;
+		}
 	}
 
 	public void accept(long currentTime) {
@@ -328,4 +329,10 @@ public class Quest {
 		this.nbt.putBoolean("Complete", true);
 		player.sendMessage(new LiteralText("Quest completed"), true);
 	}*/
+
+	static class MinWeightComparator implements Comparator<QuestPoolData> {
+        public int compare(QuestPoolData a, QuestPoolData b) {
+			return b.getMinWorth() - a.getMinWorth();
+        }
+    }
 }

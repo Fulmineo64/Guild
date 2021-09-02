@@ -34,7 +34,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class GuildScreen extends HandledScreen<GuildScreenHandler> {
+public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	private static final Identifier TEXTURE = new Identifier(Guild.MOD_ID, "textures/gui/container/guild.png");
 	private ProfessionButton[] professions = new ProfessionButton[7];
 	private QuestButton[] available = new QuestButton[7];
@@ -48,11 +48,12 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 	private int professionLevelPerc;
 	private boolean deleteMode;
 
-   	public GuildScreen(GuildScreenHandler handler, PlayerInventory inventory, Text title) {
+   	public QuestsScreen(QuestsScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 		this.passEvents = false;
 		this.backgroundWidth = 276;
-		this.backgroundHeight = 196;
+		this.backgroundHeight = 200;
+		this.titleY = 4;
 		if (this.professionQuests == null) {
 			this.professionQuests = new ArrayList<>();
 		}
@@ -63,12 +64,12 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		if (this.handler.professions.size() > 0) this.selectProfession(0);
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
-		/*this.addDrawableChild(new ButtonWidget(w + 4, h + 27,  60, 20, new LiteralText("Refresh"), (button) -> {
+		/*this.addDrawableChild(new ButtonWidget(w + 4, h + 27,  60, 20, new TranslatableText("button.quest.refresh"), (button) -> {
 			ClientNetworkManager.openGuildScreen();
 		}));*/
-		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 66, h + 27, 60, 20, new LiteralText("Delete"), (button) -> {
+		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 66, h + 29, 60, 20, new TranslatableText("button.quest.delete"), (button) -> {
 			this.deleteMode = !this.deleteMode;
-			button.setMessage(this.deleteMode ? new LiteralText("Cancel") : new LiteralText("Delete"));
+			button.setMessage(this.deleteMode ? new TranslatableText("button.quest.cancel") : new TranslatableText("button.quest.delete"));
 			for(int i = 0; i < 7; ++i) {
 				this.available[i].active = this.deleteMode ? true : this.handler.acceptedQuests.size() < 7;
 			}
@@ -79,7 +80,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 	private void initButtons() {
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
-		int y = h + 37;
+		int y = h + 41;
 		int profNum = this.handler.professions.size();
 		int x = (this.width / 2) - (((profNum * 20) + ((profNum-1) * 2)) / 2);
 		for(int i = 0; i < profNum; ++i) {
@@ -91,7 +92,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 			this.professions[i].active = this.handler.professions.get(i).name != this.professionName;
 			x += 22;
 		}
-		y = h + 48;
+		y = h + 52;
 		for(int i = 0; i < 7; ++i) {
 			this.available[i] = this.addDrawableChild(new AvailableQuestButton(w + 5, y, i, (button) -> {
 				if (this.deleteMode) {
@@ -106,9 +107,9 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 			this.available[i].active = this.handler.acceptedQuests.size() < 7;
 			y += 20;
 		}
-		y = h + 48;
+		y = h + 52;
 		for(int i = 0; i < this.handler.acceptedQuests.size(); i++){
-			this.accepted[i] = this.addDrawableChild(new AcceptedQuestButton(w + 144, y, i, (button) -> {
+			this.accepted[i] = this.addDrawableChild(new AcceptedQuestButton(w + 143, y, i, (button) -> {
 				if (this.deleteMode) {
 					this.handler.deleteAcceptedQuest(((AcceptedQuestButton)button).index);
 				} else {
@@ -121,7 +122,8 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 	}
 
 	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-		this.textRenderer.draw(matrices, this.title, (float)this.titleX, (float)this.titleY, 4210752);
+		float x = (float)((70 - this.textRenderer.getWidth(this.title)) / 2);
+		this.textRenderer.draw(matrices, this.title, x, (float)this.titleY, 4210752);
 	}
 
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
@@ -152,13 +154,13 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 	private void drawLevelInfo(MatrixStack matrices, int x, int y) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, TEXTURE);
-		drawTexture(matrices, x + 85, y + 40, this.getZOffset(), 0.0F, 216.0F, 102, 5, 256, 512);
+		drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 216.0F, 102, 5, 256, 512);
 		if (!this.maxLevelReached) {
-			drawTexture(matrices, x + 85, y + 40, this.getZOffset(), 0.0F, 221.0F, this.professionLevelPerc + 1, 5, 256, 512);
+			drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 221.0F, this.professionLevelPerc + 1, 5, 256, 512);
 		}
 
 		int tx = x + 135;
-		int ty = y + 34;
+		int ty = y + 38;
 		String val = String.valueOf(this.professionLevel + 1);
 
 		this.textRenderer.draw(matrices, val, (float)(tx + 1), (float)ty, 0);
@@ -208,26 +210,26 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		}
 
 		public QuestProfession getQuestProfession() {
-			return GuildScreen.this.handler.professions.get(this.index);
+			return QuestsScreen.this.handler.professions.get(this.index);
 		}
 
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			QuestProfession profession = this.getQuestProfession();
 			if (profession == null) return;
 			super.renderButton(matrices, mouseX, mouseY, delta);
-			GuildScreen.this.itemRenderer.zOffset = 100.0F;
+			QuestsScreen.this.itemRenderer.zOffset = 100.0F;
 			if (this.item == null) {
 				this.item = Registry.ITEM.get(new Identifier(profession.icon));
 			}
 			ItemStack stack = new ItemStack(this.item);
-			GuildScreen.this.itemRenderer.renderInGui(stack, this.x + 2, this.y + 2);
+			QuestsScreen.this.itemRenderer.renderInGui(stack, this.x + 2, this.y + 2);
 		}
 
 		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
 				tooltip.add(new TranslatableText("profession."+this.getQuestProfession().name.replace(":", ".")).formatted(Formatting.GOLD));
-				GuildScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
+				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
 		}
 	}
@@ -239,7 +241,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		}
 
 		public Quest getQuest() {
-			return GuildScreen.this.professionQuests.size() > this.index ? GuildScreen.this.professionQuests.get(this.index) : null;
+			return QuestsScreen.this.professionQuests.size() > this.index ? QuestsScreen.this.professionQuests.get(this.index) : null;
 		}
 	}
 
@@ -250,7 +252,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		}
 
 		public Quest getQuest() {
-			return GuildScreen.this.handler.acceptedQuests.size() > this.index ? GuildScreen.this.handler.acceptedQuests.get(this.index) : null;
+			return QuestsScreen.this.handler.acceptedQuests.size() > this.index ? QuestsScreen.this.handler.acceptedQuests.get(this.index) : null;
 		}
 
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
@@ -265,7 +267,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 		final int index;
 
 		public QuestButton(int x, int y, int index, ButtonWidget.PressAction onPress) {
-			super(x, y, 119, 20, LiteralText.EMPTY, onPress);
+			super(x, y, 126, 20, LiteralText.EMPTY, onPress);
 			this.index = index;
 		}
 
@@ -281,7 +283,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 			Quest quest = this.getQuest();
 			if (quest == null) return;
 			super.renderButton(matrices, mouseX, mouseY, delta);
-			GuildScreen.this.itemRenderer.zOffset = 100.0F;
+			QuestsScreen.this.itemRenderer.zOffset = 100.0F;
 
 			int xi = this.x + 1;
 			int yi = this.y + 1;
@@ -292,8 +294,8 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 				NbtCompound entity = (NbtCompound)elm;
 				Item item = Registry.ITEM.get(new Identifier(entity.getString("Name")));
 				ItemStack stack = new ItemStack(item);
-				GuildScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				this.renderGuiItemOverlay(GuildScreen.this.textRenderer, stack, xi, yi, entity.getInt("Needed"));
+				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
+				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entity.getInt("Needed"));
 				xi += 18;
 			}
 
@@ -305,27 +307,27 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 					spawnEgg = Items.DIAMOND_SWORD;
 				}
 				ItemStack stack = new ItemStack(spawnEgg);
-				GuildScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				this.renderGuiItemOverlay(GuildScreen.this.textRenderer, stack, xi, yi, entity.getInt("Needed") - entity.getInt("Count"));
+				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
+				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entity.getInt("Needed") - entity.getInt("Count"));
 				xi += 18;
 			}
 
-			xi = x + 99;
+			xi = x + 108;
 			NbtList rewards = quest.getRewards();
 			for (NbtElement elm: rewards) {
 				NbtCompound reward = (NbtCompound)elm;
 				Item item = Registry.ITEM.get(new Identifier(reward.getString("Name")));
 				ItemStack stack = new ItemStack(item);
-				GuildScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				this.renderGuiItemOverlay(GuildScreen.this.textRenderer, stack, xi, yi, reward.getInt("Count"));
+				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
+				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, reward.getInt("Count"));
 				xi -= 18;
 			}
 
-			GuildScreen.this.itemRenderer.zOffset = 0.0F;
+			QuestsScreen.this.itemRenderer.zOffset = 0.0F;
 		}
 
 		protected void renderGuiItemOverlay(TextRenderer renderer, ItemStack stack, int x, int y, int val) {
-			GuildScreen.this.itemRenderer.renderGuiItemOverlay(GuildScreen.this.textRenderer, stack, x, y, val > 0 ? String.valueOf(val) : "✔");
+			QuestsScreen.this.itemRenderer.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, x, y, val > 0 ? String.valueOf(val) : "✔");
 		}
 
 		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
@@ -334,7 +336,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 				if (quest == null) return;
 				List<Text> tooltip = new ArrayList<>();
 				MutableText text = new TranslatableText("item.guild.quest_scroll.tasks").formatted(Formatting.BLUE);
-				String time = quest.getRemainingTime(GuildScreen.this.handler.world.getTime());
+				String time = quest.getRemainingTime(QuestsScreen.this.handler.world.getTime());
 				if (time.length() > 0) {
 					text.append("            ").append(new LiteralText("⌚ "+time).formatted(time == "00:00" ? Formatting.RED : Formatting.GRAY));
 				}
@@ -372,7 +374,7 @@ public class GuildScreen extends HandledScreen<GuildScreenHandler> {
 						.append(String.valueOf(entry.getInt("Count")))
 					);
 				}
-				GuildScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
+				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
 		}
 	}

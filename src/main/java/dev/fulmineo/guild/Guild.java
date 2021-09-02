@@ -24,7 +24,7 @@ import dev.fulmineo.guild.data.DataManager;
 import dev.fulmineo.guild.item.QuestProfessionLicence;
 import dev.fulmineo.guild.item.QuestProfessionResignment;
 import dev.fulmineo.guild.network.ServerNetworkManager;
-import dev.fulmineo.guild.screen.GuildScreenHandler;
+import dev.fulmineo.guild.screen.QuestsScreenHandler;
 
 public class Guild implements ModInitializer {
 
@@ -33,13 +33,15 @@ public class Guild implements ModInitializer {
     // Identifiers
 
     public static final String MOD_ID = "guild";
-	public static final Identifier OPEN_GUILD_SCREEN_PACKET_ID = new Identifier(MOD_ID, "guild_screen_packet");
+	public static final Identifier OPEN_QUESTS_SCREEN_PACKET_ID = new Identifier(MOD_ID, "quest_screen_packet");
     public static final Identifier ACCEPT_QUEST_PACKET_ID = new Identifier(MOD_ID, "accept_quest_packet");
     public static final Identifier TRY_COMPLETE_QUEST_PACKET_ID = new Identifier(MOD_ID, "complete_quest_packet");
     public static final Identifier DELETE_ACCEPTED_QUEST_PACKET_ID = new Identifier(MOD_ID, "delete_accepted_quest_packet");
     public static final Identifier DELETE_AVAILABLE_QUEST_PACKET_ID = new Identifier(MOD_ID, "delete_available_quest_packet");
-    public static final ScreenHandlerType<GuildScreenHandler> GUILD_SCREEN_HANDLER = ScreenHandlerRegistry.registerExtended(new Identifier(MOD_ID, "guild_screen"), GuildScreenHandler::new);
+    public static final ScreenHandlerType<QuestsScreenHandler> QUESTS_SCREEN_HANDLER = ScreenHandlerRegistry.registerExtended(new Identifier(MOD_ID, "quest_screen"), QuestsScreenHandler::new);
 	public static final ItemGroup GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID,"group"), () -> new ItemStack(Registry.ITEM.get(new Identifier(MOD_ID, "quest_scroll"))));
+
+	public static final String[] SCREEN_TITLES = {"screen.guild.quest"};
 
 	// Blocks
 
@@ -49,8 +51,8 @@ public class Guild implements ModInitializer {
 
 	public static final Item GUILD_MASTER_TABLE_ITEM = new BlockItem(GUILD_MASTER_TABLE, new Item.Settings().group(GROUP));
 
-    public static final Item QUEST_PROFESSION_LICENCE_ITEM = new QuestProfessionLicence(new FabricItemSettings().group(GROUP));
-    public static final Item QUEST_PROFESSION_RESIGNMENT_ITEM = new QuestProfessionResignment(new FabricItemSettings().group(GROUP));
+    public static final Item QUEST_PROFESSION_LICENCE_ITEM = new QuestProfessionLicence(new FabricItemSettings());
+    public static final Item QUEST_PROFESSION_RESIGNMENT_ITEM = new QuestProfessionResignment(new FabricItemSettings());
 
     @Override
     public void onInitialize() {

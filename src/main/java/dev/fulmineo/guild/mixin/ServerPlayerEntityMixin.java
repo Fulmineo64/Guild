@@ -33,9 +33,9 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 
 	protected List<Quest> acceptedQuests = new ArrayList<>();
 	protected Map<String, List<Quest>> availableQuests = new HashMap<>();
-	private long lastQuestGenTime = world.getTime();
-	private List<String> professions = new ArrayList<>();
-	private Map<String, Integer> professionsExp = new HashMap<>();
+	protected long lastQuestGenTime = world.getTime();
+	protected List<String> professions = new ArrayList<>();
+	protected Map<String, Integer> professionsExp = new HashMap<>();
 
 	public ServerPlayerEntityMixin(MinecraftServer server, ServerWorld world, GameProfile profile) {
 		super(world, world.getSpawnPos(), world.getSpawnAngle(), profile);
@@ -80,6 +80,10 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 		this.lastQuestGenTime = time;
 	}
 
+	public List<String> getProfessions() {
+		return this.professions;
+	}
+
 	public List<QuestProfession> getQuestProfessions() {
 		List<QuestProfession> professions = new ArrayList<>();
 		for (String professionName: this.professions) {
@@ -101,6 +105,10 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 		return found;
 	}
 
+	public Map<String, Integer> getProfessionExp() {
+		return this.professionsExp;
+	}
+
 	public int getProfessionExp(String professionName) {
 		Integer val = this.professionsExp.get(professionName);
 		return val != null ? val : 0;
@@ -108,6 +116,16 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 
 	public void setProfessionExp(String professionName, int exp) {
 		this.professionsExp.put(professionName, exp);
+	}
+
+	@Inject(at = @At("TAIL"), method = "copyFrom(Lnet/minecraft/server/network/ServerPlayerEntity;Z)V")
+	public void copyFromMixin(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo info) {
+		GuildServerPlayerEntity guildPlayer = (GuildServerPlayerEntity)oldPlayer;
+		this.lastQuestGenTime = guildPlayer.getLastQuestGenTime();
+		this.acceptedQuests = guildPlayer.getAcceptedQuests();
+		this.availableQuests = guildPlayer.getAvailableQuests();
+		this.professions = guildPlayer.getProfessions();
+		this.professionsExp = guildPlayer.getProfessionExp();
 	}
 
 	@Inject(at = @At("TAIL"), method = "writeCustomDataToNbt(Lnet/minecraft/nbt/NbtCompound;)V")

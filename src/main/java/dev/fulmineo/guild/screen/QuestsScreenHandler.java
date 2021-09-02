@@ -21,7 +21,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.world.World;
 
-public class GuildScreenHandler extends ScreenHandler {
+public class QuestsScreenHandler extends ScreenHandler {
 	// private final Inventory inventory;
 
 	public Map<String, List<Quest>> availableQuests;
@@ -30,7 +30,7 @@ public class GuildScreenHandler extends ScreenHandler {
 	public Map<String, Integer> professionsExp;
 	public World world;
 
-	public GuildScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf){
+	public QuestsScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf){
         this(syncId, playerInventory);
 		NbtCompound nbt = buf.readNbt();
 		this.availableQuests = QuestHelper.fromMapNbt(nbt);
@@ -50,8 +50,8 @@ public class GuildScreenHandler extends ScreenHandler {
 		this.world = playerInventory.player.world;
     }
 
-    public GuildScreenHandler(int syncId, PlayerInventory playerInventory) {
-        super(Guild.GUILD_SCREEN_HANDLER, syncId);
+    public QuestsScreenHandler(int syncId, PlayerInventory playerInventory) {
+        super(Guild.QUESTS_SCREEN_HANDLER, syncId);
 	}
 
 	public boolean canUse(PlayerEntity player) {

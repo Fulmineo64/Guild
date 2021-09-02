@@ -1,0 +1,149 @@
+{
+	"name": "guild:overworld_passive_mob_drops",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:feather",
+			"range": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 40,
+			"unit_time": 100,
+			"unit_exp": 4,
+			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:chicken",
+			"range": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 60,
+			"unit_time": 100,
+			"unit_exp": 5,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:rabbit_hide",
+			"range": {
+				"min": 3,
+				"max": 8
+			},
+			"unit_worth": 70,
+			"unit_time": 160,
+			"unit_exp": 7,
+			"weight": 40
+		},
+		{
+			"type": "item",
+			"name": "minecraft:rabbit_foot",
+			"range": {
+				"min": 1,
+				"max": 4
+			},
+			"unit_worth": 100,
+			"unit_time": 180,
+			"unit_exp": 10,
+			"weight": 30
+		},
+		{
+			"type": "item",
+			"name": "minecraft:rabbit",
+			"range": {
+				"min": 3,
+				"max": 8
+			},
+			"unit_worth": 60,
+			"unit_time": 160,
+			"unit_exp": 6,
+			"weight": 40
+		},
+		{
+			"type": "item",
+			"name": "minecraft:white_wool",
+			"range": {
+				"min": 4,
+				"max": 16
+			},
+			"unit_worth": 50,
+			"unit_time": 80,
+			"unit_exp": 4,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:mutton",
+			"range": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 60,
+			"unit_time": 100,
+			"unit_exp": 5,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:leather",
+			"range": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 70,
+			"unit_time": 120,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:beef",
+			"range": {
+				"min": 5,
+				"max": 15
+			},
+			"unit_worth": 60,
+			"unit_time": 100,
+			"unit_exp": 5,
+			"weight": 80
+		},
+		{
+			"type": "item",
+			"name": "minecraft:porkchop",
+			"range": {
+				"min": 6,
+				"max": 18
+			},
+			"unit_worth": 60,
+			"unit_time": 80,
+			"unit_exp": 5,
+			"weight": 80
+		},
+		{
+			"type": "item",
+			"name": "minecraft:ink_sac",
+			"range": {
+				"min": 4,
+				"max": 16
+			},
+			"unit_worth": 40,
+			"unit_time": 100,
+			"unit_exp": 4,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:glow_ink_sac",
+			"range": {
+				"min": 4,
+				"max": 16
+			},
+			"unit_worth": 50,
+			"unit_time": 120,
+			"unit_exp": 5,
+			"weight": 50
+		}
+	]
+}

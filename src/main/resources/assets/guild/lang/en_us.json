@@ -1,14 +1,21 @@
 {
+	"block.guild.guild_master_table": "Guild Master Table",
+	"button.quest.delete": "Delete",
+	"button.quest.cancel": "Cancel",
+	"category.guild.guild": "The Guild",
+	"entity.minecraft.villager.guild_master": "Guild master",
 	"itemGroup.guild.group": "The Guild",
 	"item.guild.quest_scroll": "Quest Scroll",
 	"item.guild.quest_scroll.tasks": "Tasks",
 	"item.guild.quest_scroll.rewards": "Rewards",
 	"item.guild.profession_licence": "Profession Licence",
 	"item.guild.profession_resignment": "Profession Resignment",
-	"key.guild.guild_screen": "Open Guild Screen",
-	"category.guild.guild": "The Guild",
-	"entity.minecraft.villager.guild_master": "Guild master",
+	"key.guild.quest_screen": "Open Guild Screen",
 	"profession.missing": "You need a profession before opening the Guild screen.\nGo visit the Guild Master!",
 	"profession.profession": "Profession",
-	"profession.guild.guard": "Guard"
+	"profession.guild.fisherman": "Fisherman",
+	"profession.guild.guard": "Guard",
+	"profession.guild.hunter": "Hunter",
+	"screen.guild.quests": "Quests",
+	"screen.guild.expeditions": "Expeditions"
 }

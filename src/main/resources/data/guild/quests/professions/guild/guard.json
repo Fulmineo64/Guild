@@ -4,11 +4,11 @@
 	"guild_master_level": 1,
 	"levels_pool": "guild:common_levels",
 	"task_pools": [
-		"guild:hostile_mobs",
-		"guild:mob_drops"
+		"guild:overworld_hostile_mob_drops",
+		"guild:overworld_hostile_mob_heads",
+		"guild:overworld_hostile_mobs"
 	],
 	"reward_pools": [
-		"guild:common_rewards",
-		"guild:guard_rewards"
+		"guild:common_rewards"
 	]
 }
