@@ -16,6 +16,12 @@
 	"profession.guild.fisherman": "Fisherman",
 	"profession.guild.guard": "Guard",
 	"profession.guild.hunter": "Hunter",
+	"screen.guild.expeditions": "Expeditions",
 	"screen.guild.quests": "Quests",
-	"screen.guild.expeditions": "Expeditions"
+	"screen.guild.quests.accepted": "Accepted",
+	"screen.guild.quests.available": "Available",
+	"screen.guild.quests.build": "Build",
+	"screen.guild.quests.deliver": "Deliver",
+	"screen.guild.quests.legend": "Legend",
+	"screen.guild.quests.slay": "Slay"
 }

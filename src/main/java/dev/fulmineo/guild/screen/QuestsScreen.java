@@ -67,7 +67,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		/*this.addDrawableChild(new ButtonWidget(w + 4, h + 27,  60, 20, new TranslatableText("button.quest.refresh"), (button) -> {
 			ClientNetworkManager.openGuildScreen();
 		}));*/
-		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 66, h + 29, 60, 20, new TranslatableText("button.quest.delete"), (button) -> {
+		this.addDrawableChild(new InfoButton(w + 6, h + 16, (button) -> {}));
+		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 66, h + 16, 60, 20, new TranslatableText("button.quest.delete"), (button) -> {
 			this.deleteMode = !this.deleteMode;
 			button.setMessage(this.deleteMode ? new TranslatableText("button.quest.cancel") : new TranslatableText("button.quest.delete"));
 			for(int i = 0; i < 7; ++i) {
@@ -124,6 +125,10 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
 		float x = (float)((70 - this.textRenderer.getWidth(this.title)) / 2);
 		this.textRenderer.draw(matrices, this.title, x, (float)this.titleY, 4210752);
+
+		this.textRenderer.draw(matrices, new TranslatableText("screen.guild.quests.available"), 6, 40, 4210752);
+		MutableText accepted = new TranslatableText("screen.guild.quests.accepted");
+		this.textRenderer.draw(matrices, accepted, this.backgroundWidth - 6 - this.textRenderer.getWidth(accepted), 40, 4210752);
 	}
 
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
@@ -199,6 +204,25 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		QuestLevel nextLevel = this.professionLevels.get(this.professionLevel+1);
 		this.professionLevelPerc = (int)(((float)(exp - currentLevel.exp) / (float)(nextLevel.exp - currentLevel.exp)) * 100);
 	}
+
+	@Environment(EnvType.CLIENT)
+	class InfoButton extends ButtonWidget {
+		public InfoButton(int x, int y, ButtonWidget.PressAction onPress) {
+			super(x, y, 20, 20, new LiteralText("?"), onPress);
+		}
+
+		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
+			if (this.hovered) {
+				List<Text> tooltip = new ArrayList<>();
+				tooltip.add(new TranslatableText("screen.guild.quests.legend").formatted(Formatting.AQUA));
+				tooltip.add(new LiteralText("✉").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.deliver")));
+				tooltip.add(new LiteralText("🗡").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.slay")));
+				tooltip.add(new LiteralText("⚒").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.build")));
+				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
+			}
+		}
+	}
+
 
 	@Environment(EnvType.CLIENT)
 	class ProfessionButton extends ButtonWidget {
@@ -346,7 +370,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				for (NbtElement elem : items) {
 					NbtCompound entry = (NbtCompound)elem;
 					tooltip.add(
-						new TranslatableText(Registry.ITEM.get(new Identifier(entry.getString("Name"))).getTranslationKey()).formatted(Formatting.GRAY)
+						new LiteralText("✉").formatted(Formatting.GRAY)
+						.append(" ")
+						.append(new TranslatableText(Registry.ITEM.get(new Identifier(entry.getString("Name"))).getTranslationKey()))
 						.append(" ")
 						.append(String.valueOf(entry.getInt("Count")))
 						.append(" / ")
@@ -357,7 +383,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				for (NbtElement elem : entities) {
 					NbtCompound entry = (NbtCompound)elem;
 					tooltip.add(
-						new TranslatableText(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getTranslationKey()).formatted(Formatting.GRAY)
+						new LiteralText("🗡").formatted(Formatting.GRAY)
+						.append(" ")
+						.append(new TranslatableText(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getTranslationKey()))
 						.append(" ")
 						.append(String.valueOf(entry.getInt("Count")))
 						.append(" / ")
