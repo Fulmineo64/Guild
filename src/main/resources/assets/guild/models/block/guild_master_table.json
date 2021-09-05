@@ -1,0 +1,12 @@
+{
+	"parent": "minecraft:block/cube",
+	"textures": {
+	  "particle": "minecraft:block/dark_oak_planks",
+	  "north": "guild:block/guild_master_table_side",
+	  "south": "guild:block/guild_master_table_side",
+	  "east": "guild:block/guild_master_table_side",
+	  "west": "guild:block/guild_master_table_side",
+	  "up": "guild:block/guild_master_table_top",
+	  "down": "minecraft:block/dark_oak_planks"
+	}
+  }

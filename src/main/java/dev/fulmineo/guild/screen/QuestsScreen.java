@@ -1,9 +1,13 @@
 package dev.fulmineo.guild.screen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.fulmineo.guild.Guild;
@@ -32,6 +36,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 
 public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
@@ -47,9 +52,11 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	private boolean maxLevelReached;
 	private int professionLevelPerc;
 	private boolean deleteMode;
+	private PlayerInventory inventory;
 
    	public QuestsScreen(QuestsScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
+		this.inventory = inventory;
 		this.passEvents = false;
 		this.backgroundWidth = 276;
 		this.backgroundHeight = 200;
@@ -79,6 +86,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	}
 
 	private void initButtons() {
+		this.updateItemCompletion();
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
 		int y = h + 41;
@@ -119,6 +127,33 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				this.initButtons();
 			}));
 			y += 20;
+		}
+	}
+
+	private void updateItemCompletion() {
+		Map<String, Integer> map = new HashMap<>();
+
+		ImmutableList<DefaultedList<ItemStack>> mainAndOffhand = ImmutableList.of(inventory.main, inventory.offHand);
+		Iterator<DefaultedList<ItemStack>> iterator = mainAndOffhand.iterator();
+		while (iterator.hasNext()) {
+			DefaultedList<ItemStack> defaultedList = (DefaultedList<ItemStack>) iterator.next();
+			for (int i = 0; i < defaultedList.size(); ++i) {
+				ItemStack stack = defaultedList.get(i);
+				if (!stack.isOf(Items.AIR)) {
+					String id = Registry.ITEM.getId(stack.getItem()).toString();
+					Integer val = map.get(id);
+					map.put(id, (val == null ? 0 : val) + stack.getCount());
+				}
+			}
+		}
+
+		for (Quest quest: this.handler.acceptedQuests) {
+			NbtList items = quest.getItems();
+			for (NbtElement elm: items) {
+				NbtCompound entry = (NbtCompound)elm;
+				Integer val = map.get(entry.getString("Name"));
+				entry.putInt("Count", Math.min(val == null ? 0 : val, entry.getInt("Needed")));
+			}
 		}
 	}
 
@@ -215,9 +250,17 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
 				tooltip.add(new TranslatableText("screen.guild.quests.legend").formatted(Formatting.AQUA));
-				tooltip.add(new LiteralText("✉").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.deliver")));
+				tooltip.add(new LiteralText("⌚").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.time_available")));
+				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description2").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description3").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new LiteralText("✉").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.deliver_item")));
+				tooltip.add(new TranslatableText("screen.guild.quests.deliver_item.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new TranslatableText("screen.guild.quests.deliver_item.description2").formatted(Formatting.DARK_GRAY));
 				tooltip.add(new LiteralText("🗡").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.slay")));
-				tooltip.add(new LiteralText("⚒").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.build")));
+				tooltip.add(new TranslatableText("screen.guild.quests.slay.description").formatted(Formatting.DARK_GRAY));
+				/*tooltip.add(new LiteralText("⚒").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.build")));
+				tooltip.add(new TranslatableText("screen.guild.quests.build.description").formatted(Formatting.DARK_GRAY));*/
 				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
 		}
@@ -315,35 +358,35 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			// TODO: Remove Registry calls from the render cycle!
 			NbtList items = quest.getItems();
 			for (NbtElement elm: items) {
-				NbtCompound entity = (NbtCompound)elm;
-				Item item = Registry.ITEM.get(new Identifier(entity.getString("Name")));
+				NbtCompound entry = (NbtCompound)elm;
+				Item item = Registry.ITEM.get(new Identifier(entry.getString("Name")));
 				ItemStack stack = new ItemStack(item);
 				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entity.getInt("Needed"));
+				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entry.getInt("Needed") - entry.getInt("Count"));
 				xi += 18;
 			}
 
 			NbtList entities = quest.getEntities();
 			for (NbtElement elm: entities) {
-				NbtCompound entity = (NbtCompound)elm;
-				Item spawnEgg = Registry.ITEM.get(new Identifier(entity.getString("Name")+"_spawn_egg"));
+				NbtCompound entry = (NbtCompound)elm;
+				Item spawnEgg = Registry.ITEM.get(new Identifier(entry.getString("Name")+"_spawn_egg"));
 				if (spawnEgg == null) {
 					spawnEgg = Items.DIAMOND_SWORD;
 				}
 				ItemStack stack = new ItemStack(spawnEgg);
 				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entity.getInt("Needed") - entity.getInt("Count"));
+				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entry.getInt("Needed") - entry.getInt("Count"));
 				xi += 18;
 			}
 
 			xi = x + 108;
 			NbtList rewards = quest.getRewards();
 			for (NbtElement elm: rewards) {
-				NbtCompound reward = (NbtCompound)elm;
-				Item item = Registry.ITEM.get(new Identifier(reward.getString("Name")));
+				NbtCompound entry = (NbtCompound)elm;
+				Item item = Registry.ITEM.get(new Identifier(entry.getString("Name")));
 				ItemStack stack = new ItemStack(item);
 				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, reward.getInt("Count"));
+				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entry.getInt("Count"));
 				xi -= 18;
 			}
 
@@ -362,7 +405,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				MutableText text = new TranslatableText("item.guild.quest_scroll.tasks").formatted(Formatting.BLUE);
 				String time = quest.getRemainingTime(QuestsScreen.this.handler.world.getTime());
 				if (time.length() > 0) {
-					text.append("            ").append(new LiteralText("⌚ "+time).formatted(time == "00:00" ? Formatting.RED : Formatting.GRAY));
+					text.append("               ").append(new LiteralText("⌚ "+time).formatted(time == "00:00" ? Formatting.RED : Formatting.GRAY));
 				}
 				tooltip.add(text);
 				// TODO: Remove Registry calls from the render cycle!

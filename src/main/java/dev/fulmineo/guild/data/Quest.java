@@ -151,7 +151,7 @@ public class Quest {
 		int seconds;
 		if (this.nbt.contains("ExpiresAt")) {
 			seconds = (int)((this.nbt.getLong("ExpiresAt") - currentTime) / 20);
-			if (seconds == 0) return "00:00";
+			if (seconds <= 0) return "00:00";
 		} else {
 			seconds = this.nbt.getInt("Time");
 			if (seconds == 0) return "";

@@ -21,7 +21,15 @@
 	"screen.guild.quests.accepted": "Accepted",
 	"screen.guild.quests.available": "Available",
 	"screen.guild.quests.build": "Build",
-	"screen.guild.quests.deliver": "Deliver",
+	"screen.guild.quests.build.description": "Place the specified blocks to build a structure.",
+	"screen.guild.quests.deliver_item": "Deliver item",
+	"screen.guild.quests.deliver_item.description": "Obtain the requested item to progress with the quest.",
+	"screen.guild.quests.deliver_item.description2": "Items will get automatically delivered on quest completition.",
 	"screen.guild.quests.legend": "Legend",
-	"screen.guild.quests.slay": "Slay"
+	"screen.guild.quests.slay": "Slay",
+	"screen.guild.quests.slay.description": "Slay the requested entity to progress with the quest.",
+	"screen.guild.quests.time_available": "Time available",
+	"screen.guild.quests.time_available.description": "Complete a quest within its available time to get the full reward.",
+	"screen.guild.quests.time_available.description2": "Expired quests can still be completed but with a lesser reward.",
+	"screen.guild.quests.time_available.description3": "Use the Luck effect to get a bonus roll on the lesser reward."
 }

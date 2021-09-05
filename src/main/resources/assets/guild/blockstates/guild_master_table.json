@@ -1,0 +1,7 @@
+{
+	"variants": {
+	  "": {
+		"model": "guild:block/guild_master_table"
+	  }
+	}
+  }
