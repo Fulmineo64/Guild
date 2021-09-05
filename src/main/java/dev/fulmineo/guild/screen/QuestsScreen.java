@@ -295,7 +295,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
-				tooltip.add(new TranslatableText("profession."+this.getQuestProfession().name.replace(":", ".")).formatted(Formatting.GOLD));
+				tooltip.add(new TranslatableText(this.getQuestProfession().getTranslationKey()).formatted(Formatting.GOLD));
 				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
 		}

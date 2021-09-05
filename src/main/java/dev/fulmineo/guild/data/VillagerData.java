@@ -44,7 +44,6 @@ public class VillagerData {
 				offers = new ArrayList<>();
 			}
 			offers.add(new SellGuildProfessionItemFactory(Guild.QUEST_PROFESSION_LICENCE_ITEM, professionName, 5 * level, 5 * level));
-			offers.add(new SellGuildProfessionItemFactory(Guild.QUEST_PROFESSION_RESIGNMENT_ITEM, professionName, 1, 1));
 			offersByLevel.put(level, offers);
 		}
 		ImmutableMap.Builder<Integer, TradeOffers.Factory[]> builder = ImmutableMap.builder();

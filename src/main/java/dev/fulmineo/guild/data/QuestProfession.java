@@ -21,4 +21,12 @@ public class QuestProfession {
 	public void addRewardPool(QuestPool pool){
 		rewards.addAll(Arrays.asList(pool.data));
 	}
+
+	public String getTranslationKey() {
+		return getTranslationKey(this.name);
+	}
+
+	public static String getTranslationKey(String name) {
+		return "profession."+name.replace(":", ".");
+	}
 }
