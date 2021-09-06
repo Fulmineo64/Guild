@@ -107,7 +107,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				if (this.deleteMode) {
 					this.handler.deleteAvailableQuest(this.professionName, ((AvailableQuestButton)button).index);
 				} else {
-					if (!button.active) return;
+					if (!button.active || this.handler.acceptedQuests.size() == 7) return;
 					this.handler.acceptQuest(this.professionName, ((AvailableQuestButton)button).index);
 					this.professionQuests = handler.availableQuests.get(this.professionName);
 					this.initButtons();

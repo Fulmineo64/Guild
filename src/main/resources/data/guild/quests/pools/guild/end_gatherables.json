@@ -1,0 +1,20 @@
+{
+	"name": "guild:end_gatherables",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:chorus_fruit",
+			"level": {
+				"min": 20
+			},
+			"number": {
+				"min": 8,
+				"max": 32
+			},
+			"unit_worth": 20,
+			"unit_time": 120,
+			"unit_exp": 5,
+			"weight": 100
+		}
+	]
+}

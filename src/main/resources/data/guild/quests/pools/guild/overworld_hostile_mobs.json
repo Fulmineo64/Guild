@@ -4,23 +4,23 @@
 		{
 			"type": "entity",
 			"name": "minecraft:creeper",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 9
 			},
-			"unit_worth": 50,
+			"unit_worth": 60,
 			"unit_time": 120,
-			"unit_exp": 10,
+			"unit_exp": 9,
 			"weight": 70
 		},
 		{
 			"type": "entity",
 			"name": "minecraft:skeleton",
-			"range": {
+			"number": {
 				"min": 4,
 				"max": 12
 			},
-			"unit_worth": 40,
+			"unit_worth": 60,
 			"unit_time": 100,
 			"unit_exp": 8,
 			"weight": 80
@@ -28,11 +28,11 @@
 		{
 			"type": "entity",
 			"name": "minecraft:zombie",
-			"range": {
+			"number": {
 				"min": 5,
 				"max": 15
 			},
-			"unit_worth": 30,
+			"unit_worth": 50,
 			"unit_time": 80,
 			"unit_exp": 7,
 			"weight": 100
@@ -40,11 +40,11 @@
 		{
 			"type": "entity",
 			"name": "minecraft:spider",
-			"range": {
+			"number": {
 				"min": 4,
 				"max": 12
 			},
-			"unit_worth": 30,
+			"unit_worth": 50,
 			"unit_time": 100,
 			"unit_exp": 7,
 			"weight": 90
@@ -52,7 +52,7 @@
 		{
 			"type": "entity",
 			"name": "minecraft:enderman",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 7
 			},

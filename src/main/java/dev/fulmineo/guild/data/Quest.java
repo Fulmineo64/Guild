@@ -32,8 +32,15 @@ public class Quest {
 		this.nbt = new NbtCompound();
 	}
 
-	public static Quest create(QuestProfession profession, long currentTime) {
-		List<QuestPoolData> tasks = WeightedItemHelper.getWeightedItems(profession.tasks, (new Random()).nextInt(MAX_TASK_ROLLS) + 1);
+	public static Quest create(QuestProfession profession, PlayerEntity player) {
+		int level = QuestHelper.getCurrentLevel(DataManager.levels.get(profession.levelsPool), ((GuildServerPlayerEntity)player).getProfessionExp(profession.name));
+
+		List<QuestPoolData> tasks = new ArrayList<>(profession.tasks);
+		Iterator<QuestPoolData> iterator = tasks.iterator();
+		while (iterator.hasNext()) {
+			if (!iterator.next().isAvailableFor(level+1)) iterator.remove();
+		}
+		tasks = WeightedItemHelper.getWeightedItems(tasks, (new Random()).nextInt(MAX_TASK_ROLLS) + 1);
 
 		NbtList items = new NbtList();
 		NbtList entities = new NbtList();
@@ -50,8 +57,8 @@ public class Quest {
 			if (qpd == null) {
 				groupedTasks.put(key, task);
 			} else {
-				qpd.range.min += task.range.min;
-				qpd.range.max += task.range.max;
+				qpd.number.min += task.number.min;
+				qpd.number.max += task.number.max;
 			}
 		}
 
@@ -83,7 +90,7 @@ public class Quest {
 		}
 
 		List<QuestPoolData> rewardsCopy = new ArrayList<>(profession.rewards);
-		Iterator<QuestPoolData> iterator = rewardsCopy.iterator();
+		iterator = rewardsCopy.iterator();
 		while (iterator.hasNext()) {
 			if (iterator.next().getMinWorth() > worth) iterator.remove();
 		}

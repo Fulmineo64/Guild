@@ -14,8 +14,8 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
 public class QuestHelper {
-	// private static int QUEST_GENERATION_TICKS = 6000;
-	private static int QUEST_GENERATION_TICKS = 20;
+	// private static int QUEST_GENERATION_TICKS = 3600;
+	private static int QUEST_GENERATION_TICKS = 1;
 	private static int MAX_QUEST_TO_GENERATE = 10;
 	private static int MAX_QUESTS_BY_PROFESSION = 7;
 
@@ -44,15 +44,6 @@ public class QuestHelper {
 		}
 		return guildQuests;
 	}
-
-	/*public static List<Quest> generateQuests(QuestProfession profession, int min, int max){
-		int amount = min + (new Random()).nextInt(max - min);
-		List<Quest> guildQuests = new ArrayList<>();
-		for (int i=0; i < amount; i++){
-			guildQuests.add(Quest.create(profession));
-		}
-		return guildQuests;
-	}*/
 
 	public static void refreshAvailableQuests(List<QuestProfession> professions, PlayerEntity player) {
 		long time = player.world.getTime();
@@ -85,7 +76,7 @@ public class QuestHelper {
 				} else {
 					quests = new ArrayList<>();
 				}
-				quests.add(Quest.create(profession, time));
+				quests.add(Quest.create(profession, player));
 				availableQuests.put(profession.name, quests);
 				if (quests.size() == MAX_QUESTS_BY_PROFESSION) {
 					availableProfessions.remove(professionIndex);

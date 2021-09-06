@@ -1,0 +1,65 @@
+{
+	"name": "guild:nether_gatherables",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:warped_fungus",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 16
+			},
+			"unit_worth": 60,
+			"unit_time": 120,
+			"unit_exp": 4,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:crimson_fungus",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 16
+			},
+			"unit_worth": 60,
+			"unit_time": 120,
+			"unit_exp": 4,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:twisting_vines",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 12
+			},
+			"unit_worth": 60,
+			"unit_time": 180,
+			"unit_exp": 6,
+			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:weeping_vines",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 12
+			},
+			"unit_worth": 60,
+			"unit_time": 180,
+			"unit_exp": 6,
+			"weight": 50
+		}
+	]
+}

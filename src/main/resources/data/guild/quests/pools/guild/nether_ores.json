@@ -1,0 +1,35 @@
+{
+	"name": "guild:nether_ores",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:quartz",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 8,
+				"max": 64
+			},
+			"unit_worth": 20,
+			"unit_time": 60,
+			"unit_exp": 2,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:glowstone_dust",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 8,
+				"max": 32
+			},
+			"unit_worth": 20,
+			"unit_time": 60,
+			"unit_exp": 2,
+			"weight": 80
+		}
+	]
+}

@@ -1,0 +1,14 @@
+{
+	"name": "guild:gatherer",
+	"icon": "minecraft:bundle",
+	"guild_master_level": 2,
+	"levels_pool": "guild:common_levels",
+	"task_pools": [
+		"guild:overworld_gatherables",
+		"guild:nether_gatherables",
+		"guild:end_gatherables"
+	],
+	"reward_pools": [
+		"guild:common_rewards"
+	]
+}

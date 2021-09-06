@@ -61,6 +61,7 @@ public class QuestsScreenHandler extends ScreenHandler {
 	@Environment(EnvType.CLIENT)
 	public void acceptQuest(String profession, int index) {
 		List<Quest> professionsQuest = this.availableQuests.get(profession);
+		if (professionsQuest == null || professionsQuest.size() <= index) return;
 		Quest quest = professionsQuest.remove(index);
 		quest.accept(this.world.getTime());
 		this.acceptedQuests.add(quest);

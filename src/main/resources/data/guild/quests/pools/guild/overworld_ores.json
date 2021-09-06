@@ -1,0 +1,89 @@
+{
+	"name": "guild:overworld_ores",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:coal",
+			"number": {
+				"min": 8,
+				"max": 32
+			},
+			"unit_worth": 15,
+			"unit_time": 60,
+			"unit_exp": 3,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:raw_copper",
+			"number": {
+				"min": 6,
+				"max": 24
+			},
+			"unit_worth": 20,
+			"unit_time": 70,
+			"unit_exp": 4,
+			"weight": 80
+		},
+		{
+			"type": "item",
+			"name": "minecraft:raw_iron",
+			"number": {
+				"min": 4,
+				"max": 16
+			},
+			"unit_worth": 30,
+			"unit_time": 90,
+			"unit_exp": 5,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:raw_gold",
+			"number": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 40,
+			"unit_time": 90,
+			"unit_exp": 6,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:lapis_lazuli",
+			"number": {
+				"min": 8,
+				"max": 48
+			},
+			"unit_worth": 15,
+			"unit_time": 40,
+			"unit_exp": 1,
+			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:redstone",
+			"number": {
+				"min": 8,
+				"max": 64
+			},
+			"unit_worth": 10,
+			"unit_time": 40,
+			"unit_exp": 1,
+			"weight": 40
+		},
+		{
+			"type": "item",
+			"name": "minecraft:diamond",
+			"number": {
+				"min": 1,
+				"max": 10
+			},
+			"unit_worth": 350,
+			"unit_time": 150,
+			"unit_exp": 15,
+			"weight": 30
+		}
+	]
+}

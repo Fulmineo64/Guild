@@ -4,11 +4,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:feather",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 12
 			},
-			"unit_worth": 40,
+			"unit_worth": 30,
 			"unit_time": 100,
 			"unit_exp": 4,
 			"weight": 50
@@ -16,11 +16,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:chicken",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 12
 			},
-			"unit_worth": 60,
+			"unit_worth": 40,
 			"unit_time": 100,
 			"unit_exp": 5,
 			"weight": 70
@@ -28,11 +28,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:rabbit_hide",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 8
 			},
-			"unit_worth": 70,
+			"unit_worth": 50,
 			"unit_time": 160,
 			"unit_exp": 7,
 			"weight": 40
@@ -40,11 +40,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:rabbit_foot",
-			"range": {
+			"number": {
 				"min": 1,
 				"max": 4
 			},
-			"unit_worth": 100,
+			"unit_worth": 80,
 			"unit_time": 180,
 			"unit_exp": 10,
 			"weight": 30
@@ -52,11 +52,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:rabbit",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 8
 			},
-			"unit_worth": 60,
+			"unit_worth": 50,
 			"unit_time": 160,
 			"unit_exp": 6,
 			"weight": 40
@@ -64,11 +64,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:white_wool",
-			"range": {
+			"number": {
 				"min": 4,
 				"max": 16
 			},
-			"unit_worth": 50,
+			"unit_worth": 40,
 			"unit_time": 80,
 			"unit_exp": 4,
 			"weight": 70
@@ -76,11 +76,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:mutton",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 12
 			},
-			"unit_worth": 60,
+			"unit_worth": 40,
 			"unit_time": 100,
 			"unit_exp": 5,
 			"weight": 70
@@ -88,11 +88,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:leather",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 12
 			},
-			"unit_worth": 70,
+			"unit_worth": 60,
 			"unit_time": 120,
 			"unit_exp": 6,
 			"weight": 60
@@ -100,11 +100,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:beef",
-			"range": {
+			"number": {
 				"min": 5,
 				"max": 15
 			},
-			"unit_worth": 60,
+			"unit_worth": 50,
 			"unit_time": 100,
 			"unit_exp": 5,
 			"weight": 80
@@ -112,11 +112,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:porkchop",
-			"range": {
+			"number": {
 				"min": 6,
 				"max": 18
 			},
-			"unit_worth": 60,
+			"unit_worth": 50,
 			"unit_time": 80,
 			"unit_exp": 5,
 			"weight": 80
@@ -124,11 +124,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:ink_sac",
-			"range": {
+			"number": {
 				"min": 4,
 				"max": 16
 			},
-			"unit_worth": 40,
+			"unit_worth": 30,
 			"unit_time": 100,
 			"unit_exp": 4,
 			"weight": 70
@@ -136,11 +136,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:glow_ink_sac",
-			"range": {
+			"number": {
 				"min": 4,
 				"max": 16
 			},
-			"unit_worth": 50,
+			"unit_worth": 40,
 			"unit_time": 120,
 			"unit_exp": 5,
 			"weight": 50

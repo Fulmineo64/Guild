@@ -1,0 +1,125 @@
+{
+	"name": "guild:overworld_gatherables",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:brown_mushroom",
+			"number": {
+				"min": 4,
+				"max": 16
+			},
+			"unit_worth": 40,
+			"unit_time": 90,
+			"unit_exp": 3,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:red_mushroom",
+			"number": {
+				"min": 4,
+				"max": 16
+			},
+			"unit_worth": 40,
+			"unit_time": 90,
+			"unit_exp": 3,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:sweet_berries",
+			"number": {
+				"min": 4,
+				"max": 12
+			},
+			"unit_worth": 40,
+			"unit_time": 90,
+			"unit_exp": 3,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:glow_berries",
+			"number": {
+				"min": 4,
+				"max": 12
+			},
+			"unit_worth": 40,
+			"unit_time": 90,
+			"unit_exp": 3,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:apple",
+			"number": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 50,
+			"unit_time": 120,
+			"unit_exp": 4,
+			"weight": 90
+		},
+		{
+			"type": "item",
+			"name": "minecraft:bamboo",
+			"number": {
+				"min": 12,
+				"max": 48
+			},
+			"unit_worth": 10,
+			"unit_time": 30,
+			"unit_exp": 1,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cactus",
+			"number": {
+				"min": 4,
+				"max": 12
+			},
+			"unit_worth": 40,
+			"unit_time": 120,
+			"unit_exp": 4,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:sugar_cane",
+			"number": {
+				"min": 4,
+				"max": 12
+			},
+			"unit_worth": 30,
+			"unit_time": 120,
+			"unit_exp": 4,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cocoa_beans",
+			"number": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 60,
+			"unit_time": 180,
+			"unit_exp": 6,
+			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:vine",
+			"number": {
+				"min": 4,
+				"max": 12
+			},
+			"unit_worth": 40,
+			"unit_time": 180,
+			"unit_exp": 5,
+			"weight": 50
+		}
+	]
+}

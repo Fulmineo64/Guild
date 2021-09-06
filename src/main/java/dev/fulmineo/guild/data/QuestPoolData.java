@@ -7,7 +7,8 @@ import net.minecraft.util.registry.Registry;
 public class QuestPoolData implements WeightedItem {
 	public String type;
 	public String name;
-	public QuestPoolRange range;
+	public Range level;
+	public Range number;
 	public int unitWorth;
 	public int unitTime;
 	public int unitExp;
@@ -23,16 +24,21 @@ public class QuestPoolData implements WeightedItem {
 		return nbt;
 	}
 
+	public boolean isAvailableFor(int level) {
+		if (this.level == null) return true;
+		return this.level.contains(level);
+	}
+
 	public int getQuantityInRange() {
-		return this.range.getQuantityInRange();
+		return this.number.getQuantityInRange();
 	}
 
 	public int getMinWorth() {
-		return this.range.min * this.unitWorth;
+		return this.number.min * this.unitWorth;
 	}
 
 	public int getCountByWorth(int worth) {
-		return Math.min(range.max, worth / unitWorth);
+		return Math.min(number.max, worth / unitWorth);
 	}
 
 	public String validate() {

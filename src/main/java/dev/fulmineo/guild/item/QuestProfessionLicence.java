@@ -44,12 +44,16 @@ public class QuestProfessionLicence extends Item {
 				}
 			} else {
 				// TODO: Add required rank as a bonus check
-				if (((GuildServerPlayerEntity)user).addQuestProfession(professionName)) {
-					stack.damage(1, (LivingEntity)user, (Consumer<LivingEntity>)((p) -> { p.sendToolBreakStatus(hand); }));
-					user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.success", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
-					return TypedActionResult.success(stack);
+				if (((GuildServerPlayerEntity)user).getProfessions().size() < 7) {
+					if (((GuildServerPlayerEntity)user).addQuestProfession(professionName)) {
+						stack.damage(1, (LivingEntity)user, (Consumer<LivingEntity>)((p) -> { p.sendToolBreakStatus(hand); }));
+						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.success", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
+						return TypedActionResult.success(stack);
+					} else {
+						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.fail", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
+					}
 				} else {
-					user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.fail", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
+					user.sendMessage(new TranslatableText("item.guild.profession_licence.too_many_professions", 7), false);
 				}
 			}
 			return TypedActionResult.fail(stack);

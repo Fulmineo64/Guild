@@ -1,14 +1,14 @@
 {
-	"name": "guild:fishes",
+	"name": "guild:fishing_drops",
 	"data": [
 		{
 			"type": "item",
 			"name": "minecraft:cod",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 12
 			},
-			"unit_worth": 50,
+			"unit_worth": 40,
 			"unit_time": 180,
 			"unit_exp": 3,
 			"weight": 100
@@ -16,11 +16,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:salmon",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 12
 			},
-			"unit_worth": 50,
+			"unit_worth": 40,
 			"unit_time": 180,
 			"unit_exp": 3,
 			"weight": 100
@@ -28,11 +28,11 @@
 		{
 			"type": "item",
 			"name": "minecraft:tropical_fish",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 12
 			},
-			"unit_worth": 50,
+			"unit_worth": 40,
 			"unit_time": 180,
 			"unit_exp": 3,
 			"weight": 100
@@ -40,14 +40,26 @@
 		{
 			"type": "item",
 			"name": "minecraft:pufferfish",
-			"range": {
+			"number": {
 				"min": 2,
 				"max": 8
 			},
-			"unit_worth": 70,
+			"unit_worth": 60,
 			"unit_time": 240,
 			"unit_exp": 5,
 			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:nautilus_shell",
+			"number": {
+				"min": 1,
+				"max": 2
+			},
+			"unit_worth": 200,
+			"unit_time": 600,
+			"unit_exp": 12,
+			"weight": 10
 		}
 	]
 }

@@ -19,7 +19,7 @@ public class GuildCommands {
 					ServerCommandSource source = context.getSource();
 					if (source != null) {
 						ServerPlayerEntity player = source.getPlayer();
-						((GuildServerPlayerEntity)player).acceptQuest(Quest.create(DataManager.professions.get("guild:guard"), player.world.getTime()));
+						((GuildServerPlayerEntity)player).acceptQuest(Quest.create(DataManager.professions.get("guild:guard"), player));
 					}
 					return 1;
 				})

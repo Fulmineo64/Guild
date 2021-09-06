@@ -4,7 +4,7 @@
 		{
 			"type": "item",
 			"name": "minecraft:gunpowder",
-			"range": {
+			"number": {
 				"min": 6,
 				"max": 12
 			},
@@ -16,7 +16,7 @@
 		{
 			"type": "item",
 			"name": "minecraft:bone",
-			"range": {
+			"number": {
 				"min": 6,
 				"max": 15
 			},
@@ -28,7 +28,7 @@
 		{
 			"type": "item",
 			"name": "minecraft:rotten_flesh",
-			"range": {
+			"number": {
 				"min": 8,
 				"max": 20
 			},
@@ -40,7 +40,7 @@
 		{
 			"type": "item",
 			"name": "minecraft:string",
-			"range": {
+			"number": {
 				"min": 6,
 				"max": 15
 			},
@@ -52,7 +52,7 @@
 		{
 			"type": "item",
 			"name": "minecraft:spider_eye",
-			"range": {
+			"number": {
 				"min": 4,
 				"max": 12
 			},
@@ -64,7 +64,7 @@
 		{
 			"type": "item",
 			"name": "minecraft:ender_pearl",
-			"range": {
+			"number": {
 				"min": 3,
 				"max": 10
 			},
