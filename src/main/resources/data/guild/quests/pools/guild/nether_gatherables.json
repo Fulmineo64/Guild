@@ -8,8 +8,8 @@
 				"min": 10
 			},
 			"number": {
-				"min": 4,
-				"max": 16
+				"min": 8,
+				"max": 24
 			},
 			"unit_worth": 60,
 			"unit_time": 120,
@@ -23,8 +23,8 @@
 				"min": 10
 			},
 			"number": {
-				"min": 4,
-				"max": 16
+				"min": 8,
+				"max": 24
 			},
 			"unit_worth": 60,
 			"unit_time": 120,
@@ -38,8 +38,8 @@
 				"min": 10
 			},
 			"number": {
-				"min": 4,
-				"max": 12
+				"min": 8,
+				"max": 24
 			},
 			"unit_worth": 60,
 			"unit_time": 180,
@@ -53,8 +53,8 @@
 				"min": 10
 			},
 			"number": {
-				"min": 4,
-				"max": 12
+				"min": 8,
+				"max": 24
 			},
 			"unit_worth": 60,
 			"unit_time": 180,

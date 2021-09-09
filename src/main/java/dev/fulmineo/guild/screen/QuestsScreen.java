@@ -71,9 +71,6 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		if (this.handler.professions.size() > 0) this.selectProfession(0);
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
-		/*this.addDrawableChild(new ButtonWidget(w + 4, h + 27,  60, 20, new TranslatableText("button.quest.refresh"), (button) -> {
-			ClientNetworkManager.openGuildScreen();
-		}));*/
 		this.addDrawableChild(new InfoButton(w + 6, h + 16, (button) -> {}));
 		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 66, h + 16, 60, 20, new TranslatableText("button.quest.delete"), (button) -> {
 			this.deleteMode = !this.deleteMode;
@@ -185,9 +182,6 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		int i = (this.width - this.backgroundWidth) / 2;
 		int j = (this.height - this.backgroundHeight) / 2;
 
-		// this.renderScrollbar(matrices, i, j, this.available.length);
-		// this.renderScrollbar(matrices, i, j, this.accepted.length);
-
 		this.drawLevelInfo(matrices, i, j);
 	}
 
@@ -209,22 +203,6 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		this.textRenderer.draw(matrices, val, (float)tx, (float)(ty - 1), 0);
 		this.textRenderer.draw(matrices, val, (float)tx, (float)ty, 8453920);
 	}
-
-	/*private void renderScrollbar(MatrixStack matrices, int x, int y, int size) {
-		int i = size + 1 - 7;
-		if (i > 1) {
-			int j = 139 - (27 + (i - 1) * 139 / i);
-			int k = 1 + j / i + 139 / i;
-			int m = Math.min(113, this.indexStartOffset * k);
-			if (this.indexStartOffset == i - 1) {
-				m = 113;
-			}
-
-		   	drawTexture(matrices, x + 94, y + 18 + m, this.getZOffset(), 0.0F, 199.0F, 6, 27, 256, 512);
-		} else {
-		   	drawTexture(matrices, x + 94, y + 18, this.getZOffset(), 6.0F, 199.0F, 6, 27, 256, 512);
-		}
-	}*/
 
 	private void selectProfession(int index) {
 		QuestProfession profession = this.handler.professions.get(index);
@@ -250,6 +228,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
 				tooltip.add(new TranslatableText("screen.guild.quests.legend").formatted(Formatting.AQUA));
+				tooltip.add(new LiteralText("⌚").formatted(Formatting.DARK_AQUA).append(" ").append(new TranslatableText("screen.guild.quests.quest_expiration")));
+				tooltip.add(new TranslatableText("screen.guild.quests.quest_expiration.description").formatted(Formatting.DARK_GRAY));
 				tooltip.add(new LiteralText("⌚").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.time_available")));
 				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description").formatted(Formatting.DARK_GRAY));
 				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description2").formatted(Formatting.DARK_GRAY));
@@ -261,6 +241,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				tooltip.add(new TranslatableText("screen.guild.quests.slay.description").formatted(Formatting.DARK_GRAY));
 				/*tooltip.add(new LiteralText("⚒").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.build")));
 				tooltip.add(new TranslatableText("screen.guild.quests.build.description").formatted(Formatting.DARK_GRAY));*/
+				tooltip.add(new TranslatableText("screen.guild.quests.expiring").formatted(Formatting.DARK_GRAY));
 				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
 		}
@@ -402,10 +383,18 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				Quest quest = this.getQuest();
 				if (quest == null) return;
 				List<Text> tooltip = new ArrayList<>();
-				MutableText text = new TranslatableText("item.guild.quest_scroll.tasks").formatted(Formatting.BLUE);
-				String time = quest.getRemainingTime(QuestsScreen.this.handler.world.getTime());
-				if (time.length() > 0) {
-					text.append("               ").append(new LiteralText("⌚ "+time).formatted(time == "00:00" ? Formatting.RED : Formatting.GRAY));
+				MutableText text = new TranslatableText("item.guild.quest_scroll.tasks").formatted(Formatting.BLUE).append("      ");
+				long time = QuestsScreen.this.handler.world.getTime();
+				String accTime = quest.getAcceptationTime(time);
+				String remTime = quest.getRemainingTime(time);
+				if (accTime.length() > 0) {
+					text.append(new LiteralText("⌚ "+accTime).formatted(accTime == "00:00" ? Formatting.RED : Formatting.DARK_AQUA));
+				} else {
+					text.append("           ");
+				}
+				if (remTime.length() > 0) {
+					if (accTime.length() > 0) text.append("  ");
+					text.append(new LiteralText("⌚ "+remTime).formatted(remTime == "00:00" ? Formatting.RED : Formatting.GRAY));
 				}
 				tooltip.add(text);
 				// TODO: Remove Registry calls from the render cycle!

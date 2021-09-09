@@ -1,7 +1,7 @@
 {
 	"name": "guild:gatherer",
 	"icon": "minecraft:bundle",
-	"guild_master_level": 2,
+	"guild_master_level": 1,
 	"levels_pool": "guild:common_levels",
 	"task_pools": [
 		"guild:overworld_gatherables",

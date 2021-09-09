@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+	  "@@",
+	  "##",
+	  "##"
+	],
+	"key": {
+	  "#": {
+		"tag": "minecraft:planks"
+	  },
+	  "@": {
+		"item": "minecraft:blue_wool"
+	  }
+	},
+	"result": {
+	  "item": "guild:guild_master_table"
+	}
+  }

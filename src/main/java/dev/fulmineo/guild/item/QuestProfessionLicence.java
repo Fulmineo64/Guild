@@ -47,6 +47,9 @@ public class QuestProfessionLicence extends Item {
 				if (((GuildServerPlayerEntity)user).getProfessions().size() < 7) {
 					if (((GuildServerPlayerEntity)user).addQuestProfession(professionName)) {
 						stack.damage(1, (LivingEntity)user, (Consumer<LivingEntity>)((p) -> { p.sendToolBreakStatus(hand); }));
+						if (((GuildServerPlayerEntity)user).getProfessions().size() == 1){
+							user.sendMessage(new TranslatableText("item.guild.profession_licence.introduction"), false);
+						}
 						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.success", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
 						return TypedActionResult.success(stack);
 					} else {

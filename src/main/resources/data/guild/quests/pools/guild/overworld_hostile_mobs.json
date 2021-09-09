@@ -5,10 +5,10 @@
 			"type": "entity",
 			"name": "minecraft:creeper",
 			"number": {
-				"min": 3,
-				"max": 9
+				"min": 5,
+				"max": 10
 			},
-			"unit_worth": 60,
+			"unit_worth": 80,
 			"unit_time": 120,
 			"unit_exp": 9,
 			"weight": 70
@@ -17,10 +17,10 @@
 			"type": "entity",
 			"name": "minecraft:skeleton",
 			"number": {
-				"min": 4,
+				"min": 6,
 				"max": 12
 			},
-			"unit_worth": 60,
+			"unit_worth": 70,
 			"unit_time": 100,
 			"unit_exp": 8,
 			"weight": 80
@@ -29,11 +29,11 @@
 			"type": "entity",
 			"name": "minecraft:zombie",
 			"number": {
-				"min": 5,
-				"max": 15
+				"min": 10,
+				"max": 24
 			},
-			"unit_worth": 50,
-			"unit_time": 80,
+			"unit_worth": 60,
+			"unit_time": 70,
 			"unit_exp": 7,
 			"weight": 100
 		},
@@ -41,25 +41,73 @@
 			"type": "entity",
 			"name": "minecraft:spider",
 			"number": {
-				"min": 4,
+				"min": 6,
 				"max": 12
 			},
-			"unit_worth": 50,
-			"unit_time": 100,
+			"unit_worth": 70,
+			"unit_time": 120,
 			"unit_exp": 7,
 			"weight": 90
 		},
 		{
 			"type": "entity",
 			"name": "minecraft:enderman",
+			"level": {
+				"min": 5
+			},
 			"number": {
 				"min": 3,
 				"max": 7
 			},
-			"unit_worth": 100,
+			"unit_worth": 120,
 			"unit_time": 300,
 			"unit_exp": 12,
 			"weight": 60
+		},
+		{
+			"type": "entity",
+			"name": "minecraft:drowned",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 8,
+				"max": 16
+			},
+			"unit_worth": 80,
+			"unit_time": 100,
+			"unit_exp": 8,
+			"weight": 30
+		},
+		{
+			"type": "entity",
+			"name": "minecraft:husk",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 8,
+				"max": 16
+			},
+			"unit_worth": 80,
+			"unit_time": 100,
+			"unit_exp": 8,
+			"weight": 30
+		},
+		{
+			"type": "entity",
+			"name": "minecraft:stray",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 8,
+				"max": 12
+			},
+			"unit_worth": 90,
+			"unit_time": 120,
+			"unit_exp": 9,
+			"weight": 30
 		}
 	]
 }

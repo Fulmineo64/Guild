@@ -112,7 +112,10 @@ public class Quest {
 
 		NbtCompound nbt = new NbtCompound();
 		nbt.putString("Profession", profession.name);
-		nbt.putInt("Time", time);
+		if (time > 0) {
+			nbt.putInt("Time", time);
+		}
+		nbt.putLong("AvailableUntil", player.world.getTime() + 72000);
 		nbt.putInt("Exp", exp);
 		nbt.put("Entities", entities);
 		nbt.put("Items", items);
@@ -163,6 +166,20 @@ public class Quest {
 			seconds = this.nbt.getInt("Time");
 			if (seconds == 0) return "";
 		}
+		return this.timeToString(seconds);
+	}
+
+	public String getAcceptationTime(long currentTime) {
+		int seconds;
+		if (this.nbt.contains("AvailableUntil")) {
+			seconds = (int)((this.nbt.getLong("AvailableUntil") - currentTime) / 20);
+			if (seconds <= 0) return "00:00";
+			return this.timeToString(seconds);
+		}
+		return "";
+	}
+
+	public String timeToString(int seconds) {
 		int minutes = seconds / 60;
 		int hours = minutes / 60;
 		seconds = seconds % 60;
@@ -178,6 +195,7 @@ public class Quest {
 		if (this.nbt.contains("Time")) {
 			this.nbt.putLong("ExpiresAt", currentTime + this.nbt.getInt("Time") * 20);
 		}
+		this.nbt.remove("AvailableUntil");
 	}
 
 	public boolean tick() {
@@ -190,7 +208,7 @@ public class Quest {
 	}
 
 	public void updateItems(ItemStack obtainedItemStack, PlayerEntity player) {
-		if (this.nbt.contains("Items")/* && !this.nbt.getBoolean("Complete")*/) {
+		if (this.nbt.contains("Items")) {
 			NbtList items = this.nbt.getList("Items", NbtElement.COMPOUND_TYPE);
 			String itemIdentifier = Registry.ITEM.getId(obtainedItemStack.getItem()).toString();
 			for (NbtElement elem : items) {
@@ -203,9 +221,6 @@ public class Quest {
 					obtainedItemStack.decrement(diff);
 					int updatedCount = entry.getInt("Count") + diff;
 					entry.putInt("Count", updatedCount);
-					/*if (updatedCount == entry.getInt("Needed")) {
-						this.checkComplete(player);
-					}*/
 					break;
 				}
 			}
@@ -213,16 +228,13 @@ public class Quest {
 	}
 
 	public void updateEntities(String entityIdentifier, PlayerEntity player) {
-		if (this.nbt.contains("Entities")/* && !this.nbt.getBoolean("Complete")*/) {
+		if (this.nbt.contains("Entities")) {
 			NbtList entities = this.nbt.getList("Entities", NbtElement.COMPOUND_TYPE);
 			for (NbtElement elem : entities) {
 				NbtCompound entry = (NbtCompound)elem;
 				if (entry.getInt("Count") < entry.getInt("Needed") && entry.getString("Name").equals(entityIdentifier)) {
 					int updatedCount = entry.getInt("Count") + 1;
 					entry.putInt("Count", updatedCount);
-					/*if (updatedCount == entry.getInt("Needed")) {
-						this.checkComplete(player);
-					}*/
 					break;
 				}
 			}
@@ -317,25 +329,6 @@ public class Quest {
 			player.giveItemStack(new ItemStack(Registry.ITEM.get(new Identifier(reward.getString("Name"))), count));
 		}
 	}
-
-	/*private void checkComplete(PlayerEntity player) {
-		NbtList entities = this.nbt.getList("Entities", NbtElement.COMPOUND_TYPE);
-		for (NbtElement elem : entities) {
-			NbtCompound entry = (NbtCompound)elem;
-			if (entry.getInt("Count") != entry.getInt("Needed")) return;
-		}
-		NbtList items = this.nbt.getList("Items", NbtElement.COMPOUND_TYPE);
-		for (NbtElement elem : items) {
-			NbtCompound entry = (NbtCompound)elem;
-			if (entry.getInt("Count") != entry.getInt("Needed")) return;
-		}
-		this.complete(player);
-	}
-
-	private void complete(PlayerEntity player) {
-		this.nbt.putBoolean("Complete", true);
-		player.sendMessage(new LiteralText("Quest completed"), true);
-	}*/
 
 	static class MinWeightComparator implements Comparator<QuestPoolData> {
         public int compare(QuestPoolData a, QuestPoolData b) {

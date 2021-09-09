@@ -2,6 +2,7 @@ package dev.fulmineo.guild.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,8 +15,8 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
 public class QuestHelper {
-	// private static int QUEST_GENERATION_TICKS = 3600;
-	private static int QUEST_GENERATION_TICKS = 1;
+	private static int QUEST_GENERATION_TICKS = 3600;
+	// private static int QUEST_GENERATION_TICKS = 1;
 	private static int MAX_QUEST_TO_GENERATE = 10;
 	private static int MAX_QUESTS_BY_PROFESSION = 7;
 
@@ -56,6 +57,15 @@ public class QuestHelper {
 			long currentGenTimeFrame = time % QUEST_GENERATION_TICKS;
 
 			int questsToGenerate = Math.min((int)(((time - currentGenTimeFrame) - (lastGenTime - lastGenTimeFrame)) / QUEST_GENERATION_TICKS), MAX_QUEST_TO_GENERATE);
+
+			for (List<Quest> quests: availableQuests.values()) {
+				Iterator<Quest> iterator = quests.iterator();
+				while (iterator.hasNext()) {
+					if (iterator.next().nbt.getLong("AvailableUntil") < time) {
+						iterator.remove();
+					}
+				}
+			}
 
 			List<QuestProfession> availableProfessions = new ArrayList<>();
 			for (QuestProfession profession: professions) {

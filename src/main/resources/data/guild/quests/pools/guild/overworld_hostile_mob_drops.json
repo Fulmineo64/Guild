@@ -17,8 +17,8 @@
 			"type": "item",
 			"name": "minecraft:bone",
 			"number": {
-				"min": 6,
-				"max": 15
+				"min": 8,
+				"max": 16
 			},
 			"unit_worth": 40,
 			"unit_time": 80,
@@ -29,8 +29,8 @@
 			"type": "item",
 			"name": "minecraft:rotten_flesh",
 			"number": {
-				"min": 8,
-				"max": 20
+				"min": 12,
+				"max": 24
 			},
 			"unit_worth": 30,
 			"unit_time": 60,
@@ -41,11 +41,11 @@
 			"type": "item",
 			"name": "minecraft:string",
 			"number": {
-				"min": 6,
-				"max": 15
+				"min": 7,
+				"max": 14
 			},
 			"unit_worth": 40,
-			"unit_time": 70,
+			"unit_time": 80,
 			"unit_exp": 4,
 			"weight": 80
 		},
@@ -53,20 +53,23 @@
 			"type": "item",
 			"name": "minecraft:spider_eye",
 			"number": {
-				"min": 4,
+				"min": 6,
 				"max": 12
 			},
-			"unit_worth": 30,
-			"unit_time": 70,
+			"unit_worth": 40,
+			"unit_time": 90,
 			"unit_exp": 4,
 			"weight": 70
 		},
 		{
 			"type": "item",
 			"name": "minecraft:ender_pearl",
+			"level": {
+				"min": 5
+			},
 			"number": {
-				"min": 3,
-				"max": 10
+				"min": 4,
+				"max": 8
 			},
 			"unit_worth": 100,
 			"unit_time": 250,

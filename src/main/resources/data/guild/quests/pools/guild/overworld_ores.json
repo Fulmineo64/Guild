@@ -29,8 +29,8 @@
 			"type": "item",
 			"name": "minecraft:raw_iron",
 			"number": {
-				"min": 4,
-				"max": 16
+				"min": 6,
+				"max": 18
 			},
 			"unit_worth": 30,
 			"unit_time": 90,
@@ -52,30 +52,39 @@
 		{
 			"type": "item",
 			"name": "minecraft:lapis_lazuli",
+			"level": {
+				"min": 5
+			},
 			"number": {
-				"min": 8,
-				"max": 48
+				"min": 16,
+				"max": 64
 			},
 			"unit_worth": 15,
-			"unit_time": 40,
+			"unit_time": 30,
 			"unit_exp": 1,
 			"weight": 50
 		},
 		{
 			"type": "item",
 			"name": "minecraft:redstone",
+			"level": {
+				"min": 5
+			},
 			"number": {
-				"min": 8,
+				"min": 16,
 				"max": 64
 			},
 			"unit_worth": 10,
-			"unit_time": 40,
+			"unit_time": 30,
 			"unit_exp": 1,
 			"weight": 40
 		},
 		{
 			"type": "item",
 			"name": "minecraft:diamond",
+			"level": {
+				"min": 5
+			},
 			"number": {
 				"min": 1,
 				"max": 10

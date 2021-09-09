@@ -5,61 +5,25 @@
 			"type": "item",
 			"name": "minecraft:feather",
 			"number": {
-				"min": 3,
+				"min": 6,
 				"max": 12
 			},
 			"unit_worth": 30,
-			"unit_time": 100,
-			"unit_exp": 4,
+			"unit_time": 80,
+			"unit_exp": 3,
 			"weight": 50
 		},
 		{
 			"type": "item",
 			"name": "minecraft:chicken",
 			"number": {
-				"min": 3,
+				"min": 6,
 				"max": 12
 			},
 			"unit_worth": 40,
-			"unit_time": 100,
-			"unit_exp": 5,
+			"unit_time": 80,
+			"unit_exp": 4,
 			"weight": 70
-		},
-		{
-			"type": "item",
-			"name": "minecraft:rabbit_hide",
-			"number": {
-				"min": 3,
-				"max": 8
-			},
-			"unit_worth": 50,
-			"unit_time": 160,
-			"unit_exp": 7,
-			"weight": 40
-		},
-		{
-			"type": "item",
-			"name": "minecraft:rabbit_foot",
-			"number": {
-				"min": 1,
-				"max": 4
-			},
-			"unit_worth": 80,
-			"unit_time": 180,
-			"unit_exp": 10,
-			"weight": 30
-		},
-		{
-			"type": "item",
-			"name": "minecraft:rabbit",
-			"number": {
-				"min": 3,
-				"max": 8
-			},
-			"unit_worth": 50,
-			"unit_time": 160,
-			"unit_exp": 6,
-			"weight": 40
 		},
 		{
 			"type": "item",
@@ -82,7 +46,7 @@
 			},
 			"unit_worth": 40,
 			"unit_time": 100,
-			"unit_exp": 5,
+			"unit_exp": 4,
 			"weight": 70
 		},
 		{
@@ -94,7 +58,7 @@
 			},
 			"unit_worth": 60,
 			"unit_time": 120,
-			"unit_exp": 6,
+			"unit_exp": 5,
 			"weight": 60
 		},
 		{
@@ -106,7 +70,7 @@
 			},
 			"unit_worth": 50,
 			"unit_time": 100,
-			"unit_exp": 5,
+			"unit_exp": 4,
 			"weight": 80
 		},
 		{
@@ -118,7 +82,7 @@
 			},
 			"unit_worth": 50,
 			"unit_time": 80,
-			"unit_exp": 5,
+			"unit_exp": 4,
 			"weight": 80
 		},
 		{
@@ -144,6 +108,51 @@
 			"unit_time": 120,
 			"unit_exp": 5,
 			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:rabbit_hide",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 50,
+			"unit_time": 160,
+			"unit_exp": 6,
+			"weight": 40
+		},
+		{
+			"type": "item",
+			"name": "minecraft:rabbit_foot",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 1,
+				"max": 4
+			},
+			"unit_worth": 80,
+			"unit_time": 180,
+			"unit_exp": 9,
+			"weight": 30
+		},
+		{
+			"type": "item",
+			"name": "minecraft:rabbit",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 50,
+			"unit_time": 160,
+			"unit_exp": 6,
+			"weight": 40
 		}
 	]
 }

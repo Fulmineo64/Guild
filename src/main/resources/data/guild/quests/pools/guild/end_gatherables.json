@@ -8,7 +8,7 @@
 				"min": 20
 			},
 			"number": {
-				"min": 8,
+				"min": 10,
 				"max": 32
 			},
 			"unit_worth": 20,

@@ -5,11 +5,11 @@
 			"type": "item",
 			"name": "minecraft:cod",
 			"number": {
-				"min": 3,
+				"min": 4,
 				"max": 12
 			},
 			"unit_worth": 40,
-			"unit_time": 180,
+			"unit_time": 80,
 			"unit_exp": 3,
 			"weight": 100
 		},
@@ -17,11 +17,11 @@
 			"type": "item",
 			"name": "minecraft:salmon",
 			"number": {
-				"min": 3,
+				"min": 4,
 				"max": 12
 			},
 			"unit_worth": 40,
-			"unit_time": 180,
+			"unit_time": 80,
 			"unit_exp": 3,
 			"weight": 100
 		},
@@ -29,29 +29,35 @@
 			"type": "item",
 			"name": "minecraft:tropical_fish",
 			"number": {
-				"min": 3,
+				"min": 4,
 				"max": 12
 			},
 			"unit_worth": 40,
-			"unit_time": 180,
+			"unit_time": 100,
 			"unit_exp": 3,
 			"weight": 100
 		},
 		{
 			"type": "item",
 			"name": "minecraft:pufferfish",
+			"level": {
+				"min": 5
+			},
 			"number": {
-				"min": 2,
-				"max": 8
+				"min": 3,
+				"max": 9
 			},
 			"unit_worth": 60,
-			"unit_time": 240,
+			"unit_time": 140,
 			"unit_exp": 5,
 			"weight": 70
 		},
 		{
 			"type": "item",
 			"name": "minecraft:nautilus_shell",
+			"level": {
+				"min": 10
+			},
 			"number": {
 				"min": 1,
 				"max": 2

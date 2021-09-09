@@ -3,7 +3,7 @@
 	"id": "guild",
 	"version": "${version}",
 	"name": "Guild",
-	"description": "",
+	"description": "Quests, expeditions and adventures await you!",
 	"authors": [
 		"Fulmineo"
 	],
