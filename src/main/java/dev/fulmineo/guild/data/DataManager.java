@@ -33,8 +33,7 @@ public class DataManager {
 
 			@Override
 			public void reload(ResourceManager manager) {
-				Guild.info("reload");
-
+				Guild.errors.clear();
 				levels.clear();
 				professions.clear();
 
@@ -46,10 +45,10 @@ public class DataManager {
 							QuestLevels data = (QuestLevels)GSON.fromJson(new String(stream.readAllBytes()), QuestLevels.class);
 							levels.put(data.name, data.levels);
 						} catch (Exception e) {
-							Guild.LOGGER.error("Couldn't parse quest level {}", (Object)id, (Object)e);
+							Guild.errors.add("Couldn't parse quest level "+id.toString());
 						}
 					} catch(Exception e) {
-						Guild.LOGGER.error("Error occurred while loading resource json " + id.toString(), e);
+						Guild.errors.add("Error occurred while loading resource json "+id.toString());
 					}
 				}
 
@@ -59,10 +58,10 @@ public class DataManager {
 							QuestProfession profession = (QuestProfession)GSON.fromJson(new String(stream.readAllBytes()), QuestProfession.class);
 							professions.put(profession.name, profession);
 						} catch (Exception e) {
-							Guild.LOGGER.error("Couldn't parse quest profession {}", (Object)id, (Object)e);
+							Guild.errors.add("Couldn't parse quest profession "+id.toString());
 						}
 					} catch(Exception e) {
-						Guild.LOGGER.error("Error occurred while loading resource json " + id.toString(), e);
+						Guild.errors.add("Error occurred while loading resource json "+id.toString());
 					}
 				}
 
@@ -75,33 +74,49 @@ public class DataManager {
 								pools.put(pool.name, pool);
 							} else {
 								// TODO: This message should be displayed to the player that issued the reload command
-								Guild.LOGGER.error("Invalid key {} in quest pool {}", (Object)invalidKey, (Object)id);
+								Guild.errors.add("Invalid key "+invalidKey.toString()+" in quest pool "+id.toString());
 							}
 						} catch (Exception e) {
-							Guild.LOGGER.error("Couldn't parse quest pool {}", (Object)id, (Object)e);
+							Guild.errors.add("Couldn't parse quest pool "+id.toString());
 						}
 					} catch(Exception e) {
-						Guild.LOGGER.error("Error occurred while loading resource json " + id.toString(), e);
+						Guild.errors.add("Error occurred while loading resource json "+id.toString());
 					}
 				}
 
 				for (Map.Entry<String, QuestProfession> entry : professions.entrySet()) {
 					QuestProfession profession = entry.getValue();
-					for (String taskId : profession.taskPools) {
-						QuestPool pool = pools.get(taskId);
-						if (pool == null) {
-							Guild.LOGGER.error("Couldn't find task quest pool "+taskId+". Skipping.");
-						} else {
-							profession.addTaskPool(pool);
+					if (profession.taskPools == null) {
+						Guild.errors.add("Missing required property taskPools in profession "+entry.getKey());
+					} else {
+						for (String taskId : profession.taskPools) {
+							QuestPool pool = pools.get(taskId);
+							if (pool == null) {
+								Guild.errors.add("Couldn't find task quest pool "+taskId+ " required by profession "+entry.getKey());
+							} else {
+								profession.addTaskPool(pool);
+							}
 						}
 					}
 
-					for (String rewardId : profession.rewardPools) {
-						QuestPool pool = pools.get(rewardId);
-						if (pool == null) {
-							Guild.LOGGER.error("Couldn't find reward quest pool "+rewardId+". Skipping.");
-						} else {
-							profession.addRewardPool(pool);
+					if (profession.rewardPools == null) {
+						Guild.errors.add("Missing required property rewardPools in profession "+entry.getKey());
+					} else {
+						for (String rewardId : profession.rewardPools) {
+							QuestPool pool = pools.get(rewardId);
+							if (pool == null) {
+								Guild.errors.add("Couldn't find reward quest pool "+rewardId+ " required by profession "+entry.getKey());
+							} else {
+								profession.addRewardPool(pool);
+							}
+						}
+					}
+
+					if (profession.levelsPool == null) {
+						Guild.errors.add("Missing required property levelsPool in profession "+entry.getKey());
+					} else {
+						if (levels.get(profession.levelsPool) == null) {
+							Guild.errors.add("Couldn't find levels pool "+profession.levelsPool+ " required by profession "+entry.getKey());
 						}
 					}
 				}

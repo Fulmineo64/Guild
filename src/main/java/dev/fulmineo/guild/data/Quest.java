@@ -11,6 +11,7 @@ import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
 
+import dev.fulmineo.guild.Guild;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -42,9 +43,11 @@ public class Quest {
 		}
 		tasks = WeightedItemHelper.getWeightedItems(tasks, (new Random()).nextInt(MAX_TASK_ROLLS) + 1);
 
-		NbtList items = new NbtList();
-		NbtList entities = new NbtList();
-		NbtList rewards = new NbtList();
+		NbtList itemList = new NbtList();
+		NbtList entityList = new NbtList();
+		NbtList cureList = new NbtList();
+		NbtList summonList = new NbtList();
+		NbtList rewardList = new NbtList();
 
 		int time = 0;
 		int worth = 0;
@@ -65,6 +68,7 @@ public class Quest {
 		for (QuestPoolData task : groupedTasks.values()) {
 			NbtCompound nbt = new NbtCompound();
 			nbt.putString("Name", task.name);
+			if (task.icon != null) nbt.putString("Icon", task.icon);
 			int needed = task.getQuantityInRange();
 			nbt.putInt("Needed", needed);
 			time += needed * task.unitTime;
@@ -72,11 +76,19 @@ public class Quest {
 			exp += needed * task.unitExp;
 			switch (task.type) {
 				case "item": {
-					items.add(nbt);
+					itemList.add(nbt);
 					break;
 				}
 				case "entity": {
-					entities.add(nbt);
+					entityList.add(nbt);
+					break;
+				}
+				case "cure": {
+					cureList.add(nbt);
+					break;
+				}
+				case "summon": {
+					summonList.add(nbt);
 					break;
 				}
 			}
@@ -103,23 +115,27 @@ public class Quest {
 				nbt.putString("Name", reward.name);
 				int count = reward.getCountByWorth(worth);
 				nbt.putInt("Count", count);
-				rewards.add(nbt);
+				rewardList.add(nbt);
 				worth -= reward.unitWorth * count;
 			}
 			rewardsCopy.remove(reward);
 		}
-		Collections.reverse(rewards);
+		Collections.reverse(rewardList);
 
 		NbtCompound nbt = new NbtCompound();
 		nbt.putString("Profession", profession.name);
 		if (time > 0) {
 			nbt.putInt("Time", time);
 		}
-		nbt.putLong("AvailableUntil", player.world.getTime() + 72000);
+		if (Guild.EXPIRATION_TICKS != 0) {
+			nbt.putLong("AvailableUntil", player.world.getTime() + Guild.EXPIRATION_TICKS);
+		}
 		nbt.putInt("Exp", exp);
-		nbt.put("Entities", entities);
-		nbt.put("Items", items);
-		nbt.put("Rewards", rewards);
+		nbt.put("Entity", entityList);
+		nbt.put("Cure", cureList);
+		nbt.put("Summon", summonList);
+		nbt.put("Item", itemList);
+		nbt.put("Reward", rewardList);
 		return fromNbt(nbt);
 	}
 
@@ -145,16 +161,24 @@ public class Quest {
 		return this.nbt.getString("Profession");
 	}
 
-	public NbtList getItems() {
-		return this.nbt.getList("Items", NbtElement.COMPOUND_TYPE);
+	public NbtList getItemList() {
+		return this.nbt.getList("Item", NbtElement.COMPOUND_TYPE);
 	}
 
-	public NbtList getEntities() {
-		return this.nbt.getList("Entities", NbtElement.COMPOUND_TYPE);
+	public NbtList getEntityList() {
+		return this.nbt.getList("Entity", NbtElement.COMPOUND_TYPE);
 	}
 
-	public NbtList getRewards() {
-		return this.nbt.getList("Rewards", NbtElement.COMPOUND_TYPE);
+	public NbtList getCureList() {
+		return this.nbt.getList("Cure", NbtElement.COMPOUND_TYPE);
+	}
+
+	public NbtList getSummonList() {
+		return this.nbt.getList("Summon", NbtElement.COMPOUND_TYPE);
+	}
+
+	public NbtList getRewardList() {
+		return this.nbt.getList("Reward", NbtElement.COMPOUND_TYPE);
 	}
 
 	public String getRemainingTime(long currentTime) {
@@ -207,34 +231,25 @@ public class Quest {
 		return false;
 	}
 
-	public void updateItems(ItemStack obtainedItemStack, PlayerEntity player) {
-		if (this.nbt.contains("Items")) {
-			NbtList items = this.nbt.getList("Items", NbtElement.COMPOUND_TYPE);
-			String itemIdentifier = Registry.ITEM.getId(obtainedItemStack.getItem()).toString();
-			for (NbtElement elem : items) {
-				NbtCompound entry = (NbtCompound)elem;
-				if (entry.getString("Item").equals(itemIdentifier) && entry.getInt("Count") < entry.getInt("Needed")) {
-					int diff = entry.getInt("Needed") - entry.getInt("Count");
-					if (diff > obtainedItemStack.getCount()) {
-						diff = obtainedItemStack.getCount();
-					}
-					obtainedItemStack.decrement(diff);
-					int updatedCount = entry.getInt("Count") + diff;
-					entry.putInt("Count", updatedCount);
-					break;
-				}
-			}
-		}
+	public void updateEntity(String entityIdentifier, PlayerEntity player) {
+		this.updateNbt("Entity", entityIdentifier, player);
 	}
 
-	public void updateEntities(String entityIdentifier, PlayerEntity player) {
-		if (this.nbt.contains("Entities")) {
-			NbtList entities = this.nbt.getList("Entities", NbtElement.COMPOUND_TYPE);
+	public void updateCure(String entityIdentifier, PlayerEntity player) {
+		this.updateNbt("Cure", entityIdentifier, player);
+	}
+
+	public void updateSummon(String entityIdentifier, PlayerEntity player) {
+		this.updateNbt("Summon", entityIdentifier, player);
+	}
+
+	private void updateNbt(String listName, String identifier, PlayerEntity player) {
+		if (this.nbt.contains(listName)) {
+			NbtList entities = this.nbt.getList(listName, NbtElement.COMPOUND_TYPE);
 			for (NbtElement elem : entities) {
 				NbtCompound entry = (NbtCompound)elem;
-				if (entry.getInt("Count") < entry.getInt("Needed") && entry.getString("Name").equals(entityIdentifier)) {
-					int updatedCount = entry.getInt("Count") + 1;
-					entry.putInt("Count", updatedCount);
+				if (entry.getInt("Count") < entry.getInt("Needed") && entry.getString("Name").equals(identifier)) {
+					entry.putInt("Count", entry.getInt("Count") + 1);
 					break;
 				}
 			}
@@ -246,7 +261,7 @@ public class Quest {
 	}
 
 	public boolean tryComplete(ServerPlayerEntity player) {
-		NbtList entities = this.nbt.getList("Entities", NbtElement.COMPOUND_TYPE);
+		NbtList entities = this.nbt.getList("Entity", NbtElement.COMPOUND_TYPE);
 		for (NbtElement elem : entities) {
 			NbtCompound entry = (NbtCompound)elem;
 			if (entry.getInt("Count") != entry.getInt("Needed")) return false;
@@ -254,7 +269,7 @@ public class Quest {
 		List<List<ItemStack>> stacksByIndex = new ArrayList<>();
 		PlayerInventory inventory = player.getInventory();
 		ImmutableList<DefaultedList<ItemStack>> mainAndOffhand = ImmutableList.of(inventory.main, inventory.offHand);
-		NbtList items = this.nbt.getList("Items", NbtElement.COMPOUND_TYPE);
+		NbtList items = this.nbt.getList("Item", NbtElement.COMPOUND_TYPE);
 		for (NbtElement elem: items) {
 			NbtCompound entry = (NbtCompound)elem;
 			List<ItemStack> stacks = new ArrayList<>();
@@ -313,7 +328,7 @@ public class Quest {
 
 	public void giveRewards(ServerPlayerEntity player) {
 		boolean expired = this.isExpired(player.world.getTime());
-		NbtList rewards = this.getRewards();
+		NbtList rewards = this.getRewardList();
 		for (NbtElement entry: rewards) {
 			NbtCompound reward = (NbtCompound)entry;
 			int count = reward.getInt("Count");

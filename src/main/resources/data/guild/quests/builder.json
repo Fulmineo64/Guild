@@ -1,0 +1,12 @@
+{
+	"name": "guild:builder",
+	"icon": "minecraft:glow_item_frame",
+	"guild_master_level": 3,
+	"levels_pool": "guild:common_levels",
+	"task_pools": [
+		"guild:golems"
+	],
+	"reward_pools": [
+		"guild:common_rewards"
+	]
+}

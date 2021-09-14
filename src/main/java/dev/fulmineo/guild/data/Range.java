@@ -18,7 +18,8 @@ public class Range {
 
 	public int getQuantityInRange() {
 		this.init();
-		int val = (new Random()).nextInt(max - min) + min + 1;
+		int diff = max - min;
+		int val = (diff > 0 ? (new Random()).nextInt(diff + 1) : 0) + min;
 		return val;
 	}
 }

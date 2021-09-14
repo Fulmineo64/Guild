@@ -7,6 +7,7 @@ import net.minecraft.util.registry.Registry;
 public class QuestPoolData implements WeightedItem {
 	public String type;
 	public String name;
+	public String icon;
 	public Range level;
 	public Range number;
 	public int unitWorth;
@@ -46,7 +47,7 @@ public class QuestPoolData implements WeightedItem {
 			case "item": {
 				if (Registry.ITEM.containsId(new Identifier(name))) return "";
 			}
-			case "entity": {
+			case "entity", "summon", "cure": {
 				if (Registry.ENTITY_TYPE.containsId(new Identifier(name))) return "";
 			}
 		}

@@ -44,7 +44,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	// TODO: Check if you can extend non implemented functions through inject
 	public void onKilledOther(ServerWorld world, LivingEntity killedEntity) {
 		super.onKilledOther(world, killedEntity);
-		QuestHelper.updateQuestEntities(this, killedEntity);
+		QuestHelper.updateQuestEntity(this, killedEntity);
 	}
 
 	public List<Quest> getAcceptedQuests() {

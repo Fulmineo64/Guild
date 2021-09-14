@@ -4,7 +4,8 @@
 	"guild_master_level": 1,
 	"levels_pool": "guild:common_levels",
 	"task_pools": [
-		"guild:fishing_drops"
+		"guild:fishing_drops",
+		"guild:sea_flora"
 	],
 	"reward_pools": [
 		"guild:common_rewards"

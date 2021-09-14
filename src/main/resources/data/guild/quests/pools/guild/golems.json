@@ -1,0 +1,43 @@
+{
+	"name": "guild:golems",
+	"data": [
+		{
+			"type": "summon",
+			"name": "minecraft:iron_golem",
+			"icon": "minecraft:iron_block",
+			"number": {
+				"min": 1,
+				"max": 1
+			},
+			"unit_worth": 1500,
+			"unit_time": 600,
+			"unit_exp": 21,
+			"weight": 20
+		},
+		{
+			"type": "summon",
+			"name": "minecraft:snow_golem",
+			"icon": "minecraft:snow_block",
+			"number": {
+				"min": 1,
+				"max": 3
+			},
+			"unit_worth": 500,
+			"unit_time": 600,
+			"unit_exp": 7,
+			"weight": 20
+		},
+		{
+			"type": "cure",
+			"name": "minecraft:zombie_villager",
+			"number": {
+				"min": 1,
+				"max": 1
+			},
+			"unit_worth": 2000,
+			"unit_time": 1800,
+			"unit_exp": 20,
+			"weight": 20
+		}
+	]
+}

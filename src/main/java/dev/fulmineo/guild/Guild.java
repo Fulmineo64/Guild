@@ -15,6 +15,9 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +31,22 @@ import dev.fulmineo.guild.screen.QuestsScreenHandler;
 public class Guild implements ModInitializer {
 
 	public static Logger LOGGER = LogManager.getLogger();
+
+	// Constants
+
+	public static final int MAX_QUESTS_BY_PROFESSION = 7;
+
+	// Global variables
+
+	public static List<String> errors = new ArrayList<>();
+
+	// Configurables
+	// All finals for now
+
+	public static final int EXPIRATION_TICKS = 108000;
+	// public static int QUEST_GENERATION_TICKS = 3600;
+	public static final int QUEST_GENERATION_TICKS = 1;
+	public static final int MAX_QUEST_TO_GENERATE = 10;
 
     // Identifiers
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import dev.fulmineo.guild.Guild;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,16 +16,27 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
 public class QuestHelper {
-	private static int QUEST_GENERATION_TICKS = 3600;
-	// private static int QUEST_GENERATION_TICKS = 1;
-	private static int MAX_QUEST_TO_GENERATE = 10;
-	private static int MAX_QUESTS_BY_PROFESSION = 7;
-
-	public static void updateQuestEntities(PlayerEntity player, LivingEntity killedEntity) {
+	public static void updateQuestEntity(PlayerEntity player, LivingEntity killedEntity) {
 		List<Quest> guildQuests = ((GuildServerPlayerEntity)player).getAcceptedQuests();
 		String entityIdentifier = EntityType.getId(killedEntity.getType()).toString();
 		for (Quest quest: guildQuests) {
-			quest.updateEntities(entityIdentifier, player);
+			quest.updateEntity(entityIdentifier, player);
+		}
+	}
+
+	public static void updateQuestCure(PlayerEntity player, LivingEntity curedEntity) {
+		List<Quest> guildQuests = ((GuildServerPlayerEntity)player).getAcceptedQuests();
+		String entityIdentifier = EntityType.getId(curedEntity.getType()).toString();
+		for (Quest quest: guildQuests) {
+			quest.updateCure(entityIdentifier, player);
+		}
+	}
+
+	public static void updateQuestSummon(PlayerEntity player, LivingEntity summonedEntity) {
+		List<Quest> guildQuests = ((GuildServerPlayerEntity)player).getAcceptedQuests();
+		String entityIdentifier = EntityType.getId(summonedEntity.getType()).toString();
+		for (Quest quest: guildQuests) {
+			quest.updateSummon(entityIdentifier, player);
 		}
 	}
 
@@ -53,10 +65,10 @@ public class QuestHelper {
 
 		if (professions.size() > 0) {
 			long lastGenTime = guildPlayer.getLastQuestGenTime();
-			long lastGenTimeFrame = lastGenTime % QUEST_GENERATION_TICKS;
-			long currentGenTimeFrame = time % QUEST_GENERATION_TICKS;
+			long lastGenTimeFrame = lastGenTime % Guild.QUEST_GENERATION_TICKS;
+			long currentGenTimeFrame = time % Guild.QUEST_GENERATION_TICKS;
 
-			int questsToGenerate = Math.min((int)(((time - currentGenTimeFrame) - (lastGenTime - lastGenTimeFrame)) / QUEST_GENERATION_TICKS), MAX_QUEST_TO_GENERATE);
+			int questsToGenerate = Math.min((int)(((time - currentGenTimeFrame) - (lastGenTime - lastGenTimeFrame)) / Guild.QUEST_GENERATION_TICKS), Guild.MAX_QUEST_TO_GENERATE);
 
 			for (List<Quest> quests: availableQuests.values()) {
 				Iterator<Quest> iterator = quests.iterator();
@@ -70,7 +82,7 @@ public class QuestHelper {
 			List<QuestProfession> availableProfessions = new ArrayList<>();
 			for (QuestProfession profession: professions) {
 				List<Quest> professionsQuest = availableQuests.get(profession.name);
-				if (professionsQuest == null || professionsQuest.size() < MAX_QUESTS_BY_PROFESSION) {
+				if (professionsQuest == null || professionsQuest.size() < Guild.MAX_QUESTS_BY_PROFESSION) {
 					availableProfessions.add(profession);
 				}
 			}
@@ -88,7 +100,7 @@ public class QuestHelper {
 				}
 				quests.add(Quest.create(profession, player));
 				availableQuests.put(profession.name, quests);
-				if (quests.size() == MAX_QUESTS_BY_PROFESSION) {
+				if (quests.size() == Guild.MAX_QUESTS_BY_PROFESSION) {
 					availableProfessions.remove(professionIndex);
 				}
 			}

@@ -17,6 +17,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.screen.ScreenHandler;
@@ -29,6 +30,15 @@ public class ServerNetworkManager {
 		ServerPlayNetworking.registerGlobalReceiver(Guild.OPEN_QUESTS_SCREEN_PACKET_ID, (server, player, handler, buf, responseSender) -> {
 			server.execute(new Runnable() {
 				public void run(){
+					if (Guild.errors.size() > 0) {
+						player.sendMessage(new TranslatableText("lang.guild.errors"), false);
+						for (String error: Guild.errors) {
+							player.sendMessage(new LiteralText(" - ").append(error), false);
+						}
+						player.sendMessage(new TranslatableText("lang.guild.errors_info"), false);
+						return;
+					}
+
 					if (((GuildServerPlayerEntity)player).getQuestProfessions().size() == 0) {
 						player.sendMessage(new TranslatableText("profession.missing"), false);
 						return;

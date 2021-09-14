@@ -4,10 +4,12 @@
     "package": "dev.fulmineo.guild.mixin",
     "compatibilityLevel": "JAVA_16",
     "mixins": [
+		"CuredZombieVillagerCriterionMixin",
 		"ServerPlayerEntityMixin",
-		"PlayerInventoryMixin",
 		"StructurePoolsMixin",
-		"StructurePoolAccess"
+		"StructurePoolAccess",
+		"SummonedEntityCriterionMixin",
+		"TameableEntityMixin"
 	],
     "client": [],
     "server": [],
