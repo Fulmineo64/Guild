@@ -1,21 +1,15 @@
 package dev.fulmineo.guild.screen;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.fulmineo.guild.Guild;
-import dev.fulmineo.guild.data.DataManager;
 import dev.fulmineo.guild.data.Quest;
-import dev.fulmineo.guild.data.QuestHelper;
-import dev.fulmineo.guild.data.QuestLevel;
 import dev.fulmineo.guild.data.QuestProfession;
+import dev.fulmineo.guild.screen.QuestsScreenHandler.ProfessionData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
@@ -36,7 +30,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 
 public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
@@ -47,16 +40,11 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	int indexStartOffset;
 	private String professionName;
 	private List<Quest> professionQuests;
-	private List<QuestLevel> professionLevels;
-	private int professionLevel;
-	private boolean maxLevelReached;
-	private int professionLevelPerc;
+	private ProfessionData professionData;
 	private boolean deleteMode;
-	private PlayerInventory inventory;
 
    	public QuestsScreen(QuestsScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
-		this.inventory = inventory;
 		this.passEvents = false;
 		this.backgroundWidth = 276;
 		this.backgroundHeight = 200;
@@ -83,7 +71,6 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	}
 
 	private void initButtons() {
-		this.updateItemCompletion();
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
 		int y = h + 41;
@@ -127,33 +114,6 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		}
 	}
 
-	private void updateItemCompletion() {
-		Map<String, Integer> map = new HashMap<>();
-
-		ImmutableList<DefaultedList<ItemStack>> mainAndOffhand = ImmutableList.of(inventory.main, inventory.offHand);
-		Iterator<DefaultedList<ItemStack>> iterator = mainAndOffhand.iterator();
-		while (iterator.hasNext()) {
-			DefaultedList<ItemStack> defaultedList = (DefaultedList<ItemStack>) iterator.next();
-			for (int i = 0; i < defaultedList.size(); ++i) {
-				ItemStack stack = defaultedList.get(i);
-				if (!stack.isOf(Items.AIR)) {
-					String id = Registry.ITEM.getId(stack.getItem()).toString();
-					Integer val = map.get(id);
-					map.put(id, (val == null ? 0 : val) + stack.getCount());
-				}
-			}
-		}
-
-		for (Quest quest: this.handler.acceptedQuests) {
-			NbtList items = quest.getItemList();
-			for (NbtElement elm: items) {
-				NbtCompound entry = (NbtCompound)elm;
-				Integer val = map.get(entry.getString("Name"));
-				entry.putInt("Count", Math.min(val == null ? 0 : val, entry.getInt("Needed")));
-			}
-		}
-	}
-
 	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
 		float x = (float)((70 - this.textRenderer.getWidth(this.title)) / 2);
 		this.textRenderer.draw(matrices, this.title, x, (float)this.titleY, 4210752);
@@ -189,13 +149,13 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 216.0F, 102, 5, 256, 512);
-		if (!this.maxLevelReached) {
-			drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 221.0F, this.professionLevelPerc + 1, 5, 256, 512);
+		if (!this.professionData.levelMax) {
+			drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 221.0F, this.professionData.levelPerc+ 1, 5, 256, 512);
 		}
 
 		int tx = x + 135;
 		int ty = y + 38;
-		String val = String.valueOf(this.professionLevel + 1);
+		String val = String.valueOf(this.professionData.level + 1);
 
 		this.textRenderer.draw(matrices, val, (float)(tx + 1), (float)ty, 0);
 		this.textRenderer.draw(matrices, val, (float)(tx - 1), (float)ty, 0);
@@ -207,15 +167,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	private void selectProfession(int index) {
 		QuestProfession profession = this.handler.professions.get(index);
 		this.professionName = profession.name;
-		this.professionLevels = DataManager.levels.get(profession.levelsPool);
 		this.professionQuests = handler.availableQuests.get(this.professionName);
 		if (this.professionQuests == null) this.professionQuests = new ArrayList<>();
-		int exp = this.handler.professionsExp.get(this.professionName);
-		this.professionLevel = QuestHelper.getCurrentLevel(this.professionLevels, exp);
-		this.maxLevelReached = this.professionLevel == this.professionLevels.size()-1;
-		QuestLevel currentLevel = this.professionLevels.get(this.professionLevel);
-		QuestLevel nextLevel = this.professionLevels.get(this.professionLevel+1);
-		this.professionLevelPerc = (int)(((float)(exp - currentLevel.exp) / (float)(nextLevel.exp - currentLevel.exp)) * 100);
+		this.professionData = this.handler.professionsData.get(this.professionName);
 	}
 
 	@Environment(EnvType.CLIENT)

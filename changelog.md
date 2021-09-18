@@ -1,3 +1,12 @@
+# 0.0.3
+- Fixed the Guild Master table being undroppable
+- Fixed Quest Screen not working in multiplayer
+- Fixed "Deliver Kelp" task and added "Deliver Sea Pickle" to fisherman
+- Updated correctly the Profession's Exp when completing a quest
+- Added lumberjack profession
+- Improved the item completition count
+- Added information on which new tasks and rewards get unlocked at level up
+
 # 0.0.2
 - Pets' kills now count towards accepted quests, this applies only to Tameables and not to Golems
 - Added quests for curing zombie villagers and spawning golems

@@ -143,4 +143,16 @@ public class QuestHelper {
 		}
 		return levels.size() - 1;
 	}
+
+	public static NbtCompound writeProfessionData(NbtCompound nbt, GuildServerPlayerEntity guildPlayer, QuestProfession profession) {
+		List<QuestLevel> levels = DataManager.levels.get(profession.levelsPool);
+		int exp = guildPlayer.getProfessionExp(profession.name);
+		int level = QuestHelper.getCurrentLevel(levels, exp);
+		nbt.putInt("Level", level);
+		QuestLevel currentLevel = levels.get(level);
+		QuestLevel nextLevel = levels.get(level+1);
+		nbt.putInt("LevelPerc", (int)(((float)(exp - currentLevel.exp) / (float)(nextLevel.exp - currentLevel.exp)) * 100));
+		nbt.putBoolean("LevelMax", level == levels.size() - 1);
+		return nbt;
+	}
 }

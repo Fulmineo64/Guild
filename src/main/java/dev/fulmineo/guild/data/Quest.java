@@ -104,7 +104,8 @@ public class Quest {
 		List<QuestPoolData> rewardsCopy = new ArrayList<>(profession.rewards);
 		iterator = rewardsCopy.iterator();
 		while (iterator.hasNext()) {
-			if (iterator.next().getMinWorth() > worth) iterator.remove();
+			QuestPoolData reward = iterator.next();
+			if (!reward.isAvailableFor(level+1) || reward.getMinWorth() > worth) iterator.remove();
 		}
 
 		List<QuestPoolData> primaryRewards = WeightedItemHelper.getWeightedItems(rewardsCopy, 6 - MAX_TASK_ROLLS);

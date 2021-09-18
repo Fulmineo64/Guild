@@ -1,0 +1,107 @@
+{
+	"name": "guild:wood_crafts",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:stick",
+			"number": {
+				"min": 20,
+				"max": 64
+			},
+			"unit_worth": 5,
+			"unit_time": 30,
+			"unit_exp": 1,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:oak_boat",
+			"level": {
+				"min": 3
+			},
+			"number": {
+				"min": 1,
+				"max": 1
+			},
+			"unit_worth": 100,
+			"unit_time": 600,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:spruce_boat",
+			"level": {
+				"min": 3
+			},
+			"number": {
+				"min": 1,
+				"max": 1
+			},
+			"unit_worth": 100,
+			"unit_time": 600,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:birch_boat",
+			"level": {
+				"min": 3
+			},
+			"number": {
+				"min": 1,
+				"max": 1
+			},
+			"unit_worth": 100,
+			"unit_time": 600,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:acacia_boat",
+			"level": {
+				"min": 3
+			},
+			"number": {
+				"min": 1,
+				"max": 1
+			},
+			"unit_worth": 100,
+			"unit_time": 600,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:dark_oak_boat",
+			"level": {
+				"min": 3
+			},
+			"number": {
+				"min": 1,
+				"max": 1
+			},
+			"unit_worth": 100,
+			"unit_time": 600,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:jungle_boat",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 1,
+				"max": 1
+			},
+			"unit_worth": 100,
+			"unit_time": 600,
+			"unit_exp": 8,
+			"weight": 60
+		}
+	]
+}

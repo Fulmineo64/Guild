@@ -19,19 +19,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.entity.Entity;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOffers;
-import net.minecraft.village.VillagerProfession;
-import net.minecraft.world.poi.PointOfInterestType;
 
 public class VillagerData {
-	// Points of Interest
-	public static final PointOfInterestType GUILD_MASTER_POI = PointOfInterestType.register("guild_master", PointOfInterestType.getAllStatesOf(Guild.GUILD_MASTER_TABLE), 1, 1);
-
-	// Villager Professions
-	public static final VillagerProfession GUILD_MASTER = VillagerProfession.register("guild_master", GUILD_MASTER_POI, SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER);
-
 	public static void refreshTrades(Map<String, QuestProfession> professions) {
 		// GUILD_MASTER trades
 		Map<Integer, List<TradeOffers.Factory>> offersByLevel = new HashMap<>();
@@ -43,7 +34,7 @@ public class VillagerData {
 			if (offers == null) {
 				offers = new ArrayList<>();
 			}
-			offers.add(new SellGuildProfessionItemFactory(Guild.QUEST_PROFESSION_LICENCE_ITEM, professionName, 5 * level, 5 * level));
+			offers.add(new SellGuildProfessionItemFactory(Guild.QUEST_PROFESSION_LICENCE_ITEM, professionName, 5 * level, (int)(5 * Math.pow(level, 2))));
 			offersByLevel.put(level, offers);
 		}
 		ImmutableMap.Builder<Integer, TradeOffers.Factory[]> builder = ImmutableMap.builder();
@@ -52,7 +43,7 @@ public class VillagerData {
 			entry.getValue().toArray(array);
 			builder.put(entry.getKey(), array);
 		}
-		TradeOffers.PROFESSION_TO_LEVELED_TRADE.put(GUILD_MASTER, VillagerData.toIntMap(builder.build()));
+		TradeOffers.PROFESSION_TO_LEVELED_TRADE.put(Guild.GUILD_MASTER, VillagerData.toIntMap(builder.build()));
 	}
 
 	private static Int2ObjectMap<TradeOffers.Factory[]> toIntMap(ImmutableMap<Integer, TradeOffers.Factory[]> trades) {

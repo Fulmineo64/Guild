@@ -21,19 +21,6 @@ public class ClientNetworkManager {
 		ClientPlayNetworking.send(Guild.ACCEPT_QUEST_PACKET_ID, buf);
 	}
 
-	public static void tryCompleteQuest(List<Quest> acceptedQuests, Map<String, Integer> professionsExp, int index) {
-		PacketByteBuf buf = PacketByteBufs.create();
-		buf.writeInt(index);
-		ClientPlayNetworking.registerReceiver(Guild.TRY_COMPLETE_QUEST_PACKET_ID, (client, player, buffer, responseSender) -> {
-			if (buffer.readBoolean()) {
-				Quest quest = acceptedQuests.remove(index);
-				professionsExp.put(quest.getProfessionName(), buffer.readInt());
-			}
-			ClientPlayNetworking.unregisterReceiver(Guild.TRY_COMPLETE_QUEST_PACKET_ID);
-		});
-		ClientPlayNetworking.send(Guild.TRY_COMPLETE_QUEST_PACKET_ID, buf);
-	}
-
 	public static void deleteAcceptedQuest(List<Quest> acceptedQuests, int index) {
 		if (acceptedQuests.size() > index) {
 			acceptedQuests.remove(index);

@@ -1,0 +1,155 @@
+{
+	"name": "guild:overworld_wood",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:oak_log",
+			"number": {
+				"min": 8,
+				"max": 32
+			},
+			"unit_worth": 40,
+			"unit_time": 80,
+			"unit_exp": 3,
+			"weight": 80
+		},
+		{
+			"type": "item",
+			"name": "minecraft:birch_log",
+			"number": {
+				"min": 6,
+				"max": 16
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 3,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:spruce_log",
+			"number": {
+				"min": 6,
+				"max": 18
+			},
+			"unit_worth": 40,
+			"unit_time": 100,
+			"unit_exp": 3,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:dark_oak_log",
+			"number": {
+				"min": 8,
+				"max": 24
+			},
+			"unit_worth": 40,
+			"unit_time": 100,
+			"unit_exp": 3,
+			"weight": 80
+		},
+		{
+			"type": "item",
+			"name": "minecraft:acacia_log",
+			"number": {
+				"min": 6,
+				"max": 18
+			},
+			"unit_worth": 40,
+			"unit_time": 100,
+			"unit_exp": 3,
+			"weight": 80
+		},
+		{
+			"type": "item",
+			"name": "minecraft:jungle_log",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 16,
+				"max": 32
+			},
+			"unit_worth": 60,
+			"unit_time": 120,
+			"unit_exp": 4,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:stripped_oak_log",
+			"number": {
+				"min": 8,
+				"max": 24
+			},
+			"unit_worth": 50,
+			"unit_time": 80,
+			"unit_exp": 5,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:stripped_birch_log",
+			"number": {
+				"min": 6,
+				"max": 12
+			},
+			"unit_worth": 60,
+			"unit_time": 100,
+			"unit_exp": 5,
+			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:stripped_spruce_log",
+			"number": {
+				"min": 6,
+				"max": 16
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 5,
+			"weight": 40
+		},
+		{
+			"type": "item",
+			"name": "minecraft:stripped_dark_oak_log",
+			"number": {
+				"min": 8,
+				"max": 18
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 5,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:stripped_acacia_log",
+			"number": {
+				"min": 6,
+				"max": 16
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 5,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:stripped_jungle_log",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 16,
+				"max": 32
+			},
+			"unit_worth": 70,
+			"unit_time": 120,
+			"unit_exp": 6,
+			"weight": 40
+		}
+	]
+}

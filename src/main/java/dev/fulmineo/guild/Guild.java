@@ -12,8 +12,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.village.VillagerProfession;
+import net.minecraft.world.poi.PointOfInterestType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +47,10 @@ public class Guild implements ModInitializer {
 	// All finals for now
 
 	public static final int EXPIRATION_TICKS = 108000;
-	// public static int QUEST_GENERATION_TICKS = 3600;
-	public static final int QUEST_GENERATION_TICKS = 1;
+	public static final int QUEST_GENERATION_TICKS = 3600;
+	// public static final int QUEST_GENERATION_TICKS = 1;
 	public static final int MAX_QUEST_TO_GENERATE = 10;
+	public static final boolean DISPLAY_UNLOCKED_POOLS = true;
 
     // Identifiers
 
@@ -56,6 +60,7 @@ public class Guild implements ModInitializer {
     public static final Identifier TRY_COMPLETE_QUEST_PACKET_ID = new Identifier(MOD_ID, "complete_quest_packet");
     public static final Identifier DELETE_ACCEPTED_QUEST_PACKET_ID = new Identifier(MOD_ID, "delete_accepted_quest_packet");
     public static final Identifier DELETE_AVAILABLE_QUEST_PACKET_ID = new Identifier(MOD_ID, "delete_available_quest_packet");
+    public static final Identifier GET_PROFESSION_DATA_ID = new Identifier(MOD_ID, "get_profession_data_packet");
     public static final ScreenHandlerType<QuestsScreenHandler> QUESTS_SCREEN_HANDLER = ScreenHandlerRegistry.registerExtended(new Identifier(MOD_ID, "quest_screen"), QuestsScreenHandler::new);
 	public static final ItemGroup GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID,"group"), () -> new ItemStack(Registry.ITEM.get(new Identifier(MOD_ID, "quest_scroll"))));
 
@@ -64,6 +69,14 @@ public class Guild implements ModInitializer {
 	// Blocks
 
 	public static final Block GUILD_MASTER_TABLE = new Block(AbstractBlock.Settings.copy(Blocks.CARTOGRAPHY_TABLE));
+
+	// Points of Interest
+
+	public static final PointOfInterestType GUILD_MASTER_POI = PointOfInterestType.register("guild_master", PointOfInterestType.getAllStatesOf(GUILD_MASTER_TABLE), 1, 1);
+
+	// Villager Professions
+
+	public static final VillagerProfession GUILD_MASTER = VillagerProfession.register("guild_master", GUILD_MASTER_POI, SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER);
 
 	// Items
 

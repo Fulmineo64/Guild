@@ -1,0 +1,65 @@
+{
+	"name": "guild:nether_wood",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:crimson_stem",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 8,
+				"max": 24
+			},
+			"unit_worth": 60,
+			"unit_time": 120,
+			"unit_exp": 4,
+			"weight": 30
+		},
+		{
+			"type": "item",
+			"name": "minecraft:warped_stem",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 8,
+				"max": 24
+			},
+			"unit_worth": 60,
+			"unit_time": 120,
+			"unit_exp": 4,
+			"weight": 30
+		},
+		{
+			"type": "item",
+			"name": "minecraft:stripped_crimson_stem",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 6,
+				"max": 18
+			},
+			"unit_worth": 80,
+			"unit_time": 140,
+			"unit_exp": 6,
+			"weight": 20
+		},
+		{
+			"type": "item",
+			"name": "minecraft:stripped_warped_stem",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 6,
+				"max": 18
+			},
+			"unit_worth": 80,
+			"unit_time": 140,
+			"unit_exp": 6,
+			"weight": 20
+		}
+	]
+}

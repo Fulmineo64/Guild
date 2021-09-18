@@ -1,0 +1,14 @@
+{
+	"name": "guild:lumberjack",
+	"icon": "minecraft:iron_axe",
+	"guild_master_level": 1,
+	"levels_pool": "guild:common_levels",
+	"task_pools": [
+		"guild:overworld_wood",
+		"guild:nether_wood",
+		"guild:wood_crafts"
+	],
+	"reward_pools": [
+		"guild:common_rewards"
+	]
+}

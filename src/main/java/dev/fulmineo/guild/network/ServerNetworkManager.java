@@ -20,10 +20,15 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.screen.ScreenHandler;
+import dev.fulmineo.guild.data.DataManager;
 import dev.fulmineo.guild.data.GuildServerPlayerEntity;
 import dev.fulmineo.guild.data.Quest;
 import dev.fulmineo.guild.data.QuestHelper;
+import dev.fulmineo.guild.data.QuestLevel;
+import dev.fulmineo.guild.data.QuestPoolData;
 
 public class ServerNetworkManager {
 	public static void registerClientReceiver() {
@@ -62,9 +67,7 @@ public class ServerNetworkManager {
 								NbtCompound tag = new NbtCompound();
 								tag.putString("Name", profession.name);
 								tag.putString("Icon", profession.icon);
-								tag.putString("Levels", profession.levelsPool);
-								tag.putInt("Exp", guildPlayer.getProfessionExp(profession.name));
-								professionsInfo.add(tag);
+								professionsInfo.add(QuestHelper.writeProfessionData(tag, guildPlayer, profession));
 							}
 							nbt.put("Professions", professionsInfo);
 							packetByteBuf.writeNbt(nbt);
@@ -98,14 +101,77 @@ public class ServerNetworkManager {
 
 		ServerPlayNetworking.registerGlobalReceiver(Guild.TRY_COMPLETE_QUEST_PACKET_ID, (server, player, handler, buf, responseSender) -> {
 			int index = buf.readInt();
-			List<Quest> acceptedQuests = ((GuildServerPlayerEntity)player).getAcceptedQuests();
+			GuildServerPlayerEntity guildPlayer = (GuildServerPlayerEntity)player;
+			List<Quest> acceptedQuests = guildPlayer.getAcceptedQuests();
 			Quest quest = acceptedQuests.get(index);
+			int level = 0;
+			String professionName = quest.getProfessionName();
+			QuestProfession profession = DataManager.professions.get(professionName);
+			List<QuestLevel> levels = DataManager.levels.get(profession.levelsPool);
+			if (profession != null) {
+				level = QuestHelper.getCurrentLevel(levels, guildPlayer.getProfessionExp(professionName));
+			}
 			boolean ok = quest.tryComplete(player);
+			if (profession != null) {
+				int newLevel = QuestHelper.getCurrentLevel(levels, guildPlayer.getProfessionExp(professionName));
+				if (level != newLevel) {
+					newLevel++;
+					player.sendMessage(new TranslatableText("profession.level_up", newLevel, new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
+					if (Guild.DISPLAY_UNLOCKED_POOLS) {
+						boolean sentDescription = false;
+						for (QuestPoolData task: profession.tasks) {
+							if (task.level != null && task.level.min == newLevel) {
+								if (!sentDescription) {
+									sentDescription = true;
+									player.sendMessage(new TranslatableText("profession.unlocked_tasks"), false);
+								}
+								String icon = "";
+								String translationKey = "";
+								switch (task.type) {
+									case "item": {
+										icon = "✉";
+										translationKey = Registry.ITEM.get(new Identifier(task.name)).getTranslationKey();
+										break;
+									}
+									case "entity": {
+										icon = "🗡";
+										translationKey = Registry.ENTITY_TYPE.get(new Identifier(task.name)).getTranslationKey();
+										break;
+									}
+									case "cure": {
+										icon = "✙";
+										translationKey = Registry.ENTITY_TYPE.get(new Identifier(task.name)).getTranslationKey();
+										break;
+									}
+									case "summon": {
+										icon = "✦";
+										translationKey = Registry.ENTITY_TYPE.get(new Identifier(task.name)).getTranslationKey();
+										break;
+									}
+								}
+								player.sendMessage(new LiteralText(" "+icon+" ").append(new TranslatableText(translationKey)), false);
+							}
+						}
+						sentDescription = false;
+						for (QuestPoolData reward: profession.rewards) {
+							if (reward.level != null && reward.level.min == newLevel) {
+								if (!sentDescription) {
+									sentDescription = true;
+									player.sendMessage(new TranslatableText("profession.unlocked_rewards"), false);
+								}
+								player.sendMessage((new TranslatableText(Registry.ITEM.get(new Identifier(reward.name)).getTranslationKey())), false);
+							}
+						}
+					}
+				}
+			}
 			PacketByteBuf buffer = PacketByteBufs.create();
 			buffer.writeBoolean(ok);
 			if (ok) {
 				acceptedQuests.remove(index);
-				buffer.writeInt(((GuildServerPlayerEntity)player).getProfessionExp(quest.getProfessionName()));
+				if (profession != null) {
+					buffer.writeNbt(QuestHelper.writeProfessionData(new NbtCompound(), guildPlayer, profession));
+				}
 			}
 			responseSender.sendPacket(Guild.TRY_COMPLETE_QUEST_PACKET_ID, buffer);
 		});
