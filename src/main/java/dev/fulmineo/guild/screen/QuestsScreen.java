@@ -103,10 +103,11 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		y = h + 52;
 		for(int i = 0; i < this.handler.acceptedQuests.size(); i++){
 			this.accepted[i] = this.addDrawableChild(new AcceptedQuestButton(w + 143, y, i, (button) -> {
+				int index = ((AcceptedQuestButton)button).index;
 				if (this.deleteMode) {
-					this.handler.deleteAcceptedQuest(((AcceptedQuestButton)button).index);
-				} else {
-					this.handler.tryCompleteQuest(((AcceptedQuestButton)button).index);
+					this.handler.deleteAcceptedQuest(index);
+				} else if (this.handler.acceptedQuests.size() > index) {
+					this.handler.tryCompleteQuest(index);
 				}
 				this.initButtons();
 			}));
@@ -235,7 +236,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
-				tooltip.add(new TranslatableText(this.getQuestProfession().getTranslationKey()).formatted(Formatting.GOLD));
+				tooltip.add(this.getQuestProfession().getTranslatedName().formatted(Formatting.GOLD));
 				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
 		}
@@ -295,7 +296,6 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			int xi = this.x + 3;
 			int yi = this.y + 1;
 
-			// TODO: Remove Registry calls from the render cycle!
 			NbtList itemList = quest.getItemList();
 			for (NbtElement elm: itemList) {
 				NbtCompound entry = (NbtCompound)elm;

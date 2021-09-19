@@ -73,7 +73,6 @@ public class DataManager {
 							if (invalidKey.length() == 0) {
 								pools.put(pool.name, pool);
 							} else {
-								// TODO: This message should be displayed to the player that issued the reload command
 								Guild.errors.add("Invalid key "+invalidKey.toString()+" in quest pool "+id.toString());
 							}
 						} catch (Exception e) {

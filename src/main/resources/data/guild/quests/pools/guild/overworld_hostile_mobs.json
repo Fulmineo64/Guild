@@ -9,7 +9,7 @@
 				"max": 10
 			},
 			"unit_worth": 80,
-			"unit_time": 120,
+			"unit_time": 180,
 			"unit_exp": 9,
 			"weight": 70
 		},
@@ -21,7 +21,7 @@
 				"max": 12
 			},
 			"unit_worth": 70,
-			"unit_time": 100,
+			"unit_time": 160,
 			"unit_exp": 8,
 			"weight": 80
 		},
@@ -32,7 +32,7 @@
 				"min": 10,
 				"max": 24
 			},
-			"unit_worth": 60,
+			"unit_worth": 100,
 			"unit_time": 70,
 			"unit_exp": 7,
 			"weight": 100
@@ -45,7 +45,7 @@
 				"max": 12
 			},
 			"unit_worth": 70,
-			"unit_time": 120,
+			"unit_time": 180,
 			"unit_exp": 7,
 			"weight": 90
 		},
@@ -60,7 +60,7 @@
 				"max": 7
 			},
 			"unit_worth": 120,
-			"unit_time": 300,
+			"unit_time": 360,
 			"unit_exp": 12,
 			"weight": 60
 		},
@@ -75,7 +75,7 @@
 				"max": 16
 			},
 			"unit_worth": 80,
-			"unit_time": 100,
+			"unit_time": 200,
 			"unit_exp": 8,
 			"weight": 30
 		},
@@ -90,7 +90,7 @@
 				"max": 16
 			},
 			"unit_worth": 80,
-			"unit_time": 100,
+			"unit_time": 200,
 			"unit_exp": 8,
 			"weight": 30
 		},
@@ -105,7 +105,7 @@
 				"max": 12
 			},
 			"unit_worth": 90,
-			"unit_time": 120,
+			"unit_time": 240,
 			"unit_exp": 9,
 			"weight": 30
 		}

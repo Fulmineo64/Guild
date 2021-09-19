@@ -52,13 +52,11 @@ public class ServerNetworkManager {
 					player.openHandledScreen(new ExtendedScreenHandlerFactory() {
 						@Override
 						public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
-							// packetByteBuf.writeEnumConstant(hand);
 							List<QuestProfession> professions = ((GuildServerPlayerEntity)serverPlayerEntity).getQuestProfessions();
 
 							// Quests get generated at a fixed interval, so here we check the number of quests to generate based on that interval
 							QuestHelper.refreshAvailableQuests(professions, serverPlayerEntity);
 
-							// inventory.onOpen(playerInventory.player);
 							GuildServerPlayerEntity guildPlayer = ((GuildServerPlayerEntity)player);
 							NbtCompound nbt = QuestHelper.writeMapNbt(new NbtCompound(), guildPlayer.getAvailableQuests());
 							nbt = QuestHelper.writeNbt(nbt, guildPlayer.getAcceptedQuests());
@@ -116,7 +114,7 @@ public class ServerNetworkManager {
 				int newLevel = QuestHelper.getCurrentLevel(levels, guildPlayer.getProfessionExp(professionName));
 				if (level != newLevel) {
 					newLevel++;
-					player.sendMessage(new TranslatableText("profession.level_up", newLevel, new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
+					player.sendMessage(new TranslatableText("profession.level_up", newLevel, profession.getTranslatedName()), false);
 					if (Guild.DISPLAY_UNLOCKED_POOLS) {
 						boolean sentDescription = false;
 						for (QuestPoolData task: profession.tasks) {

@@ -6,7 +6,7 @@
 			"name": "minecraft:brown_mushroom",
 			"number": {
 				"min": 8,
-				"max": 24
+				"max": 16
 			},
 			"unit_worth": 40,
 			"unit_time": 100,
@@ -18,7 +18,7 @@
 			"name": "minecraft:red_mushroom",
 			"number": {
 				"min": 8,
-				"max": 24
+				"max": 16
 			},
 			"unit_worth": 40,
 			"unit_time": 100,

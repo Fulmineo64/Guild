@@ -95,6 +95,7 @@ public class QuestsScreenHandler extends ScreenHandler {
 		quest.accept(this.world.getTime());
 		this.acceptedQuests.add(quest);
 		ClientNetworkManager.acceptQuest(profession, index);
+		this.updateItemCompletion();
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -112,7 +113,8 @@ public class QuestsScreenHandler extends ScreenHandler {
 				data.levelMax = nbt.getBoolean("LevelMax");
 				for (NbtElement elm: quest.getItemList()) {
 					NbtCompound entry = (NbtCompound)elm;
-					this.itemCount.put(entry.getString("Name"), this.itemCount.get(entry.getString("Name")) - entry.getInt("Count"));
+					String item = entry.getString("Name");
+					this.itemCount.put(item, this.itemCount.get(item) - entry.getInt("Count"));
 				}
 				this.updateItemCompletion();
 			}

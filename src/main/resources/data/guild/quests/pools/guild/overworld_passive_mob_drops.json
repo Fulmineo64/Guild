@@ -9,7 +9,7 @@
 				"max": 12
 			},
 			"unit_worth": 30,
-			"unit_time": 80,
+			"unit_time": 100,
 			"unit_exp": 3,
 			"weight": 50
 		},
@@ -21,7 +21,7 @@
 				"max": 12
 			},
 			"unit_worth": 40,
-			"unit_time": 80,
+			"unit_time": 100,
 			"unit_exp": 4,
 			"weight": 70
 		},
@@ -33,7 +33,7 @@
 				"max": 16
 			},
 			"unit_worth": 40,
-			"unit_time": 80,
+			"unit_time": 100,
 			"unit_exp": 4,
 			"weight": 70
 		},
@@ -45,7 +45,7 @@
 				"max": 12
 			},
 			"unit_worth": 40,
-			"unit_time": 100,
+			"unit_time": 120,
 			"unit_exp": 4,
 			"weight": 70
 		},
@@ -57,7 +57,7 @@
 				"max": 12
 			},
 			"unit_worth": 60,
-			"unit_time": 120,
+			"unit_time": 140,
 			"unit_exp": 5,
 			"weight": 60
 		},
@@ -69,7 +69,7 @@
 				"max": 15
 			},
 			"unit_worth": 50,
-			"unit_time": 100,
+			"unit_time": 120,
 			"unit_exp": 4,
 			"weight": 80
 		},
@@ -81,7 +81,7 @@
 				"max": 18
 			},
 			"unit_worth": 50,
-			"unit_time": 80,
+			"unit_time": 100,
 			"unit_exp": 4,
 			"weight": 80
 		},
@@ -93,7 +93,7 @@
 				"max": 16
 			},
 			"unit_worth": 30,
-			"unit_time": 100,
+			"unit_time": 120,
 			"unit_exp": 4,
 			"weight": 70
 		},
@@ -105,7 +105,7 @@
 				"max": 16
 			},
 			"unit_worth": 40,
-			"unit_time": 120,
+			"unit_time": 140,
 			"unit_exp": 5,
 			"weight": 50
 		},
@@ -116,11 +116,11 @@
 				"min": 5
 			},
 			"number": {
-				"min": 4,
-				"max": 8
+				"min": 3,
+				"max": 6
 			},
-			"unit_worth": 50,
-			"unit_time": 160,
+			"unit_worth": 80,
+			"unit_time": 240,
 			"unit_exp": 6,
 			"weight": 40
 		},
@@ -132,10 +132,10 @@
 			},
 			"number": {
 				"min": 1,
-				"max": 4
+				"max": 2
 			},
-			"unit_worth": 80,
-			"unit_time": 180,
+			"unit_worth": 100,
+			"unit_time": 300,
 			"unit_exp": 9,
 			"weight": 30
 		},
@@ -149,8 +149,8 @@
 				"min": 4,
 				"max": 8
 			},
-			"unit_worth": 50,
-			"unit_time": 160,
+			"unit_worth": 70,
+			"unit_time": 240,
 			"unit_exp": 6,
 			"weight": 40
 		}

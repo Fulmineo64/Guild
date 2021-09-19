@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 import dev.fulmineo.guild.command.GuildCommands;
 import dev.fulmineo.guild.data.DataManager;
 import dev.fulmineo.guild.item.QuestProfessionLicence;
+import dev.fulmineo.guild.item.QuestProfessionResignment;
 import dev.fulmineo.guild.network.ServerNetworkManager;
 import dev.fulmineo.guild.screen.QuestsScreenHandler;
 
@@ -82,7 +83,8 @@ public class Guild implements ModInitializer {
 
 	public static final Item GUILD_MASTER_TABLE_ITEM = new BlockItem(GUILD_MASTER_TABLE, new Item.Settings().group(GROUP));
 
-    public static final Item QUEST_PROFESSION_LICENCE_ITEM = new QuestProfessionLicence(new FabricItemSettings().maxDamage(3));
+    public static final Item QUEST_PROFESSION_LICENCE_ITEM = new QuestProfessionLicence(new FabricItemSettings().maxCount(1));
+    public static final Item QUEST_PROFESSION_RESIGNMENT_ITEM = new QuestProfessionResignment(new FabricItemSettings().maxCount(1));
 
     @Override
     public void onInitialize() {
@@ -94,6 +96,7 @@ public class Guild implements ModInitializer {
 
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "guild_master_table"), GUILD_MASTER_TABLE_ITEM);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "profession_licence"), QUEST_PROFESSION_LICENCE_ITEM);
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "profession_resignment"), QUEST_PROFESSION_RESIGNMENT_ITEM);
 
 		// Data
 

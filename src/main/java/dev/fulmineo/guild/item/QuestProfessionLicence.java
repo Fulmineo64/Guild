@@ -5,6 +5,8 @@ import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
+import dev.fulmineo.guild.Guild;
+import dev.fulmineo.guild.data.DataManager;
 import dev.fulmineo.guild.data.GuildServerPlayerEntity;
 import dev.fulmineo.guild.data.QuestProfession;
 import net.fabricmc.api.EnvType;
@@ -36,24 +38,32 @@ public class QuestProfessionLicence extends Item {
 			NbtCompound nbt = stack.getOrCreateNbt();
 			String professionName = nbt.getString("Profession");
 			if (user.isSneaking()) {
-				if (((GuildServerPlayerEntity)user).removeQuestProfession(professionName)) {
-					user.sendMessage(new TranslatableText("item.guild.profession_licence.resignment.success", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
-					return TypedActionResult.success(stack);
-				} else {
-					user.sendMessage(new TranslatableText("item.guild.profession_licence.resignment.fail", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
-				}
+				ItemStack newStack = new ItemStack(Guild.QUEST_PROFESSION_RESIGNMENT_ITEM);
+				NbtCompound tag = stack.getOrCreateNbt();
+				tag.putString("Profession", nbt.getString("Profession"));
+				user.getItemCooldownManager().set(Guild.QUEST_PROFESSION_LICENCE_ITEM, 10);
+				user.getItemCooldownManager().set(Guild.QUEST_PROFESSION_RESIGNMENT_ITEM, 10);
+				newStack.setNbt(tag);
+				return TypedActionResult.success(newStack);
 			} else {
 				// TODO: Add required rank as a bonus check
-				if (((GuildServerPlayerEntity)user).getProfessions().size() < 7) {
+				if (((GuildServerPlayerEntity)user).getProfessions().size() <= 7) {
+					QuestProfession profession = DataManager.professions.get(professionName);
 					if (((GuildServerPlayerEntity)user).addQuestProfession(professionName)) {
 						stack.damage(1, (LivingEntity)user, (Consumer<LivingEntity>)((p) -> { p.sendToolBreakStatus(hand); }));
 						if (((GuildServerPlayerEntity)user).getProfessions().size() == 1){
 							user.sendMessage(new TranslatableText("item.guild.profession_licence.introduction"), false);
 						}
-						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.success", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
-						return TypedActionResult.success(stack);
+						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.success", profession.getTranslatedName()), false);
+						ItemStack newStack = new ItemStack(Guild.QUEST_PROFESSION_RESIGNMENT_ITEM);
+						NbtCompound tag = stack.getOrCreateNbt();
+						tag.putString("Profession", nbt.getString("Profession"));
+						user.getItemCooldownManager().set(Guild.QUEST_PROFESSION_LICENCE_ITEM, 10);
+						user.getItemCooldownManager().set(Guild.QUEST_PROFESSION_RESIGNMENT_ITEM, 10);
+						newStack.setNbt(tag);
+						return TypedActionResult.success(newStack);
 					} else {
-						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.fail", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
+						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.fail", profession.getTranslatedName()), false);
 					}
 				} else {
 					user.sendMessage(new TranslatableText("item.guild.profession_licence.too_many_professions", 7), false);
@@ -68,7 +78,8 @@ public class QuestProfessionLicence extends Item {
 		NbtCompound nbt = stack.getOrCreateNbt();
 		String professionName = nbt.getString("Profession");
 		if (professionName.length() > 0) {
-			tooltip.add(new TranslatableText("profession.profession").append(" ").append(new TranslatableText(QuestProfession.getTranslationKey(professionName))).formatted(Formatting.GOLD));
+			QuestProfession profession = DataManager.professions.get(professionName);
+			tooltip.add(new TranslatableText("profession.profession").append(" ").append(profession.getTranslatedName()).formatted(Formatting.GOLD));
 			tooltip.add(new TranslatableText("item.guild.profession_licence.description").formatted(Formatting.DARK_GRAY));
 			tooltip.add(new TranslatableText("item.guild.profession_licence.description2").formatted(Formatting.DARK_GRAY));
 		}

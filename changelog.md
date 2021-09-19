@@ -1,3 +1,10 @@
+# 0.0.4
+- Removed Lumberjack tasks from Gatherer
+- Fixed bug with double clicking to complete a quest
+- Added Profession Resignment to abandon a specific profession
+- Integrated the Profession Resignment with the Profession Licence
+- Added optional "label" property to Professions, use it to give the Profession a localized name without adding a lang file
+
 # 0.0.3
 - Fixed the Guild Master table being undroppable
 - Fixed Quest Screen not working in multiplayer
