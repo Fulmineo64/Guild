@@ -1,3 +1,6 @@
+# 0.0.5
+- Added Chinese translations, many thanks to Peakstep233!
+
 # 0.0.4
 - Removed Lumberjack tasks from Gatherer
 - Fixed bug with double clicking to complete a quest
