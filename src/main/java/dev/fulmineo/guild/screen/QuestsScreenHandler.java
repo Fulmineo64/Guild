@@ -107,10 +107,12 @@ public class QuestsScreenHandler extends ScreenHandler {
 				Quest quest = this.acceptedQuests.remove(index);
 				NbtCompound nbt = buffer.readNbt();
 				ProfessionData data = this.professionsData.get(quest.getProfessionName());
-				data.exp = nbt.getInt("Exp");
-				data.level = nbt.getInt("Level");
-				data.levelPerc = nbt.getInt("LevelPerc");
-				data.levelMax = nbt.getBoolean("LevelMax");
+				if (data != null) {
+					data.exp = nbt.getInt("Exp");
+					data.level = nbt.getInt("Level");
+					data.levelPerc = nbt.getInt("LevelPerc");
+					data.levelMax = nbt.getBoolean("LevelMax");
+				}
 				for (NbtElement elm: quest.getItemList()) {
 					NbtCompound entry = (NbtCompound)elm;
 					String item = entry.getString("Name");

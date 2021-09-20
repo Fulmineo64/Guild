@@ -32,6 +32,7 @@
 	"profession.guild.gatherer": "Gatherer",
 	"profession.guild.guard": "Guard",
 	"profession.guild.hunter": "Hunter",
+	"profession.guild.invalid_profession": "Invalid quest profession %s",
 	"profession.guild.lumberjack": "Lumberjack",
 	"profession.guild.miner": "Miner",
 	"screen.guild.expeditions": "Expeditions",

@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -36,6 +37,10 @@ public class QuestProfessionResignment extends Item {
 			NbtCompound nbt = stack.getOrCreateNbt();
 			String professionName = nbt.getString("Profession");
 			QuestProfession profession = DataManager.professions.get(professionName);
+			if (profession == null) {
+				user.sendMessage(new TranslatableText("profession.guild.invalid_profession", professionName), false);
+				return TypedActionResult.fail(stack);
+			}
 			if (((GuildServerPlayerEntity)user).removeQuestProfession(professionName)) {
 				user.sendMessage(new TranslatableText("item.guild.profession_licence.resignment.success", profession.getTranslatedName()), false);
 				return TypedActionResult.success(new ItemStack(Items.AIR));
@@ -52,7 +57,7 @@ public class QuestProfessionResignment extends Item {
 		String professionName = nbt.getString("Profession");
 		if (professionName.length() > 0) {
 			QuestProfession profession = DataManager.professions.get(professionName);
-			tooltip.add(new TranslatableText("profession.profession").append(" ").append(profession.getTranslatedName()).formatted(Formatting.GOLD));
+			tooltip.add(new TranslatableText("profession.profession").append(" ").append(profession == null ? new LiteralText(professionName) : profession.getTranslatedName()).formatted(Formatting.GOLD));
 			tooltip.add(new TranslatableText("item.guild.profession_resignment.description").formatted(Formatting.DARK_GRAY));
 		}
 	}

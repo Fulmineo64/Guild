@@ -314,15 +314,16 @@ public class Quest {
 		GuildServerPlayerEntity guildPlayer = ((GuildServerPlayerEntity)player);
 		String professionName = this.getProfessionName();
 		QuestProfession profession = DataManager.professions.get(professionName);
-		List<QuestLevel> levels = DataManager.levels.get(profession.levelsPool);
-		int exp = guildPlayer.getProfessionExp(professionName);
-		exp += this.nbt.getInt("Exp");
-		QuestLevel lastLevel = levels.get(levels.size()-1);
-		if (exp > lastLevel.exp) {
-			exp = lastLevel.exp;
+		if (profession != null) {
+			List<QuestLevel> levels = DataManager.levels.get(profession.levelsPool);
+			int exp = guildPlayer.getProfessionExp(professionName);
+			exp += this.nbt.getInt("Exp");
+			QuestLevel lastLevel = levels.get(levels.size()-1);
+			if (exp > lastLevel.exp) {
+				exp = lastLevel.exp;
+			}
+			guildPlayer.setProfessionExp(professionName, exp);
 		}
-		guildPlayer.setProfessionExp(professionName, exp);
-
 		this.giveRewards(player);
 		return true;
 	}
@@ -342,7 +343,10 @@ public class Quest {
 					count = cnt1;
 				}
 			}
-			player.giveItemStack(new ItemStack(Registry.ITEM.get(new Identifier(reward.getString("Name"))), count));
+			ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier(reward.getString("Name"))), count);
+			if (!player.giveItemStack(stack)) {
+				player.dropItem(stack, false);
+			}
 		}
 	}
 

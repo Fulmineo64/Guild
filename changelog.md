@@ -1,3 +1,8 @@
+# 0.0.6
+- Rewards get now dropped on the ground when the inventory is full
+- Fixed completing quests for resigned professions
+- Added extra checks to prevent crashes for missing or invalid professions
+
 # 0.0.5
 - Added Chinese translations, many thanks to Peakstep233!
 

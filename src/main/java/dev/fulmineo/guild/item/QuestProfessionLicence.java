@@ -17,6 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -49,6 +50,10 @@ public class QuestProfessionLicence extends Item {
 				// TODO: Add required rank as a bonus check
 				if (((GuildServerPlayerEntity)user).getProfessions().size() <= 7) {
 					QuestProfession profession = DataManager.professions.get(professionName);
+					if (profession == null) {
+						user.sendMessage(new TranslatableText("profession.guild.invalid_profession", professionName), false);
+						return TypedActionResult.fail(stack);
+					}
 					if (((GuildServerPlayerEntity)user).addQuestProfession(professionName)) {
 						stack.damage(1, (LivingEntity)user, (Consumer<LivingEntity>)((p) -> { p.sendToolBreakStatus(hand); }));
 						if (((GuildServerPlayerEntity)user).getProfessions().size() == 1){
@@ -79,7 +84,7 @@ public class QuestProfessionLicence extends Item {
 		String professionName = nbt.getString("Profession");
 		if (professionName.length() > 0) {
 			QuestProfession profession = DataManager.professions.get(professionName);
-			tooltip.add(new TranslatableText("profession.profession").append(" ").append(profession.getTranslatedName()).formatted(Formatting.GOLD));
+			tooltip.add(new TranslatableText("profession.profession").append(" ").append(profession == null ? new LiteralText(professionName) : profession.getTranslatedName()).formatted(Formatting.GOLD));
 			tooltip.add(new TranslatableText("item.guild.profession_licence.description").formatted(Formatting.DARK_GRAY));
 			tooltip.add(new TranslatableText("item.guild.profession_licence.description2").formatted(Formatting.DARK_GRAY));
 		}
