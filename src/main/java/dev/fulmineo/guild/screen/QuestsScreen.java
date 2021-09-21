@@ -35,11 +35,11 @@ import net.minecraft.util.registry.Registry;
 public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	private static final Identifier TEXTURE = new Identifier(Guild.MOD_ID, "textures/gui/container/guild.png");
 	private ProfessionButton[] professions = new ProfessionButton[7];
-	private QuestButton[] available = new QuestButton[7];
-	private QuestButton[] accepted = new QuestButton[7];
+	private List<QuestButton> available = new ArrayList<>();
+	private List<QuestButton> accepted = new ArrayList<>();
+	private List<Quest> professionQuests = new ArrayList<>();
 	int indexStartOffset;
 	private String professionName;
-	private List<Quest> professionQuests;
 	private ProfessionData professionData;
 	private boolean deleteMode;
 
@@ -49,30 +49,20 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		this.backgroundWidth = 276;
 		this.backgroundHeight = 200;
 		this.titleY = 4;
-		if (this.professionQuests == null) {
-			this.professionQuests = new ArrayList<>();
-		}
    	}
 
 	protected void init() {
 		super.init();
-		if (this.handler.professions.size() > 0) this.selectProfession(0);
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
 		this.addDrawableChild(new InfoButton(w + 6, h + 16, (button) -> {}));
 		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 66, h + 16, 60, 20, new TranslatableText("button.guild.quest.delete"), (button) -> {
 			this.deleteMode = !this.deleteMode;
 			button.setMessage(this.deleteMode ? new TranslatableText("button.guild.quest.cancel") : new TranslatableText("button.guild.quest.delete"));
-			for(int i = 0; i < 7; ++i) {
-				this.available[i].active = this.deleteMode ? true : this.handler.acceptedQuests.size() < 7;
+			for(int i = 0; i < this.available.size(); ++i) {
+				this.available.get(i).active = this.deleteMode ? true : this.handler.acceptedQuests.size() < 7;
 			}
 		}));
-		this.initButtons();
-	}
-
-	private void initButtons() {
-		int w = (this.width - this.backgroundWidth) / 2;
-		int h = (this.height - this.backgroundHeight) / 2;
 		int y = h + 41;
 		int profNum = this.handler.professions.size();
 		int x = (this.width / 2) - (((profNum * 20) + ((profNum-1) * 2)) / 2);
@@ -80,29 +70,48 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			this.professions[i] = this.addDrawableChild(new ProfessionButton(x, y - 25, i, (button) -> {
 				if (!button.active) return;
 				this.selectProfession(((ProfessionButton)button).index);
-				this.initButtons();
 			}));
-			this.professions[i].active = this.handler.professions.get(i).name != this.professionName;
 			x += 22;
 		}
-		y = h + 52;
-		for(int i = 0; i < 7; ++i) {
-			this.available[i] = this.addDrawableChild(new AvailableQuestButton(w + 5, y, i, (button) -> {
+		if (this.handler.professions.size() > 0) this.selectProfession(0);
+	}
+
+	private void initButtons() {
+		int w = (this.width - this.backgroundWidth) / 2;
+		int h = (this.height - this.backgroundHeight) / 2;
+		int y = h + 52;
+		for(int i = 0; i < this.handler.professions.size(); ++i) {
+			this.professions[i].active = this.handler.professions.get(i).name != this.professionName;
+		}
+		for(int i = 0; i < this.available.size(); ++i) {
+			this.remove(this.available.get(i));
+		}
+		for(int i = 0; i < this.accepted.size(); ++i) {
+			this.remove(this.accepted.get(i));
+		}
+
+		this.available.clear();
+		this.accepted.clear();
+
+		for(int i = 0; i < this.professionQuests.size(); i++){
+			AvailableQuestButton btn = this.addDrawableChild(new AvailableQuestButton(w + 5, y, i, (button) -> {
+				int index = ((AvailableQuestButton)button).index;
 				if (this.deleteMode) {
-					this.handler.deleteAvailableQuest(this.professionName, ((AvailableQuestButton)button).index);
+					this.handler.deleteAvailableQuest(this.professionName, index);
 				} else {
 					if (!button.active || this.handler.acceptedQuests.size() == 7) return;
-					this.handler.acceptQuest(this.professionName, ((AvailableQuestButton)button).index);
+					this.handler.acceptQuest(this.professionName, index);
 					this.professionQuests = handler.availableQuests.get(this.professionName);
-					this.initButtons();
 				}
+				this.initButtons();
 			}));
-			this.available[i].active = this.handler.acceptedQuests.size() < 7;
+			btn.active = this.handler.acceptedQuests.size() < 7;
+			this.available.add(btn);
 			y += 20;
 		}
 		y = h + 52;
 		for(int i = 0; i < this.handler.acceptedQuests.size(); i++){
-			this.accepted[i] = this.addDrawableChild(new AcceptedQuestButton(w + 143, y, i, (button) -> {
+			AcceptedQuestButton btn = this.addDrawableChild(new AcceptedQuestButton(w + 143, y, i, (button) -> {
 				int index = ((AcceptedQuestButton)button).index;
 				if (this.deleteMode) {
 					this.handler.deleteAcceptedQuest(index);
@@ -111,6 +120,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				}
 				this.initButtons();
 			}));
+			this.accepted.add(btn);
 			y += 20;
 		}
 	}
@@ -171,6 +181,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		this.professionQuests = handler.availableQuests.get(this.professionName);
 		if (this.professionQuests == null) this.professionQuests = new ArrayList<>();
 		this.professionData = this.handler.professionsData.get(this.professionName);
+		this.initButtons();
 	}
 
 	@Environment(EnvType.CLIENT)
