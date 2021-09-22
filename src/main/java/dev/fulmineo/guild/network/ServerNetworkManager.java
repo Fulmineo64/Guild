@@ -44,7 +44,8 @@ public class ServerNetworkManager {
 						return;
 					}
 
-					if (((GuildServerPlayerEntity)player).getQuestProfessions().size() == 0) {
+					GuildServerPlayerEntity guildPlayer = ((GuildServerPlayerEntity)player);
+					if (guildPlayer.getQuestProfessions().size() == 0) {
 						player.sendMessage(new TranslatableText("profession.missing"), false);
 						return;
 					}
@@ -52,12 +53,11 @@ public class ServerNetworkManager {
 					player.openHandledScreen(new ExtendedScreenHandlerFactory() {
 						@Override
 						public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
-							List<QuestProfession> professions = ((GuildServerPlayerEntity)serverPlayerEntity).getQuestProfessions();
+							List<QuestProfession> professions = guildPlayer.getQuestProfessions();
 
 							// Quests get generated at a fixed interval, so here we check the number of quests to generate based on that interval
-							QuestHelper.refreshAvailableQuests(professions, serverPlayerEntity);
+							QuestHelper.refreshAvailableQuests(professions, player);
 
-							GuildServerPlayerEntity guildPlayer = ((GuildServerPlayerEntity)player);
 							NbtCompound nbt = QuestHelper.writeMapNbt(new NbtCompound(), guildPlayer.getAvailableQuests());
 							nbt = QuestHelper.writeNbt(nbt, guildPlayer.getAcceptedQuests());
 							NbtList professionsInfo = new NbtList();

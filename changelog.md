@@ -1,3 +1,6 @@
+# 0.0.9
+- Removed "label" property from Professions as it doesn't work properly in multiplayer
+
 # 0.0.8
 - Removed "quest" command
 - Added "guild reset" command, that removes all professions and all accepted and available quests

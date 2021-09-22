@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -56,8 +55,7 @@ public class QuestProfessionResignment extends Item {
 		NbtCompound nbt = stack.getOrCreateNbt();
 		String professionName = nbt.getString("Profession");
 		if (professionName.length() > 0) {
-			QuestProfession profession = DataManager.professions.get(professionName);
-			tooltip.add(new TranslatableText("profession.profession").append(" ").append(profession == null ? new LiteralText(professionName) : profession.getTranslatedName()).formatted(Formatting.GOLD));
+			tooltip.add(new TranslatableText("profession.profession").append(" ").append(new TranslatableText(QuestProfession.getTranslationKey(professionName))).formatted(Formatting.GOLD));
 			tooltip.add(new TranslatableText("item.guild.profession_resignment.description").formatted(Formatting.DARK_GRAY));
 		}
 	}
