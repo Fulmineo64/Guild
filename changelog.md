@@ -1,3 +1,8 @@
+# 0.0.8
+- Removed "quest" command
+- Added "guild reset" command, that removes all professions and all accepted and available quests
+- Added "guild clear" command, that removes all accepted and available quests
+
 # 0.0.7
 - Added Russian translations, many thanks to RiverCat!
 - Refactored the code that handles the buttons in the Quest Screen.

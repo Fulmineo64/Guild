@@ -3,6 +3,8 @@
 	"button.guild.quest.delete": "Delete",
 	"button.guild.quest.cancel": "Cancel",
 	"category.guild.guild": "The Guild",
+	"command.guild.clear.success": "Quests cleared successfully",
+	"command.guild.reset.success": "Quests and professions cleared successfully",
 	"entity.minecraft.villager.guild_master": "Guild master",
 	"itemGroup.guild.group": "The Guild",
 	"item.guild.quest_scroll": "Quest Scroll",

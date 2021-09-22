@@ -18,4 +18,6 @@ public interface GuildServerPlayerEntity {
 	public void setProfessionExp(String professionName, int exp);
 	public boolean addQuestProfession(String professionName);
 	public boolean removeQuestProfession(String professionName);
+	public void resetQuestsAndProfessions();
+	public void clearQuests();
 }

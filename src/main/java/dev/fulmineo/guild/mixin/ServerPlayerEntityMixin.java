@@ -117,6 +117,17 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 		this.professionsExp.put(professionName, exp);
 	}
 
+	public void resetQuestsAndProfessions() {
+		this.clearQuests();
+		this.professions.clear();
+		this.professionsExp.clear();
+	}
+
+	public void clearQuests() {
+		this.acceptedQuests.clear();
+		this.availableQuests.clear();
+	}
+
 	@Inject(at = @At("TAIL"), method = "copyFrom(Lnet/minecraft/server/network/ServerPlayerEntity;Z)V")
 	public void copyFromMixin(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo info) {
 		GuildServerPlayerEntity guildPlayer = (GuildServerPlayerEntity)oldPlayer;
