@@ -34,7 +34,7 @@ public class Quest {
 	}
 
 	public static Quest create(QuestProfession profession, PlayerEntity player) {
-		int level = QuestHelper.getCurrentLevel(DataManager.levels.get(profession.levelsPool), ((GuildServerPlayerEntity)player).getProfessionExp(profession.name));
+		int level = QuestHelper.getCurrentLevel(ServerDataManager.levels.get(profession.levelsPool), ((GuildServerPlayerEntity)player).getProfessionExp(profession.name));
 
 		List<QuestPoolData> tasks = new ArrayList<>(profession.tasks);
 		Iterator<QuestPoolData> iterator = tasks.iterator();
@@ -313,9 +313,9 @@ public class Quest {
 
 		GuildServerPlayerEntity guildPlayer = ((GuildServerPlayerEntity)player);
 		String professionName = this.getProfessionName();
-		QuestProfession profession = DataManager.professions.get(professionName);
+		QuestProfession profession = ServerDataManager.professions.get(professionName);
 		if (profession != null) {
-			List<QuestLevel> levels = DataManager.levels.get(profession.levelsPool);
+			List<QuestLevel> levels = ServerDataManager.levels.get(profession.levelsPool);
 			int exp = guildPlayer.getProfessionExp(professionName);
 			exp += this.nbt.getInt("Exp");
 			QuestLevel lastLevel = levels.get(levels.size()-1);

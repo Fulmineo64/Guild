@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import dev.fulmineo.guild.data.DataManager;
+import dev.fulmineo.guild.data.ServerDataManager;
 import dev.fulmineo.guild.data.GuildServerPlayerEntity;
 import dev.fulmineo.guild.data.QuestProfession;
 import net.fabricmc.api.EnvType;
@@ -35,16 +35,16 @@ public class QuestProfessionResignment extends Item {
 		} else {
 			NbtCompound nbt = stack.getOrCreateNbt();
 			String professionName = nbt.getString("Profession");
-			QuestProfession profession = DataManager.professions.get(professionName);
+			QuestProfession profession = ServerDataManager.professions.get(professionName);
 			if (profession == null) {
 				user.sendMessage(new TranslatableText("profession.guild.invalid_profession", professionName), false);
 				return TypedActionResult.fail(stack);
 			}
 			if (((GuildServerPlayerEntity)user).removeQuestProfession(professionName)) {
-				user.sendMessage(new TranslatableText("item.guild.profession_licence.resignment.success", profession.getTranslatedName()), false);
+				user.sendMessage(new TranslatableText("item.guild.profession_resignment.resignment.success", profession.getTranslatedName()), false);
 				return TypedActionResult.success(new ItemStack(Items.AIR));
 			} else {
-				user.sendMessage(new TranslatableText("item.guild.profession_licence.resignment.fail", profession.getTranslatedName()), false);
+				user.sendMessage(new TranslatableText("item.guild.profession_resignment.resignment.fail", profession.getTranslatedName()), false);
 			}
 			return TypedActionResult.fail(stack);
         }

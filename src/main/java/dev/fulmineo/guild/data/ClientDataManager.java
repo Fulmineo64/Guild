@@ -1,0 +1,8 @@
+package dev.fulmineo.guild.data;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ClientDataManager {
+	public static Map<String, QuestProfessionRequirement[]> professionRequirements = new HashMap<>();
+}

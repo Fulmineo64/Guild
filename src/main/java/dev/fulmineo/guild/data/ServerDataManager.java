@@ -16,7 +16,7 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import dev.fulmineo.guild.Guild;
 
-public class DataManager {
+public class ServerDataManager {
 	private static final Gson GSON = new GsonBuilder()
     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
     .create();

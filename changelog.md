@@ -1,5 +1,10 @@
-# 0.0.9
+# 0.1.0
 - Removed "label" property from Professions as it doesn't work properly in multiplayer
+- Updated to Fabric API 0.40.1+1.17
+- Added over-complicated Profession Requirements system, useful to limit early access to professions
+- Added /guild licence <profession\> command to generate profession licences
+- Added /guild exp <profession\> <exp\> command to change the player's profession exp
+- Centered the level text on Quests Screen
 
 # 0.0.8
 - Removed "quest" command

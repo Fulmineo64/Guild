@@ -57,7 +57,6 @@ public class QuestsScreenHandler extends ScreenHandler {
 			data.exp = professionInfo.getInt("Exp");
 			data.level = professionInfo.getInt("Level");
 			data.levelPerc = professionInfo.getInt("LevelPerc");
-			data.levelMax = professionInfo.getBoolean("LevelMax");
 			this.professions.add(profession);
 			this.professionsData.put(profession.name, data);
 		}
@@ -111,7 +110,6 @@ public class QuestsScreenHandler extends ScreenHandler {
 					data.exp = nbt.getInt("Exp");
 					data.level = nbt.getInt("Level");
 					data.levelPerc = nbt.getInt("LevelPerc");
-					data.levelMax = nbt.getBoolean("LevelMax");
 				}
 				for (NbtElement elm: quest.getItemList()) {
 					NbtCompound entry = (NbtCompound)elm;
@@ -150,6 +148,5 @@ public class QuestsScreenHandler extends ScreenHandler {
 		public int exp;
 		public int level;
 		public int levelPerc;
-		public boolean levelMax;
 	}
 }

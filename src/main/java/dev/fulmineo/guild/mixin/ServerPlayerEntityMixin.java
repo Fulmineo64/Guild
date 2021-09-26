@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import dev.fulmineo.guild.data.DataManager;
+import dev.fulmineo.guild.data.ServerDataManager;
 import dev.fulmineo.guild.data.GuildServerPlayerEntity;
 import dev.fulmineo.guild.data.Quest;
 import dev.fulmineo.guild.data.QuestHelper;
@@ -86,7 +86,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	public List<QuestProfession> getQuestProfessions() {
 		List<QuestProfession> professions = new ArrayList<>();
 		for (String professionName: this.professions) {
-			QuestProfession profession = DataManager.professions.get(professionName);
+			QuestProfession profession = ServerDataManager.professions.get(professionName);
 			if (profession != null) professions.add(profession);
 		}
 		return professions;
@@ -139,7 +139,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	}
 
 	@Inject(at = @At("TAIL"), method = "writeCustomDataToNbt(Lnet/minecraft/nbt/NbtCompound;)V")
-	public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo info) {
+	public void writeCustomDataToNbtMixin(NbtCompound nbt, CallbackInfo info) {
 		QuestHelper.writeMapNbt(nbt, this.availableQuests);
 		QuestHelper.writeNbt(nbt, this.acceptedQuests);
 		NbtList professions = new NbtList();
@@ -156,7 +156,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	}
 
 	@Inject(at = @At("TAIL"), method = "readCustomDataFromNbt(Lnet/minecraft/nbt/NbtCompound;)V")
-	public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
+	public void readCustomDataFromNbtMixin(NbtCompound nbt, CallbackInfo info) {
 		this.availableQuests = QuestHelper.fromMapNbt(nbt);
 		this.acceptedQuests = QuestHelper.fromNbt(nbt);
 		NbtList professions = nbt.getList("Professions", NbtElement.STRING_TYPE);

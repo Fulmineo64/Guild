@@ -160,13 +160,12 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 216.0F, 102, 5, 256, 512);
-		if (!this.professionData.levelMax) {
-			drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 221.0F, this.professionData.levelPerc+ 1, 5, 256, 512);
-		}
+		drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 221.0F, this.professionData.levelPerc+ 1, 5, 256, 512);
 
-		int tx = x + 135;
+		int tx = x + 138;
 		int ty = y + 38;
 		String val = String.valueOf(this.professionData.level + 1);
+		tx -= this.textRenderer.getWidth(val) / 2;
 
 		this.textRenderer.draw(matrices, val, (float)(tx + 1), (float)ty, 0);
 		this.textRenderer.draw(matrices, val, (float)(tx - 1), (float)ty, 0);

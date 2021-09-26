@@ -25,10 +25,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dev.fulmineo.guild.command.GuildCommands;
-import dev.fulmineo.guild.data.DataManager;
+import dev.fulmineo.guild.data.ServerDataManager;
+import dev.fulmineo.guild.init.EventInit;
+import dev.fulmineo.guild.init.GuildCommandInit;
 import dev.fulmineo.guild.item.QuestProfessionLicence;
 import dev.fulmineo.guild.item.QuestProfessionResignment;
+import dev.fulmineo.guild.network.ClientNetworkManager;
 import dev.fulmineo.guild.network.ServerNetworkManager;
 import dev.fulmineo.guild.screen.QuestsScreenHandler;
 
@@ -61,7 +63,8 @@ public class Guild implements ModInitializer {
     public static final Identifier TRY_COMPLETE_QUEST_PACKET_ID = new Identifier(MOD_ID, "complete_quest_packet");
     public static final Identifier DELETE_ACCEPTED_QUEST_PACKET_ID = new Identifier(MOD_ID, "delete_accepted_quest_packet");
     public static final Identifier DELETE_AVAILABLE_QUEST_PACKET_ID = new Identifier(MOD_ID, "delete_available_quest_packet");
-    public static final Identifier GET_PROFESSION_DATA_ID = new Identifier(MOD_ID, "get_profession_data_packet");
+    public static final Identifier REQUEST_CLIENT_DATA_ID = new Identifier(MOD_ID, "request_client_data_packet");
+    public static final Identifier TRANSFER_CLIENT_DATA_ID = new Identifier(MOD_ID, "transfer_client_data_packet");
     public static final ScreenHandlerType<QuestsScreenHandler> QUESTS_SCREEN_HANDLER = ScreenHandlerRegistry.registerExtended(new Identifier(MOD_ID, "quest_screen"), QuestsScreenHandler::new);
 	public static final ItemGroup GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID,"group"), () -> new ItemStack(Registry.ITEM.get(new Identifier(MOD_ID, "quest_scroll"))));
 
@@ -98,12 +101,16 @@ public class Guild implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "profession_licence"), QUEST_PROFESSION_LICENCE_ITEM);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "profession_resignment"), QUEST_PROFESSION_RESIGNMENT_ITEM);
 
+		// Networking
+
+		ClientNetworkManager.registerServerReceiver();
+		ServerNetworkManager.registerClientReceiver();
+
 		// Data
 
-		DataManager.init();
-		GuildCommands.init();
-
-		ServerNetworkManager.registerClientReceiver();
+		ServerDataManager.init();
+		GuildCommandInit.init();
+		EventInit.init();
     }
 
 	public static void info(String message){

@@ -1,14 +1,17 @@
 package dev.fulmineo.guild.item;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
 import dev.fulmineo.guild.Guild;
-import dev.fulmineo.guild.data.DataManager;
+import dev.fulmineo.guild.data.ServerDataManager;
+import dev.fulmineo.guild.data.ClientDataManager;
 import dev.fulmineo.guild.data.GuildServerPlayerEntity;
 import dev.fulmineo.guild.data.QuestProfession;
+import dev.fulmineo.guild.data.QuestProfessionRequirement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -17,6 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -46,11 +50,15 @@ public class QuestProfessionLicence extends Item {
 				newStack.setNbt(tag);
 				return TypedActionResult.success(newStack);
 			} else {
-				// TODO: Add required rank as a bonus check
 				if (((GuildServerPlayerEntity)user).getProfessions().size() <= 7) {
-					QuestProfession profession = DataManager.professions.get(professionName);
+					QuestProfession profession = ServerDataManager.professions.get(professionName);
 					if (profession == null) {
-						user.sendMessage(new TranslatableText("profession.guild.invalid_profession", professionName), false);
+						user.sendMessage(new TranslatableText("profession.guild.invalid_profession", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
+						return TypedActionResult.fail(stack);
+					}
+					Map<String, Integer> professionsExp = ((GuildServerPlayerEntity)user).getProfessionExp();
+					if (!profession.checkRequirements(professionsExp)) {
+						user.sendMessage(new TranslatableText("item.guild.profession_licence.missing_requirements", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
 						return TypedActionResult.fail(stack);
 					}
 					if (((GuildServerPlayerEntity)user).addQuestProfession(professionName)) {
@@ -83,6 +91,23 @@ public class QuestProfessionLicence extends Item {
 		String professionName = nbt.getString("Profession");
 		if (professionName.length() > 0) {
 			tooltip.add(new TranslatableText("profession.profession").append(" ").append(new TranslatableText(QuestProfession.getTranslationKey(professionName))).formatted(Formatting.GOLD));
+			QuestProfessionRequirement[] requirements = ClientDataManager.professionRequirements.get(professionName);
+			if (requirements != null) {
+				tooltip.add(new TranslatableText("item.guild.profession_licence.requirements").formatted(Formatting.GREEN));
+				for (QuestProfessionRequirement req: requirements) {
+					MutableText text = req.profession != null ? new TranslatableText(QuestProfession.getTranslationKey(req.profession)) : new TranslatableText("item.guild.profession_licence.any_profession");
+					if (req.level != null) {
+						text = text.append(new TranslatableText("item.guild.profession_licence.level"));
+						if (req.level.min != null) {
+							text = text.append(">= "+req.level.min+" ");
+						}
+						if (req.level.max != null) {
+							text = text.append("<= "+req.level.max);
+						}
+					}
+					tooltip.add(text.formatted(Formatting.GREEN));
+				}
+			}
 			tooltip.add(new TranslatableText("item.guild.profession_licence.description").formatted(Formatting.DARK_GRAY));
 			tooltip.add(new TranslatableText("item.guild.profession_licence.description2").formatted(Formatting.DARK_GRAY));
 		}

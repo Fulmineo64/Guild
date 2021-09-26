@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import dev.fulmineo.guild.Guild;
 import dev.fulmineo.guild.feature.ModifiableStructurePool;
 
 @Mixin(StructurePools.class)
@@ -31,7 +30,6 @@ public class StructurePoolsMixin {
 
 	private static StructurePool tryAddElementToPool(Identifier targetPool, StructurePool pool, String elementId, StructurePool.Projection projection, int weight) {
         if(targetPool.equals(pool.getId())) {
-    		Guild.info("register " + targetPool.toString());
             ModifiableStructurePool modPool = new ModifiableStructurePool(pool);
             modPool.addStructurePoolElement(StructurePoolElement.ofProcessedLegacySingle(elementId, StructureProcessorLists.EMPTY).apply(projection), weight);
             return modPool.getStructurePool();

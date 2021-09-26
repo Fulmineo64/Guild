@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import dev.fulmineo.guild.Guild;
 import dev.fulmineo.guild.data.QuestProfession;
+import dev.fulmineo.guild.data.QuestProfessionRequirement;
 import dev.fulmineo.guild.screen.QuestsScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -23,7 +24,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.screen.ScreenHandler;
-import dev.fulmineo.guild.data.DataManager;
+import dev.fulmineo.guild.data.ServerDataManager;
 import dev.fulmineo.guild.data.GuildServerPlayerEntity;
 import dev.fulmineo.guild.data.Quest;
 import dev.fulmineo.guild.data.QuestHelper;
@@ -104,8 +105,8 @@ public class ServerNetworkManager {
 			Quest quest = acceptedQuests.get(index);
 			int level = 0;
 			String professionName = quest.getProfessionName();
-			QuestProfession profession = DataManager.professions.get(professionName);
-			List<QuestLevel> levels = DataManager.levels.get(profession.levelsPool);
+			QuestProfession profession = ServerDataManager.professions.get(professionName);
+			List<QuestLevel> levels = ServerDataManager.levels.get(profession.levelsPool);
 			if (profession != null) {
 				level = QuestHelper.getCurrentLevel(levels, guildPlayer.getProfessionExp(professionName));
 			}
@@ -181,5 +182,45 @@ public class ServerNetworkManager {
 		ServerPlayNetworking.registerGlobalReceiver(Guild.DELETE_AVAILABLE_QUEST_PACKET_ID, (server, player, handler, buf, responseSender) -> {
 			((GuildServerPlayerEntity)player).getAvailableQuests().get(buf.readString()).remove(buf.readInt());
 		});
+
+		ServerPlayNetworking.registerGlobalReceiver(Guild.REQUEST_CLIENT_DATA_ID, (server, player, handler, buf, responseSender) -> {
+			ServerNetworkManager.sendDataToClient(player, ServerNetworkManager.getClientDataNbt());
+		});
+	}
+
+	public static NbtCompound getClientDataNbt() {
+		NbtCompound nbt = new NbtCompound();
+		NbtCompound professionRequirements = new NbtCompound();
+		for (QuestProfession profession: ServerDataManager.professions.values()) {
+			if (profession.requirements != null) {
+				NbtList requirements = new NbtList();
+				for (QuestProfessionRequirement req: profession.requirements) {
+					NbtCompound requirement = new NbtCompound();
+					if (req.profession != null) {
+						requirement.putString("Profession", req.profession);
+					}
+					if (req.level != null) {
+						NbtCompound level = new NbtCompound();
+						if (req.level.min != null) {
+							level.putInt("Min", req.level.min);
+						}
+						if (req.level.max != null) {
+							level.putInt("Max", req.level.max);
+						}
+						requirement.put("Level", level);
+					}
+					requirements.add(requirement);
+				}
+				professionRequirements.put(profession.name, requirements);
+			}
+		}
+		nbt.put("Requirements", professionRequirements);
+		return nbt;
+	}
+
+	public static void sendDataToClient(ServerPlayerEntity player, NbtCompound nbt) {
+		PacketByteBuf buf = PacketByteBufs.create();
+		buf.writeNbt(nbt);
+		ServerPlayNetworking.send(player, Guild.TRANSFER_CLIENT_DATA_ID, buf);
 	}
 }
