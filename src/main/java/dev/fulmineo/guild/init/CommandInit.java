@@ -22,7 +22,7 @@ import dev.fulmineo.guild.data.GuildServerPlayerEntity;
 import dev.fulmineo.guild.data.QuestProfession;
 import dev.fulmineo.guild.data.ServerDataManager;
 
-public class GuildCommandInit {
+public class CommandInit {
 	public static ProfessionsSuggestionProvider PROFESSION_SUGGESTION_PROVIDER = new ProfessionsSuggestionProvider();
 	public static void init(){
 		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {

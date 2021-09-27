@@ -26,11 +26,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dev.fulmineo.guild.data.ServerDataManager;
-import dev.fulmineo.guild.init.EventInit;
-import dev.fulmineo.guild.init.GuildCommandInit;
+import dev.fulmineo.guild.init.ServerEventInit;
+import dev.fulmineo.guild.init.CommandInit;
 import dev.fulmineo.guild.item.QuestProfessionLicence;
 import dev.fulmineo.guild.item.QuestProfessionResignment;
-import dev.fulmineo.guild.network.ClientNetworkManager;
 import dev.fulmineo.guild.network.ServerNetworkManager;
 import dev.fulmineo.guild.screen.QuestsScreenHandler;
 
@@ -103,14 +102,13 @@ public class Guild implements ModInitializer {
 
 		// Networking
 
-		ClientNetworkManager.registerServerReceiver();
 		ServerNetworkManager.registerClientReceiver();
 
 		// Data
 
+		CommandInit.init();
 		ServerDataManager.init();
-		GuildCommandInit.init();
-		EventInit.init();
+		ServerEventInit.init();
     }
 
 	public static void info(String message){

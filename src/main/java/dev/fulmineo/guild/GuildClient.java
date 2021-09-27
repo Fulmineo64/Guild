@@ -1,6 +1,8 @@
 package dev.fulmineo.guild;
 
 import dev.fulmineo.guild.client.KeyBindManager;
+import dev.fulmineo.guild.init.ClientEventInit;
+import dev.fulmineo.guild.network.ClientNetworkManager;
 import dev.fulmineo.guild.screen.QuestsScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.Environment;
@@ -11,6 +13,14 @@ import net.fabricmc.api.EnvType;
 public class GuildClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+		// Networking
+
+		ClientNetworkManager.registerServerReceiver();
+
+		// Data
+
+		ClientEventInit.init();
+
         ScreenRegistry.register(Guild.QUESTS_SCREEN_HANDLER, QuestsScreen::new);
 		KeyBindManager.init();
     }
