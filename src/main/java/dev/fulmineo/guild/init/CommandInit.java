@@ -8,6 +8,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -19,6 +21,8 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
 import dev.fulmineo.guild.Guild;
 import dev.fulmineo.guild.data.GuildServerPlayerEntity;
+import dev.fulmineo.guild.data.Quest;
+import dev.fulmineo.guild.data.QuestHelper;
 import dev.fulmineo.guild.data.QuestProfession;
 import dev.fulmineo.guild.data.ServerDataManager;
 
@@ -78,6 +82,35 @@ public class CommandInit {
 									stack.setNbt(nbt);
 									if (!player.giveItemStack(stack)) {
 										player.dropItem(stack, false);
+									}
+								}
+							}
+							return 1;
+						})
+					)
+				)
+			);
+			dispatcher.register(
+				CommandManager.literal("guild")
+				.then(
+					CommandManager.literal("quest")
+					.then(
+						CommandManager.argument("profession", StringArgumentType.string())
+						.suggests(PROFESSION_SUGGESTION_PROVIDER)
+						.executes(context -> {
+							ServerCommandSource source = context.getSource();
+							if (source != null) {
+								ServerPlayerEntity player = source.getPlayer();
+								String professionName = StringArgumentType.getString(context, "profession");
+								QuestProfession profession = ServerDataManager.professions.get(professionName);
+								if (profession == null) {
+									source.sendFeedback(new TranslatableText("command.guild.licence.invalid_profession", professionName), false);
+								} else {
+									List<Quest> professionQuests = ((GuildServerPlayerEntity)player).getAvailableQuests().get(professionName);
+									if (professionQuests != null && professionQuests.size() < Guild.MAX_QUESTS_BY_PROFESSION) {
+										List<QuestProfession> availableProfessions = new ArrayList<>();
+										availableProfessions.add(profession);
+										QuestHelper.generateQuests(player, availableProfessions, 1);
 									}
 								}
 							}

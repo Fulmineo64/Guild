@@ -4,6 +4,7 @@
 - Added over-complicated Profession Requirements system, useful to limit early access to professions
 - Added /guild licence <profession\> command to generate profession licences
 - Added /guild exp <profession\> <exp\> command to change the player's profession exp
+- Added /guild quest <profession\> command to generate a new quest for the specified profession
 - Centered the level text on Quests Screen
 
 # 0.0.8

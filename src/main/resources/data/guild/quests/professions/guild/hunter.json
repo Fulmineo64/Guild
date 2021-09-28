@@ -2,12 +2,6 @@
 	"name": "guild:hunter",
 	"icon": "minecraft:bow",
 	"guild_master_level": 2,
-	"requirements": [{
-		"profession": "guild:gatherer",
-		"level": {
-			"min": 10
-		}
-	}],
 	"levels_pool": "guild:common_levels",
 	"task_pools": [
 		"guild:overworld_passive_mob_drops"

@@ -87,25 +87,32 @@ public class QuestHelper {
 				}
 			}
 
-			int i;
-			for (i = 0; i < questsToGenerate; i++){
-				if (availableProfessions.size() == 0) break;
-				int professionIndex = player.world.random.nextInt(availableProfessions.size());
-				QuestProfession profession = availableProfessions.get(professionIndex);
-				List<Quest> quests;
-				if (availableQuests.containsKey(profession.name)) {
-					quests = availableQuests.get(profession.name);
-				} else {
-					quests = new ArrayList<>();
-				}
-				quests.add(Quest.create(profession, player));
-				availableQuests.put(profession.name, quests);
-				if (quests.size() == Guild.MAX_QUESTS_BY_PROFESSION) {
-					availableProfessions.remove(professionIndex);
-				}
-			}
-			if (i > 0) guildPlayer.setLastQuestGenTime(time);
+			int generated = generateQuests(player, availableProfessions, questsToGenerate);
+			if (generated > 0) guildPlayer.setLastQuestGenTime(time);
 		}
+	}
+
+	public static int generateQuests(PlayerEntity player, List<QuestProfession> availableProfessions, int questsToGenerate) {
+		GuildServerPlayerEntity guildPlayer = (GuildServerPlayerEntity)player;
+		Map<String, List<Quest>> availableQuests = guildPlayer.getAvailableQuests();
+		int i;
+		for (i = 0; i < questsToGenerate; i++){
+			if (availableProfessions.size() == 0) break;
+			int professionIndex = player.world.random.nextInt(availableProfessions.size());
+			QuestProfession profession = availableProfessions.get(professionIndex);
+			List<Quest> quests;
+			if (availableQuests.containsKey(profession.name)) {
+				quests = availableQuests.get(profession.name);
+			} else {
+				quests = new ArrayList<>();
+			}
+			quests.add(Quest.create(profession, player));
+			availableQuests.put(profession.name, quests);
+			if (quests.size() == Guild.MAX_QUESTS_BY_PROFESSION) {
+				availableProfessions.remove(professionIndex);
+			}
+		}
+		return i;
 	}
 
     public static NbtCompound writeMapNbt(NbtCompound nbt, Map<String, List<Quest>> availableQuests) {
