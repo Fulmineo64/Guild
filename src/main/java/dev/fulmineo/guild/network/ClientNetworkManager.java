@@ -19,6 +19,10 @@ public class ClientNetworkManager {
 	public static void registerServerReceiver() {
 		ClientPlayNetworking.registerGlobalReceiver(Guild.TRANSFER_CLIENT_DATA_ID, (client, handler, buf, responseSender) -> {
 			NbtCompound nbt = buf.readNbt();
+			NbtCompound professionsLabels = nbt.getCompound("Labels");
+			for (String professionName: professionsLabels.getKeys()) {
+				ClientDataManager.professionsLabels.put(professionName, professionsLabels.getString(professionName));
+			}
 			NbtCompound professionsRequirements = nbt.getCompound("Requirements");
 			for (String professionName: professionsRequirements.getKeys()) {
 				NbtList requirementsList = professionsRequirements.getList(professionName, NbtElement.COMPOUND_TYPE);

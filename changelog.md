@@ -1,3 +1,8 @@
+# 0.1.1
+- Changed the commands introduced in 0.1.0 to be available only to operators and above
+- Added example datapack
+- Added back "label" property to Professions as now it works properly on servers
+
 # 0.1.0
 - Removed "label" property from Professions as it doesn't work properly in multiplayer
 - Updated to Fabric API 0.40.1+1.17

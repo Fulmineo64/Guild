@@ -16,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
@@ -190,8 +191,12 @@ public class ServerNetworkManager {
 
 	public static NbtCompound getClientDataNbt() {
 		NbtCompound nbt = new NbtCompound();
+		NbtCompound professionLabels = new NbtCompound();
 		NbtCompound professionRequirements = new NbtCompound();
 		for (QuestProfession profession: ServerDataManager.professions.values()) {
+			if (profession.label != null) {
+				professionLabels.put(profession.name, NbtString.of(profession.label));
+			}
 			if (profession.requirements != null) {
 				NbtList requirements = new NbtList();
 				for (QuestProfessionRequirement req: profession.requirements) {
@@ -214,6 +219,7 @@ public class ServerNetworkManager {
 				professionRequirements.put(profession.name, requirements);
 			}
 		}
+		nbt.put("Labels", professionLabels);
 		nbt.put("Requirements", professionRequirements);
 		return nbt;
 	}

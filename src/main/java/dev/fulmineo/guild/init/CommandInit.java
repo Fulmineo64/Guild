@@ -64,6 +64,7 @@ public class CommandInit {
 				CommandManager.literal("guild")
 				.then(
 					CommandManager.literal("licence")
+					.requires(source -> source.hasPermissionLevel(2))
 					.then(
 						CommandManager.argument("profession", StringArgumentType.string())
 						.suggests(PROFESSION_SUGGESTION_PROVIDER)
@@ -94,6 +95,7 @@ public class CommandInit {
 				CommandManager.literal("guild")
 				.then(
 					CommandManager.literal("quest")
+					.requires(source -> source.hasPermissionLevel(2))
 					.then(
 						CommandManager.argument("profession", StringArgumentType.string())
 						.suggests(PROFESSION_SUGGESTION_PROVIDER)
@@ -107,7 +109,7 @@ public class CommandInit {
 									source.sendFeedback(new TranslatableText("command.guild.licence.invalid_profession", professionName), false);
 								} else {
 									List<Quest> professionQuests = ((GuildServerPlayerEntity)player).getAvailableQuests().get(professionName);
-									if (professionQuests != null && professionQuests.size() < Guild.MAX_QUESTS_BY_PROFESSION) {
+									if (professionQuests == null || professionQuests.size() < Guild.MAX_QUESTS_BY_PROFESSION) {
 										List<QuestProfession> availableProfessions = new ArrayList<>();
 										availableProfessions.add(profession);
 										QuestHelper.generateQuests(player, availableProfessions, 1);
@@ -123,6 +125,7 @@ public class CommandInit {
 				CommandManager.literal("guild")
 				.then(
 					CommandManager.literal("exp")
+					.requires(source -> source.hasPermissionLevel(2))
 					.then(
 						CommandManager.argument("profession", StringArgumentType.string())
 						.suggests(PROFESSION_SUGGESTION_PROVIDER)

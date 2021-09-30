@@ -12,6 +12,7 @@ import net.minecraft.text.TranslatableText;
 public class QuestProfession {
 	public String name;
 	public String icon;
+	public String label;
 	public int guildMasterLevel;
 	public QuestProfessionRequirement[] requirements;
 	public String levelsPool;
