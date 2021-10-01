@@ -10,7 +10,7 @@
 			},
 			"unit_worth": 40,
 			"unit_time": 80,
-			"unit_exp": 3,
+			"unit_exp": 5,
 			"weight": 100
 		},
 		{
@@ -22,7 +22,7 @@
 			},
 			"unit_worth": 40,
 			"unit_time": 80,
-			"unit_exp": 3,
+			"unit_exp": 5,
 			"weight": 100
 		},
 		{
@@ -34,7 +34,7 @@
 			},
 			"unit_worth": 40,
 			"unit_time": 120,
-			"unit_exp": 3,
+			"unit_exp": 5,
 			"weight": 100
 		},
 		{
@@ -49,7 +49,7 @@
 			},
 			"unit_worth": 60,
 			"unit_time": 140,
-			"unit_exp": 5,
+			"unit_exp": 8,
 			"weight": 70
 		},
 		{
@@ -64,8 +64,32 @@
 			},
 			"unit_worth": 200,
 			"unit_time": 600,
-			"unit_exp": 12,
+			"unit_exp": 16,
 			"weight": 10
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_cod",
+			"number": {
+				"min": 4,
+				"max": 10
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_salmon",
+			"number": {
+				"min": 4,
+				"max": 10
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 6,
+			"weight": 60
 		}
 	]
 }

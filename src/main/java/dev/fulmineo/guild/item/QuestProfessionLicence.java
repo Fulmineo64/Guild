@@ -53,12 +53,12 @@ public class QuestProfessionLicence extends Item {
 				if (((GuildServerPlayerEntity)user).getProfessions().size() <= 7) {
 					QuestProfession profession = ServerDataManager.professions.get(professionName);
 					if (profession == null) {
-						user.sendMessage(new TranslatableText("profession.guild.invalid_profession", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
+						user.sendMessage(new TranslatableText("profession.guild.invalid_profession", QuestProfession.getTranslatedText(professionName)), false);
 						return TypedActionResult.fail(stack);
 					}
 					Map<String, Integer> professionsExp = ((GuildServerPlayerEntity)user).getProfessionExp();
 					if (!profession.checkRequirements(professionsExp)) {
-						user.sendMessage(new TranslatableText("item.guild.profession_licence.missing_requirements", new TranslatableText(QuestProfession.getTranslationKey(professionName))), false);
+						user.sendMessage(new TranslatableText("item.guild.profession_licence.missing_requirements", QuestProfession.getTranslatedText(professionName)), false);
 						return TypedActionResult.fail(stack);
 					}
 					if (((GuildServerPlayerEntity)user).addQuestProfession(professionName)) {
@@ -66,7 +66,7 @@ public class QuestProfessionLicence extends Item {
 						if (((GuildServerPlayerEntity)user).getProfessions().size() == 1){
 							user.sendMessage(new TranslatableText("item.guild.profession_licence.introduction"), false);
 						}
-						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.success", profession.getTranslatedName()), false);
+						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.success", QuestProfession.getTranslatedText(profession.name)), false);
 						ItemStack newStack = new ItemStack(Guild.QUEST_PROFESSION_RESIGNMENT_ITEM);
 						NbtCompound tag = stack.getOrCreateNbt();
 						tag.putString("Profession", nbt.getString("Profession"));
@@ -75,7 +75,7 @@ public class QuestProfessionLicence extends Item {
 						newStack.setNbt(tag);
 						return TypedActionResult.success(newStack);
 					} else {
-						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.fail", profession.getTranslatedName()), false);
+						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.fail", QuestProfession.getTranslatedText(profession.name)), false);
 					}
 				} else {
 					user.sendMessage(new TranslatableText("item.guild.profession_licence.too_many_professions", 7), false);
@@ -90,12 +90,12 @@ public class QuestProfessionLicence extends Item {
 		NbtCompound nbt = stack.getOrCreateNbt();
 		String professionName = nbt.getString("Profession");
 		if (professionName.length() > 0) {
-			tooltip.add(new TranslatableText("profession.profession").append(" ").append(new TranslatableText(QuestProfession.getTranslationKey(professionName))).formatted(Formatting.GOLD));
+			tooltip.add(new TranslatableText("profession.profession").append(" ").append(QuestProfession.getTranslatedText(professionName)).formatted(Formatting.GOLD));
 			QuestProfessionRequirement[] requirements = ClientDataManager.professionRequirements.get(professionName);
 			if (requirements != null) {
 				tooltip.add(new TranslatableText("item.guild.profession_licence.requirements").formatted(Formatting.GREEN));
 				for (QuestProfessionRequirement req: requirements) {
-					MutableText text = req.profession != null ? new TranslatableText(QuestProfession.getTranslationKey(req.profession)) : new TranslatableText("item.guild.profession_licence.any_profession");
+					MutableText text = req.profession != null ? QuestProfession.getTranslatedText(req.profession) : new TranslatableText("item.guild.profession_licence.any_profession");
 					if (req.level != null) {
 						text = text.append(new TranslatableText("item.guild.profession_licence.level"));
 						if (req.level.min != null) {

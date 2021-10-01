@@ -1,0 +1,12 @@
+{
+	"name": "guild:chef",
+	"icon": "minecraft:cake",
+	"guild_master_level": 2,
+	"levels_pool": "guild:common_levels",
+	"task_pools": [
+		"guild:foods"
+	],
+	"reward_pools": [
+		"guild:common_rewards"
+	]
+}

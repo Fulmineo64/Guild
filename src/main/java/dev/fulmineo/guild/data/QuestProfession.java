@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
 
@@ -27,10 +28,6 @@ public class QuestProfession {
 
 	public void addRewardPool(QuestPool pool){
 		rewards.addAll(Arrays.asList(pool.data));
-	}
-
-	public MutableText getTranslatedName() {
-		return new TranslatableText(getTranslationKey(this.name));
 	}
 
 	public boolean checkRequirements(Map<String, Integer> professionsExp) {
@@ -73,5 +70,10 @@ public class QuestProfession {
 
 	public static String getTranslationKey(String name) {
 		return "profession."+name.replace(":", ".");
+	}
+
+	public static MutableText getTranslatedText(String name) {
+		String label = ClientDataManager.professionsLabels.get(name);
+		return label != null ? new LiteralText(label) : new TranslatableText(QuestProfession.getTranslationKey(name));
 	}
 }

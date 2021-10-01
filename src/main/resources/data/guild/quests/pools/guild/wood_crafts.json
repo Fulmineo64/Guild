@@ -15,6 +15,18 @@
 		},
 		{
 			"type": "item",
+			"name": "minecraft:bowl",
+			"number": {
+				"min": 12,
+				"max": 24
+			},
+			"unit_worth": 18,
+			"unit_time": 60,
+			"unit_exp": 3,
+			"weight": 40
+		},
+		{
+			"type": "item",
 			"name": "minecraft:oak_boat",
 			"level": {
 				"min": 3

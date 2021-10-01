@@ -15,6 +15,18 @@
 		},
 		{
 			"type": "item",
+			"name": "minecraft:dried_kelp",
+			"number": {
+				"min": 20,
+				"max": 40
+			},
+			"unit_worth": 15,
+			"unit_time": 50,
+			"unit_exp": 1,
+			"weight": 40
+		},
+		{
+			"type": "item",
 			"name": "minecraft:sea_pickle",
 			"number": {
 				"min": 6,

@@ -1,3 +1,9 @@
+# 0.1.2
+- Added new Profession, the Chef
+- Added cooked variants of foods to their respective professions (meat for hunters, fishes and kelp for fisherman)
+- Improved translation system for Professions
+- Buffed exps and rewards for Hunter and Gatherer
+
 # 0.1.1
 - Changed the commands introduced in 0.1.0 to be available only to operators and above
 - Added example datapack

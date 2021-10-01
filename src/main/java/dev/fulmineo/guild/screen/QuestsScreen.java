@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.fulmineo.guild.Guild;
-import dev.fulmineo.guild.data.ClientDataManager;
 import dev.fulmineo.guild.data.Quest;
 import dev.fulmineo.guild.data.QuestProfession;
 import dev.fulmineo.guild.screen.QuestsScreenHandler.ProfessionData;
@@ -248,8 +247,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
 				QuestProfession profession = this.getQuestProfession();
-				String label = ClientDataManager.professionsLabels.get(profession.name);
-				tooltip.add((label != null ? new LiteralText(label) : this.getQuestProfession().getTranslatedName()).formatted(Formatting.GOLD));
+				tooltip.add(QuestProfession.getTranslatedText(profession.name).formatted(Formatting.GOLD));
 				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
 		}

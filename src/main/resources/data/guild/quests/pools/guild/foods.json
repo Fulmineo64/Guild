@@ -1,0 +1,131 @@
+{
+	"name": "guild:foods",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:beetroot_soup",
+			"number": {
+				"min": 4,
+				"max": 12
+			},
+			"unit_worth": 50,
+			"unit_time": 120,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:bread",
+			"number": {
+				"min": 6,
+				"max": 16
+			},
+			"unit_worth": 40,
+			"unit_time": 120,
+			"unit_exp": 5,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:mushroom_stew",
+			"number": {
+				"min": 4,
+				"max": 10
+			},
+			"unit_worth": 60,
+			"unit_time": 140,
+			"unit_exp": 7,
+			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cookie",
+			"number": {
+				"min": 16,
+				"max": 32
+			},
+			"level": {
+				"min": 5
+			},
+			"unit_worth": 20,
+			"unit_time": 60,
+			"unit_exp": 2,
+			"weight": 30
+		},
+		{
+			"type": "item",
+			"name": "minecraft:pumpkin_pie",
+			"number": {
+				"min": 2,
+				"max": 4
+			},
+			"level": {
+				"min": 5
+			},
+			"unit_worth": 200,
+			"unit_time": 400,
+			"unit_exp": 20,
+			"weight": 20
+		},
+		{
+			"type": "item",
+			"name": "minecraft:suspicious_stew",
+			"number": {
+				"min": 4,
+				"max": 10
+			},
+			"level": {
+				"min": 5
+			},
+			"unit_worth": 70,
+			"unit_time": 160,
+			"unit_exp": 9,
+			"weight": 20
+		},
+		{
+			"type": "item",
+			"name": "minecraft:rabbit_stew",
+			"number": {
+				"min": 3,
+				"max": 6
+			},
+			"level": {
+				"min": 10
+			},
+			"unit_worth": 250,
+			"unit_time": 500,
+			"unit_exp": 25,
+			"weight": 15
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cake",
+			"number": {
+				"min": 1,
+				"max": 2
+			},
+			"level": {
+				"min": 10
+			},
+			"unit_worth": 300,
+			"unit_time": 600,
+			"unit_exp": 40,
+			"weight": 15
+		},
+		{
+			"type": "item",
+			"name": "minecraft:golden_carrot",
+			"number": {
+				"min": 8,
+				"max": 24
+			},
+			"level": {
+				"min": 20
+			},
+			"unit_worth": 75,
+			"unit_time": 120,
+			"unit_exp": 7,
+			"weight": 30
+		}
+	]
+}

@@ -8,9 +8,9 @@
 				"min": 6,
 				"max": 12
 			},
-			"unit_worth": 30,
+			"unit_worth": 40,
 			"unit_time": 100,
-			"unit_exp": 3,
+			"unit_exp": 5,
 			"weight": 50
 		},
 		{
@@ -20,9 +20,9 @@
 				"min": 6,
 				"max": 12
 			},
-			"unit_worth": 40,
+			"unit_worth": 50,
 			"unit_time": 100,
-			"unit_exp": 4,
+			"unit_exp": 6,
 			"weight": 70
 		},
 		{
@@ -32,9 +32,9 @@
 				"min": 4,
 				"max": 16
 			},
-			"unit_worth": 40,
+			"unit_worth": 50,
 			"unit_time": 100,
-			"unit_exp": 4,
+			"unit_exp": 6,
 			"weight": 70
 		},
 		{
@@ -44,9 +44,9 @@
 				"min": 3,
 				"max": 12
 			},
-			"unit_worth": 40,
+			"unit_worth": 50,
 			"unit_time": 120,
-			"unit_exp": 4,
+			"unit_exp": 6,
 			"weight": 70
 		},
 		{
@@ -56,9 +56,9 @@
 				"min": 3,
 				"max": 12
 			},
-			"unit_worth": 60,
+			"unit_worth": 80,
 			"unit_time": 140,
-			"unit_exp": 5,
+			"unit_exp": 6,
 			"weight": 60
 		},
 		{
@@ -68,9 +68,9 @@
 				"min": 5,
 				"max": 15
 			},
-			"unit_worth": 50,
+			"unit_worth": 60,
 			"unit_time": 120,
-			"unit_exp": 4,
+			"unit_exp": 6,
 			"weight": 80
 		},
 		{
@@ -80,9 +80,9 @@
 				"min": 6,
 				"max": 18
 			},
-			"unit_worth": 50,
+			"unit_worth": 60,
 			"unit_time": 100,
-			"unit_exp": 4,
+			"unit_exp": 6,
 			"weight": 80
 		},
 		{
@@ -92,9 +92,9 @@
 				"min": 4,
 				"max": 16
 			},
-			"unit_worth": 30,
+			"unit_worth": 40,
 			"unit_time": 120,
-			"unit_exp": 4,
+			"unit_exp": 6,
 			"weight": 70
 		},
 		{
@@ -104,9 +104,9 @@
 				"min": 4,
 				"max": 16
 			},
-			"unit_worth": 40,
+			"unit_worth": 50,
 			"unit_time": 140,
-			"unit_exp": 5,
+			"unit_exp": 7,
 			"weight": 50
 		},
 		{
@@ -119,9 +119,9 @@
 				"min": 3,
 				"max": 6
 			},
-			"unit_worth": 80,
+			"unit_worth": 100,
 			"unit_time": 240,
-			"unit_exp": 6,
+			"unit_exp": 8,
 			"weight": 40
 		},
 		{
@@ -134,9 +134,9 @@
 				"min": 1,
 				"max": 2
 			},
-			"unit_worth": 100,
+			"unit_worth": 150,
 			"unit_time": 300,
-			"unit_exp": 9,
+			"unit_exp": 12,
 			"weight": 30
 		},
 		{
@@ -149,10 +149,73 @@
 				"min": 4,
 				"max": 8
 			},
-			"unit_worth": 70,
+			"unit_worth": 80,
 			"unit_time": 240,
-			"unit_exp": 6,
+			"unit_exp": 8,
 			"weight": 40
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_chicken",
+			"number": {
+				"min": 6,
+				"max": 10
+			},
+			"unit_worth": 60,
+			"unit_time": 140,
+			"unit_exp": 7,
+			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_mutton",
+			"number": {
+				"min": 3,
+				"max": 10
+			},
+			"unit_worth": 60,
+			"unit_time": 160,
+			"unit_exp": 7,
+			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_porkchop",
+			"number": {
+				"min": 6,
+				"max": 15
+			},
+			"unit_worth": 70,
+			"unit_time": 140,
+			"unit_exp": 7,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_beef",
+			"number": {
+				"min": 5,
+				"max": 12
+			},
+			"unit_worth": 70,
+			"unit_time": 160,
+			"unit_exp": 7,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_rabbit",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 4,
+				"max": 6
+			},
+			"unit_worth": 100,
+			"unit_time": 280,
+			"unit_exp": 9,
+			"weight": 20
 		}
 	]
 }

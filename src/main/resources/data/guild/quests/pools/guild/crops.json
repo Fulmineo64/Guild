@@ -1,0 +1,17 @@
+{
+	"name": "guild:crops",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:baked_potato",
+			"number": {
+				"min": 6,
+				"max": 16
+			},
+			"unit_worth": 40,
+			"unit_time": 100,
+			"unit_exp": 5,
+			"weight": 60
+		}
+	]
+}
