@@ -68,6 +68,32 @@ public class QuestProfession {
 		return true;
 	}
 
+	public void merge(QuestProfession professionToMerge) {
+		if (this.name == null) this.name = professionToMerge.name;
+		if (this.icon == null) this.icon = professionToMerge.icon;
+		if (this.label == null) this.label = professionToMerge.label;
+		if (this.guildMasterLevel == 0) this.guildMasterLevel = professionToMerge.guildMasterLevel;
+		if (this.requirements == null) this.requirements = professionToMerge.requirements;
+		if (this.levelsPool == null) this.levelsPool = professionToMerge.levelsPool;
+		if (this.taskPools == null) this.taskPools = professionToMerge.taskPools;
+		if (this.rewardPools == null) this.rewardPools = professionToMerge.rewardPools;
+
+		List<String> taskPools = new ArrayList<>(Arrays.asList(this.taskPools));
+		List<String> rewardPools = new ArrayList<>(Arrays.asList(this.rewardPools));
+		for (String task: professionToMerge.taskPools) {
+			if (!taskPools.contains(task)) {
+				taskPools.add(task);
+			}
+		}
+		for (String reward: professionToMerge.rewardPools) {
+			if (!rewardPools.contains(reward)) {
+				rewardPools.add(reward);
+			}
+		}
+		this.taskPools = taskPools.toArray(new String[0]);
+		this.rewardPools = rewardPools.toArray(new String[0]);
+	}
+
 	public static String getTranslationKey(String name) {
 		return "profession."+name.replace(":", ".");
 	}

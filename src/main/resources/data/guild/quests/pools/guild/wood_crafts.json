@@ -4,6 +4,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:stick",
+			"level": {
+				"min": 3
+			},
 			"number": {
 				"min": 20,
 				"max": 64
@@ -16,6 +19,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:bowl",
+			"level": {
+				"min": 3
+			},
 			"number": {
 				"min": 12,
 				"max": 24
@@ -29,7 +35,7 @@
 			"type": "item",
 			"name": "minecraft:oak_boat",
 			"level": {
-				"min": 3
+				"min": 10
 			},
 			"number": {
 				"min": 1,
@@ -44,7 +50,7 @@
 			"type": "item",
 			"name": "minecraft:spruce_boat",
 			"level": {
-				"min": 3
+				"min": 10
 			},
 			"number": {
 				"min": 1,
@@ -59,7 +65,7 @@
 			"type": "item",
 			"name": "minecraft:birch_boat",
 			"level": {
-				"min": 3
+				"min": 10
 			},
 			"number": {
 				"min": 1,
@@ -74,7 +80,7 @@
 			"type": "item",
 			"name": "minecraft:acacia_boat",
 			"level": {
-				"min": 3
+				"min": 10
 			},
 			"number": {
 				"min": 1,
@@ -89,7 +95,7 @@
 			"type": "item",
 			"name": "minecraft:dark_oak_boat",
 			"level": {
-				"min": 3
+				"min": 10
 			},
 			"number": {
 				"min": 1,
@@ -104,7 +110,7 @@
 			"type": "item",
 			"name": "minecraft:jungle_boat",
 			"level": {
-				"min": 5
+				"min": 10
 			},
 			"number": {
 				"min": 1,

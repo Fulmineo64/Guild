@@ -51,18 +51,6 @@
 		},
 		{
 			"type": "item",
-			"name": "minecraft:leather",
-			"number": {
-				"min": 3,
-				"max": 12
-			},
-			"unit_worth": 80,
-			"unit_time": 140,
-			"unit_exp": 6,
-			"weight": 60
-		},
-		{
-			"type": "item",
 			"name": "minecraft:beef",
 			"number": {
 				"min": 5,
@@ -99,7 +87,85 @@
 		},
 		{
 			"type": "item",
+			"name": "minecraft:leather",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 3,
+				"max": 12
+			},
+			"unit_worth": 80,
+			"unit_time": 140,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_chicken",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 6,
+				"max": 10
+			},
+			"unit_worth": 60,
+			"unit_time": 140,
+			"unit_exp": 7,
+			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_mutton",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 3,
+				"max": 10
+			},
+			"unit_worth": 60,
+			"unit_time": 160,
+			"unit_exp": 7,
+			"weight": 50
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_porkchop",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 6,
+				"max": 15
+			},
+			"unit_worth": 70,
+			"unit_time": 140,
+			"unit_exp": 7,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_beef",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 5,
+				"max": 12
+			},
+			"unit_worth": 70,
+			"unit_time": 160,
+			"unit_exp": 7,
+			"weight": 60
+		},
+		{
+			"type": "item",
 			"name": "minecraft:glow_ink_sac",
+			"level": {
+				"min": 5
+			},
 			"number": {
 				"min": 4,
 				"max": 16
@@ -111,9 +177,39 @@
 		},
 		{
 			"type": "item",
+			"name": "minecraft:rabbit",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 80,
+			"unit_time": 240,
+			"unit_exp": 8,
+			"weight": 40
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_rabbit",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 6
+			},
+			"unit_worth": 100,
+			"unit_time": 280,
+			"unit_exp": 9,
+			"weight": 20
+		},
+		{
+			"type": "item",
 			"name": "minecraft:rabbit_hide",
 			"level": {
-				"min": 5
+				"min": 10
 			},
 			"number": {
 				"min": 3,
@@ -128,7 +224,7 @@
 			"type": "item",
 			"name": "minecraft:rabbit_foot",
 			"level": {
-				"min": 5
+				"min": 10
 			},
 			"number": {
 				"min": 1,
@@ -138,84 +234,6 @@
 			"unit_time": 300,
 			"unit_exp": 12,
 			"weight": 30
-		},
-		{
-			"type": "item",
-			"name": "minecraft:rabbit",
-			"level": {
-				"min": 5
-			},
-			"number": {
-				"min": 4,
-				"max": 8
-			},
-			"unit_worth": 80,
-			"unit_time": 240,
-			"unit_exp": 8,
-			"weight": 40
-		},
-		{
-			"type": "item",
-			"name": "minecraft:cooked_chicken",
-			"number": {
-				"min": 6,
-				"max": 10
-			},
-			"unit_worth": 60,
-			"unit_time": 140,
-			"unit_exp": 7,
-			"weight": 50
-		},
-		{
-			"type": "item",
-			"name": "minecraft:cooked_mutton",
-			"number": {
-				"min": 3,
-				"max": 10
-			},
-			"unit_worth": 60,
-			"unit_time": 160,
-			"unit_exp": 7,
-			"weight": 50
-		},
-		{
-			"type": "item",
-			"name": "minecraft:cooked_porkchop",
-			"number": {
-				"min": 6,
-				"max": 15
-			},
-			"unit_worth": 70,
-			"unit_time": 140,
-			"unit_exp": 7,
-			"weight": 60
-		},
-		{
-			"type": "item",
-			"name": "minecraft:cooked_beef",
-			"number": {
-				"min": 5,
-				"max": 12
-			},
-			"unit_worth": 70,
-			"unit_time": 160,
-			"unit_exp": 7,
-			"weight": 60
-		},
-		{
-			"type": "item",
-			"name": "minecraft:cooked_rabbit",
-			"level": {
-				"min": 5
-			},
-			"number": {
-				"min": 4,
-				"max": 6
-			},
-			"unit_worth": 100,
-			"unit_time": 280,
-			"unit_exp": 9,
-			"weight": 20
 		}
 	]
 }

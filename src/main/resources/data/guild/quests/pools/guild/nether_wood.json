@@ -5,7 +5,7 @@
 			"type": "item",
 			"name": "minecraft:crimson_stem",
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"number": {
 				"min": 8,
@@ -20,7 +20,7 @@
 			"type": "item",
 			"name": "minecraft:warped_stem",
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"number": {
 				"min": 8,
@@ -35,7 +35,7 @@
 			"type": "item",
 			"name": "minecraft:stripped_crimson_stem",
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"number": {
 				"min": 6,
@@ -50,7 +50,7 @@
 			"type": "item",
 			"name": "minecraft:stripped_warped_stem",
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"number": {
 				"min": 6,

@@ -56,7 +56,11 @@ public class ServerDataManager {
 					try(InputStream stream = manager.getResource(id).getInputStream()) {
 						try {
 							QuestProfession profession = (QuestProfession)GSON.fromJson(new String(stream.readAllBytes()), QuestProfession.class);
-							professions.put(profession.name, profession);
+							if (professions.containsKey(profession.name)) {
+								professions.get(profession.name).merge(profession);
+							} else {
+								professions.put(profession.name, profession);
+							}
 						} catch (Exception e) {
 							Guild.errors.add("Couldn't parse quest profession "+id.toString());
 						}

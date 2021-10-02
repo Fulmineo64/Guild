@@ -79,6 +79,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:stripped_oak_log",
+			"level": {
+				"min": 5
+			},
 			"number": {
 				"min": 8,
 				"max": 24
@@ -91,6 +94,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:stripped_birch_log",
+			"level": {
+				"min": 5
+			},
 			"number": {
 				"min": 6,
 				"max": 12
@@ -103,6 +109,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:stripped_spruce_log",
+			"level": {
+				"min": 5
+			},
 			"number": {
 				"min": 6,
 				"max": 16
@@ -115,6 +124,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:stripped_dark_oak_log",
+			"level": {
+				"min": 5
+			},
 			"number": {
 				"min": 8,
 				"max": 18
@@ -127,6 +139,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:stripped_acacia_log",
+			"level": {
+				"min": 5
+			},
 			"number": {
 				"min": 6,
 				"max": 16

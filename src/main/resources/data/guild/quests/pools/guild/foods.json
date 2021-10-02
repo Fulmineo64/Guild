@@ -9,7 +9,7 @@
 				"max": 12
 			},
 			"unit_worth": 50,
-			"unit_time": 120,
+			"unit_time": 160,
 			"unit_exp": 6,
 			"weight": 60
 		},
@@ -21,7 +21,7 @@
 				"max": 16
 			},
 			"unit_worth": 40,
-			"unit_time": 120,
+			"unit_time": 100,
 			"unit_exp": 5,
 			"weight": 100
 		},
@@ -33,7 +33,7 @@
 				"max": 10
 			},
 			"unit_worth": 60,
-			"unit_time": 140,
+			"unit_time": 160,
 			"unit_exp": 7,
 			"weight": 50
 		},
@@ -54,21 +54,6 @@
 		},
 		{
 			"type": "item",
-			"name": "minecraft:pumpkin_pie",
-			"number": {
-				"min": 2,
-				"max": 4
-			},
-			"level": {
-				"min": 5
-			},
-			"unit_worth": 200,
-			"unit_time": 400,
-			"unit_exp": 20,
-			"weight": 20
-		},
-		{
-			"type": "item",
 			"name": "minecraft:suspicious_stew",
 			"number": {
 				"min": 4,
@@ -80,6 +65,21 @@
 			"unit_worth": 70,
 			"unit_time": 160,
 			"unit_exp": 9,
+			"weight": 20
+		},
+		{
+			"type": "item",
+			"name": "minecraft:pumpkin_pie",
+			"number": {
+				"min": 2,
+				"max": 4
+			},
+			"level": {
+				"min": 10
+			},
+			"unit_worth": 200,
+			"unit_time": 400,
+			"unit_exp": 20,
 			"weight": 20
 		},
 		{
@@ -105,7 +105,7 @@
 				"max": 2
 			},
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"unit_worth": 300,
 			"unit_time": 600,

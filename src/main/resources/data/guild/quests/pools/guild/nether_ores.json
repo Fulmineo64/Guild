@@ -5,7 +5,7 @@
 			"type": "item",
 			"name": "minecraft:quartz",
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"number": {
 				"min": 12,
@@ -20,7 +20,7 @@
 			"type": "item",
 			"name": "minecraft:glowstone_dust",
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"number": {
 				"min": 8,

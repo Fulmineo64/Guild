@@ -1,6 +1,6 @@
 {
 	"name": "guild:chef",
-	"icon": "minecraft:cake",
+	"icon": "minecraft:cookie",
 	"guild_master_level": 2,
 	"levels_pool": "guild:common_levels",
 	"task_pools": [

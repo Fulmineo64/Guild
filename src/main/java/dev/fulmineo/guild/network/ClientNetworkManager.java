@@ -18,6 +18,8 @@ import net.minecraft.network.PacketByteBuf;
 public class ClientNetworkManager {
 	public static void registerServerReceiver() {
 		ClientPlayNetworking.registerGlobalReceiver(Guild.TRANSFER_CLIENT_DATA_ID, (client, handler, buf, responseSender) -> {
+			ClientDataManager.professionsLabels.clear();
+			ClientDataManager.professionRequirements.clear();
 			NbtCompound nbt = buf.readNbt();
 			NbtCompound professionsLabels = nbt.getCompound("Labels");
 			for (String professionName: professionsLabels.getKeys()) {

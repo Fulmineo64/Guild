@@ -3,30 +3,6 @@
 	"data": [
 		{
 			"type": "item",
-			"name": "minecraft:brown_mushroom",
-			"number": {
-				"min": 8,
-				"max": 16
-			},
-			"unit_worth": 40,
-			"unit_time": 100,
-			"unit_exp": 4,
-			"weight": 100
-		},
-		{
-			"type": "item",
-			"name": "minecraft:red_mushroom",
-			"number": {
-				"min": 8,
-				"max": 16
-			},
-			"unit_worth": 40,
-			"unit_time": 100,
-			"unit_exp": 4,
-			"weight": 100
-		},
-		{
-			"type": "item",
 			"name": "minecraft:sweet_berries",
 			"number": {
 				"min": 6,
@@ -87,9 +63,39 @@
 		},
 		{
 			"type": "item",
+			"name": "minecraft:brown_mushroom",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 4,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:red_mushroom",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 4,
+			"weight": 100
+		},
+		{
+			"type": "item",
 			"name": "minecraft:cactus",
 			"level": {
-				"min": 3
+				"min": 5
 			},
 			"number": {
 				"min": 4,
@@ -104,7 +110,7 @@
 			"type": "item",
 			"name": "minecraft:cocoa_beans",
 			"level": {
-				"min": 5
+				"min": 10
 			},
 			"number": {
 				"min": 4,
@@ -119,7 +125,7 @@
 			"type": "item",
 			"name": "minecraft:vine",
 			"level": {
-				"min": 5
+				"min": 10
 			},
 			"number": {
 				"min": 6,

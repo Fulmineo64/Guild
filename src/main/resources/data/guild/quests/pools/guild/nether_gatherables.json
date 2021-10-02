@@ -5,7 +5,7 @@
 			"type": "item",
 			"name": "minecraft:warped_fungus",
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"number": {
 				"min": 8,
@@ -20,7 +20,7 @@
 			"type": "item",
 			"name": "minecraft:crimson_fungus",
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"number": {
 				"min": 8,
@@ -35,7 +35,7 @@
 			"type": "item",
 			"name": "minecraft:twisting_vines",
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"number": {
 				"min": 8,
@@ -50,7 +50,7 @@
 			"type": "item",
 			"name": "minecraft:weeping_vines",
 			"level": {
-				"min": 10
+				"min": 15
 			},
 			"number": {
 				"min": 8,

@@ -4,6 +4,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:kelp",
+			"level": {
+				"min": 5
+			},
 			"number": {
 				"min": 16,
 				"max": 64
@@ -16,6 +19,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:dried_kelp",
+			"level": {
+				"min": 5
+			},
 			"number": {
 				"min": 20,
 				"max": 40
@@ -28,6 +34,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:sea_pickle",
+			"level": {
+				"min": 10
+			},
 			"number": {
 				"min": 6,
 				"max": 16

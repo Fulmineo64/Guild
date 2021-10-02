@@ -40,6 +40,9 @@
 		{
 			"type": "item",
 			"name": "minecraft:raw_gold",
+			"level": {
+				"min": 3
+			},
 			"number": {
 				"min": 3,
 				"max": 12
@@ -68,7 +71,7 @@
 			"type": "item",
 			"name": "minecraft:redstone",
 			"level": {
-				"min": 5
+				"min": 7
 			},
 			"number": {
 				"min": 16,
@@ -83,7 +86,7 @@
 			"type": "item",
 			"name": "minecraft:diamond",
 			"level": {
-				"min": 5
+				"min": 10
 			},
 			"number": {
 				"min": 1,

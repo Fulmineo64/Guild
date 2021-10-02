@@ -39,6 +39,36 @@
 		},
 		{
 			"type": "item",
+			"name": "minecraft:cooked_cod",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 4,
+				"max": 10
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cooked_salmon",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 4,
+				"max": 10
+			},
+			"unit_worth": 50,
+			"unit_time": 100,
+			"unit_exp": 6,
+			"weight": 60
+		},
+		{
+			"type": "item",
 			"name": "minecraft:pufferfish",
 			"level": {
 				"min": 5
@@ -66,30 +96,6 @@
 			"unit_time": 600,
 			"unit_exp": 16,
 			"weight": 10
-		},
-		{
-			"type": "item",
-			"name": "minecraft:cooked_cod",
-			"number": {
-				"min": 4,
-				"max": 10
-			},
-			"unit_worth": 50,
-			"unit_time": 100,
-			"unit_exp": 6,
-			"weight": 60
-		},
-		{
-			"type": "item",
-			"name": "minecraft:cooked_salmon",
-			"number": {
-				"min": 4,
-				"max": 10
-			},
-			"unit_worth": 50,
-			"unit_time": 100,
-			"unit_exp": 6,
-			"weight": 60
 		}
 	]
 }
