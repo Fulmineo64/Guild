@@ -54,6 +54,21 @@
 		},
 		{
 			"type": "item",
+			"name": "minecraft:amethyst_shard",
+			"level": {
+				"min": 5
+			},
+			"number": {
+				"min": 12,
+				"max": 20
+			},
+			"unit_worth": 20,
+			"unit_time": 100,
+			"unit_exp": 3,
+			"weight": 30
+		},
+		{
+			"type": "item",
 			"name": "minecraft:lapis_lazuli",
 			"level": {
 				"min": 5

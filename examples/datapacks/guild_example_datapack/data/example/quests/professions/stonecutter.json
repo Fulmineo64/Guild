@@ -1,11 +1,11 @@
 {
-	"name": "example:baker",
-	"icon": "minecraft:cake",
-	"label": "Baker",
+	"name": "example:stonecutter",
+	"icon": "minecraft:stone",
+	"label": "Stonecutter",
 	"guild_master_level": 1,
 	"levels_pool": "guild:common_levels",
 	"task_pools": [
-		"example:baker_tasks"
+		"example:stones"
 	],
 	"reward_pools": [
 		"guild:common_rewards"
