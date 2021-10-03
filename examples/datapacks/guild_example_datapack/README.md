@@ -139,6 +139,12 @@ We can now specify the profession to which the quests will belong.
 	"icon": "minecraft:stone",
 	"label": "Stonecutter",
 	"guild_master_level": 1,
+	"requirements": [{
+		"profession": "guild:miner",
+		"level": {
+			"min": 3
+		}
+	}],
 	"levels_pool": "guild:common_levels",
 	"task_pools": [
 		"example:stones"
@@ -160,6 +166,8 @@ Let's take an in-depth look to the properties available in the Profession:
 - **label**, an optional field that can be used to specify the Profession's readable name, instead of loading it from the language file.
 
 - **guild_master_level**, specifies the trade level of the Guild Master for the Profession. Use 1 for the lowest level.
+
+- **requirements**, an optional field that can contain an array of Quest Profession Requirements. Each Quest Profession Requirement can have the following properties: **profession** which is used to require a profession for the player to have and **level** which specifies the **level** range requirement. As usual you can specify the **level** range with the **min** and **max** properties. You can also specify only  **profession** or **level**, to achieve the following requirements: the player must have the specified **profession** no matter its level or the player must have any **profession** that matches the specified **level** range.
 
 - **levels_pool**, specifies the Levels Pool for the Profession, a Levels Pool is a list of Levels in which is contained the required exp to level up. An example can be found here: https://github.com/Fulmineo64/Guild/blob/master/src/main/resources/data/guild/quests/levels/guild/common_levels.json
 

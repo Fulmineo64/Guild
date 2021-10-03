@@ -4,10 +4,6 @@
 		{
 			"type": "item",
 			"name": "minecraft:stone",
-			"level": {
-				"min": 1,
-				"max": 20
-			},
 			"number": {
 				"min": 16,
 				"max": 32
