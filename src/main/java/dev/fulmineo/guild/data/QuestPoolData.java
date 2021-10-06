@@ -8,6 +8,7 @@ public class QuestPoolData implements WeightedItem {
 	public String type;
 	public String name;
 	public String icon;
+	public NbtCompound tag;
 	public Range level;
 	public Range number;
 	public int unitWorth;
@@ -47,7 +48,7 @@ public class QuestPoolData implements WeightedItem {
 			case "item": {
 				if (Registry.ITEM.containsId(new Identifier(name))) return "";
 			}
-			case "entity", "summon", "cure": {
+			case "slay", "summon", "cure": {
 				if (Registry.ENTITY_TYPE.containsId(new Identifier(name))) return "";
 			}
 		}

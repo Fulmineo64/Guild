@@ -201,9 +201,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description").formatted(Formatting.DARK_GRAY));
 				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description2").formatted(Formatting.DARK_GRAY));
 				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description3").formatted(Formatting.DARK_GRAY));
-				tooltip.add(new LiteralText("✉").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.deliver_item")));
-				tooltip.add(new TranslatableText("screen.guild.quests.deliver_item.description").formatted(Formatting.DARK_GRAY));
-				tooltip.add(new TranslatableText("screen.guild.quests.deliver_item.description2").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new LiteralText("✉").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.item")));
+				tooltip.add(new TranslatableText("screen.guild.quests.item.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new TranslatableText("screen.guild.quests.item.description2").formatted(Formatting.DARK_GRAY));
 				tooltip.add(new LiteralText("🗡").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.slay")));
 				tooltip.add(new TranslatableText("screen.guild.quests.slay.description").formatted(Formatting.DARK_GRAY));
 				tooltip.add(new LiteralText("✙").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.cure")));
@@ -315,6 +315,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
 				} else {
 					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))));
+					if (entry.contains("Tag")) {
+						stack.setNbt(entry.getCompound("Tag"));
+					}
 				}
 				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
 				QuestsScreen.this.itemRenderer.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi - 10, yi - 9, "✉");
@@ -322,8 +325,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				xi += 20;
 			}
 
-			NbtList entityList = quest.getEntityList();
-			for (NbtElement elm: entityList) {
+			NbtList slayList = quest.getSlayList();
+			for (NbtElement elm: slayList) {
 				NbtCompound entry = (NbtCompound)elm;
 				ItemStack stack;
 				if (entry.contains("Icon")) {
@@ -384,6 +387,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
 				} else {
 					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))));
+					if (entry.contains("Tag")) {
+						stack.setNbt(entry.getCompound("Tag"));
+					}
 				}
 				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
 				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entry.getInt("Count"));
@@ -422,14 +428,14 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 					tooltip.add(
 						new LiteralText("✉").formatted(Formatting.GRAY)
 						.append(" ")
-						.append(new TranslatableText(Registry.ITEM.get(new Identifier(entry.getString("Name"))).getTranslationKey()))
+						.append(getItemText(entry))
 						.append(" ")
 						.append(String.valueOf(entry.getInt("Count")))
 						.append(" / ")
 						.append(String.valueOf(entry.getInt("Needed")))
 					);
 				}
-				NbtList entityList = quest.getEntityList();
+				NbtList entityList = quest.getSlayList();
 				for (NbtElement elem : entityList) {
 					NbtCompound entry = (NbtCompound)elem;
 					tooltip.add(
@@ -480,6 +486,19 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				}
 				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
+		}
+
+		public static MutableText getItemText(NbtCompound entry) {
+			if (entry.contains("Tag")) {
+				NbtCompound tag = entry.getCompound("Tag");
+				if (tag.contains("display")) {
+					MutableText text = Text.Serializer.fromJson(tag.getCompound("display").getString("Name"));
+					if (text != null) {
+					   return text;
+					}
+				}
+			}
+			return new TranslatableText(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getTranslationKey());
 		}
 	}
 }

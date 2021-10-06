@@ -2,7 +2,7 @@
 	"name": "guild:overworld_hostile_mobs",
 	"data": [
 		{
-			"type": "entity",
+			"type": "slay",
 			"name": "minecraft:creeper",
 			"number": {
 				"min": 5,
@@ -14,7 +14,7 @@
 			"weight": 70
 		},
 		{
-			"type": "entity",
+			"type": "slay",
 			"name": "minecraft:skeleton",
 			"number": {
 				"min": 6,
@@ -26,7 +26,7 @@
 			"weight": 80
 		},
 		{
-			"type": "entity",
+			"type": "slay",
 			"name": "minecraft:zombie",
 			"number": {
 				"min": 10,
@@ -38,7 +38,7 @@
 			"weight": 100
 		},
 		{
-			"type": "entity",
+			"type": "slay",
 			"name": "minecraft:spider",
 			"number": {
 				"min": 6,
@@ -50,7 +50,7 @@
 			"weight": 90
 		},
 		{
-			"type": "entity",
+			"type": "slay",
 			"name": "minecraft:enderman",
 			"level": {
 				"min": 5
@@ -65,7 +65,7 @@
 			"weight": 60
 		},
 		{
-			"type": "entity",
+			"type": "slay",
 			"name": "minecraft:drowned",
 			"level": {
 				"min": 10
@@ -80,7 +80,7 @@
 			"weight": 30
 		},
 		{
-			"type": "entity",
+			"type": "slay",
 			"name": "minecraft:husk",
 			"level": {
 				"min": 10
@@ -95,7 +95,7 @@
 			"weight": 30
 		},
 		{
-			"type": "entity",
+			"type": "slay",
 			"name": "minecraft:stray",
 			"level": {
 				"min": 10

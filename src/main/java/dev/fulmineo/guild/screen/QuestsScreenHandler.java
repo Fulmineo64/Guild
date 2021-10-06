@@ -38,7 +38,7 @@ public class QuestsScreenHandler extends ScreenHandler {
 	public List<QuestProfession> professions;
 	public Map<String, ProfessionData> professionsData;
 	public World world;
-	public Map<String, Integer> itemCount = new HashMap<>();
+	private PlayerInventory playerInventory;
 
 	public QuestsScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf){
         this(syncId, playerInventory);
@@ -61,20 +61,7 @@ public class QuestsScreenHandler extends ScreenHandler {
 			this.professionsData.put(profession.name, data);
 		}
 		this.world = playerInventory.player.world;
-		// Count inventory items
-		ImmutableList<DefaultedList<ItemStack>> mainAndOffhand = ImmutableList.of(playerInventory.main, playerInventory.offHand);
-		Iterator<DefaultedList<ItemStack>> iterator = mainAndOffhand.iterator();
-		while (iterator.hasNext()) {
-			DefaultedList<ItemStack> defaultedList = (DefaultedList<ItemStack>) iterator.next();
-			for (int i = 0; i < defaultedList.size(); ++i) {
-				ItemStack stack = defaultedList.get(i);
-				if (!stack.isOf(Items.AIR)) {
-					String id = Registry.ITEM.getId(stack.getItem()).toString();
-					Integer val = this.itemCount.get(id);
-					this.itemCount.put(id, (val == null ? 0 : val) + stack.getCount());
-				}
-			}
-		}
+		this.playerInventory = playerInventory;
 		this.updateItemCompletion();
     }
 
@@ -111,11 +98,6 @@ public class QuestsScreenHandler extends ScreenHandler {
 					data.level = nbt.getInt("Level");
 					data.levelPerc = nbt.getInt("LevelPerc");
 				}
-				for (NbtElement elm: quest.getItemList()) {
-					NbtCompound entry = (NbtCompound)elm;
-					String item = entry.getString("Name");
-					this.itemCount.put(item, this.itemCount.get(item) - entry.getInt("Count"));
-				}
 				this.updateItemCompletion();
 			}
 			ClientPlayNetworking.unregisterReceiver(Guild.TRY_COMPLETE_QUEST_PACKET_ID);
@@ -134,12 +116,45 @@ public class QuestsScreenHandler extends ScreenHandler {
 	}
 
 	private void updateItemCompletion() {
+		Map<String, List<ItemStack>> itemsById = new HashMap<>();
+		ImmutableList<DefaultedList<ItemStack>> mainAndOffhand = ImmutableList.of(this.playerInventory.main, this.playerInventory.offHand);
+		Iterator<DefaultedList<ItemStack>> iterator = mainAndOffhand.iterator();
+		while (iterator.hasNext()) {
+			DefaultedList<ItemStack> defaultedList = (DefaultedList<ItemStack>) iterator.next();
+			for (int i = 0; i < defaultedList.size(); ++i) {
+				ItemStack stack = defaultedList.get(i);
+				if (!stack.isOf(Items.AIR)) {
+					String id = Registry.ITEM.getId(stack.getItem()).toString();
+					List<ItemStack> list = itemsById.get(id);
+					if (list == null) {
+						list = new ArrayList<>();
+					}
+					list.add(stack);
+					itemsById.put(id, list);
+				}
+			}
+		}
 		for (Quest quest: this.acceptedQuests) {
 			NbtList items = quest.getItemList();
 			for (NbtElement elm: items) {
 				NbtCompound entry = (NbtCompound)elm;
-				Integer val = this.itemCount.get(entry.getString("Name"));
-				entry.putInt("Count", Math.min(val == null ? 0 : val, entry.getInt("Needed")));
+
+				String item = entry.getString("Name");
+				List<ItemStack> list = itemsById.get(item);
+				int count = 0;
+				if (list != null) {
+					int needed = entry.getInt("Needed");
+					for (ItemStack stack: list) {
+						if (!entry.contains("Tag") || Quest.matchesNbt(stack, entry.getCompound("Tag"))) {
+							count += stack.getCount();
+							if (count >= needed) {
+								count = needed;
+								break;
+							}
+						}
+					}
+				}
+				entry.putInt("Count", count);
 			}
 		}
 	}

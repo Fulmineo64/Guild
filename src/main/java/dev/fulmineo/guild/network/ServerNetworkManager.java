@@ -133,7 +133,7 @@ public class ServerNetworkManager {
 										translationKey = Registry.ITEM.get(new Identifier(task.name)).getTranslationKey();
 										break;
 									}
-									case "entity": {
+									case "slay": {
 										icon = "🗡";
 										translationKey = Registry.ENTITY_TYPE.get(new Identifier(task.name)).getTranslationKey();
 										break;

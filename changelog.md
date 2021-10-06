@@ -1,3 +1,8 @@
+# 0.2.0
+- Small breaking change that removes "slay" tasks for already generated quests. This should be ignored, as it will sort itself out, but it can also be resolved immediately with a "/execute at @a run guild clear" command.
+- Cleaned up accesswideners
+- Added new "nbt" property to Quest Professions useful to request (or reward) items with custom nbt
+
 # 0.1.2
 - Added new Profession, the Chef
 - Added cooked variants of foods to their respective professions (meat for hunters, fishes and kelp for fisherman)

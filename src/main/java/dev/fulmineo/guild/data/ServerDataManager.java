@@ -1,16 +1,31 @@
 package dev.fulmineo.guild.data;
 
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtFloat;
+import net.minecraft.nbt.NbtInt;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -19,6 +34,43 @@ import dev.fulmineo.guild.Guild;
 public class ServerDataManager {
 	private static final Gson GSON = new GsonBuilder()
     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+	.registerTypeAdapter(NbtCompound.class, new JsonDeserializer<NbtCompound>() {
+		@Override
+		public NbtCompound deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			return json.isJsonObject() ? (NbtCompound)this.jsonToNbt(json) : null;
+		}
+
+		public NbtElement jsonToNbt(JsonElement json) {
+			if (json.isJsonArray()) {
+				JsonArray arr = json.getAsJsonArray();
+				NbtList list = new NbtList();
+				for (int i = 0; i < arr.size(); i++) {
+					list.add(jsonToNbt(arr.get(i)));
+				}
+				return list;
+			} else if (json.isJsonObject()) {
+				JsonObject obj = json.getAsJsonObject();
+				NbtCompound nbt = new NbtCompound();
+				for (Entry<String, JsonElement> entry: obj.entrySet()) {
+					NbtElement elm = jsonToNbt(entry.getValue());
+					if (elm != null) nbt.put(entry.getKey(), elm);
+				}
+				return nbt;
+			} else if (json.isJsonPrimitive()) {
+				String val = json.getAsString();
+				if (Pattern.compile("^[\\d\\.]+$", Pattern.CASE_INSENSITIVE).matcher(val).find()) {
+					if (val.contains(".")) {
+						return NbtFloat.of(json.getAsFloat());
+					} else {
+						return NbtInt.of(json.getAsInt());
+					}
+				}
+				return NbtString.of(val);
+			} else {
+				return null;
+			}
+		}
+	})
     .create();
 
 	public static Map<String, List<QuestLevel>> levels = new HashMap<>();

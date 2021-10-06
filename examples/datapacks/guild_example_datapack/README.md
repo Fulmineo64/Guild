@@ -91,6 +91,8 @@ Properties of a Quest Pool Data:
 
 - **name**, the identifier of the selected type. If the type is "item" it should be an item identifier (eg. "minecraft:stone") otherwise it should be an entity identifier (eg. "minecraft:creeper").
 
+- **icon**, an optional property, specifies an item identifier to use as the icon for the Quest Pool Data in the Quests Screen.
+
 - **level**, an optional property, establishes the Profession's level range required to access the Quest Pool Data. Specify the values through the **min** and **max** child properties.
 
 - **number**, establishes the unit count range for the Quest Pool Data. Specify the values through the **min** and **max** child properties.
