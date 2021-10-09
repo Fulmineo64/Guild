@@ -153,6 +153,11 @@ public class Quest {
 
 	public static Quest fromNbt(NbtCompound nbt){
 		Quest quest = new Quest();
+		// Migration code from v0.1.x to v0.2.0
+		// TODO: Remove me after a while!
+		if (nbt.contains("Entity")) {
+			nbt.put("Slay", nbt.get("Entity"));
+		}
 		quest.nbt = nbt;
 		return quest;
 	}

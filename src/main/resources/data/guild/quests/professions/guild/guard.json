@@ -1,14 +1,17 @@
 {
 	"name": "guild:guard",
-	"icon": "minecraft:chainmail_helmet",
+	"icon": "minecraft:iron_sword",
 	"guild_master_level": 1,
 	"levels_pool": "guild:common_levels",
 	"task_pools": [
 		"guild:overworld_hostile_mob_drops",
 		"guild:overworld_hostile_mob_heads",
-		"guild:overworld_hostile_mobs"
+		"guild:overworld_hostile_mobs",
+		"guild:illagers_drops",
+		"guild:illagers"
 	],
 	"reward_pools": [
-		"guild:common_rewards"
+		"guild:common_rewards",
+		"guild:combat_rewards"
 	]
 }

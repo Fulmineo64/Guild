@@ -441,7 +441,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 					tooltip.add(
 						new LiteralText("🗡").formatted(Formatting.GRAY)
 						.append(" ")
-						.append(new TranslatableText(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getTranslationKey()))
+						.append(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getName())
 						.append(" ")
 						.append(String.valueOf(entry.getInt("Count")))
 						.append(" / ")
@@ -454,7 +454,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 					tooltip.add(
 						new LiteralText("✙").formatted(Formatting.GRAY)
 						.append(" ")
-						.append(new TranslatableText(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getTranslationKey()))
+						.append(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getName())
 						.append(" ")
 						.append(String.valueOf(entry.getInt("Count")))
 						.append(" / ")
@@ -467,7 +467,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 					tooltip.add(
 						new LiteralText("✦").formatted(Formatting.GRAY)
 						.append(" ")
-						.append(new TranslatableText(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getTranslationKey()))
+						.append(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getName())
 						.append(" ")
 						.append(String.valueOf(entry.getInt("Count")))
 						.append(" / ")
@@ -479,7 +479,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				for (NbtElement elem : rewardList) {
 					NbtCompound entry = (NbtCompound)elem;
 					tooltip.add(
-						new TranslatableText(Registry.ITEM.get(new Identifier(entry.getString("Name"))).getTranslationKey()).formatted(Formatting.GRAY)
+						new LiteralText("").formatted(Formatting.GRAY)
+						.append(getItemText(entry))
 						.append(" ")
 						.append(String.valueOf(entry.getInt("Count")))
 					);
@@ -489,16 +490,13 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		}
 
 		public static MutableText getItemText(NbtCompound entry) {
+			Item item = Registry.ITEM.get(new Identifier(entry.getString("Name")));
 			if (entry.contains("Tag")) {
-				NbtCompound tag = entry.getCompound("Tag");
-				if (tag.contains("display")) {
-					MutableText text = Text.Serializer.fromJson(tag.getCompound("display").getString("Name"));
-					if (text != null) {
-					   return text;
-					}
-				}
+				ItemStack stack = new ItemStack(item);
+				stack.setNbt(entry.getCompound("Tag"));
+				return (MutableText)stack.getName();
 			}
-			return new TranslatableText(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getTranslationKey());
+			return (MutableText)item.getName();
 		}
 	}
 }

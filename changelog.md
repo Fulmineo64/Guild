@@ -1,7 +1,10 @@
 # 0.2.0
-- Small breaking change that removes "slay" tasks for already generated quests. This should be ignored, as it will sort itself out, but it can also be resolved immediately with a "/execute at @a run guild clear" command.
+- Changed "entity" task type to "slay".
 - Cleaned up accesswideners
 - Added new "nbt" property to Quest Professions useful to request (or reward) items with custom nbt
+- Updated Russian translations (thanks to M1XB0X)
+- Added new quests to the Guard Profession involving illagers
+- Added new rewards exclusive to the Guard Profession: Steak starting at lvl 5 and Regeneration Potion starting at lvl 10
 
 # 0.1.2
 - Added new Profession, the Chef
