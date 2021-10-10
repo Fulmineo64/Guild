@@ -145,7 +145,7 @@ public class QuestsScreenHandler extends ScreenHandler {
 				if (list != null) {
 					int needed = entry.getInt("Needed");
 					for (ItemStack stack: list) {
-						if (!entry.contains("Tag") || Quest.matchesNbt(stack, entry.getCompound("Tag"))) {
+						if (!entry.contains("Tag") || Quest.matchesNbt(stack.getOrCreateNbt(), entry.getCompound("Tag"))) {
 							count += stack.getCount();
 							if (count >= needed) {
 								count = needed;

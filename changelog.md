@@ -1,3 +1,9 @@
+# 0.3.0
+- Added Beekeeper profession
+- Added nbt support for entities, useful to specify a subset of entities or even players
+- Added support for nbt tags for icons with the property "icon_tag"
+- Reworked the Quests Screen to greatly improve performance and to better handle stack's custom names
+
 # 0.2.0
 - Changed "entity" task type to "slay".
 - Cleaned up accesswideners

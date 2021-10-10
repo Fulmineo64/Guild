@@ -27,7 +27,7 @@ public abstract class TameableEntityMixin extends AnimalEntity {
 
 		LivingEntity owner = this.getOwner();
 		if (owner != null && owner instanceof PlayerEntity) {
-			QuestHelper.updateQuestEntity((PlayerEntity)owner, killedEntity);
+			QuestHelper.updateQuestSlay((PlayerEntity)owner, killedEntity);
 		}
 	}
 

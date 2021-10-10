@@ -8,9 +8,10 @@ public class QuestPoolData implements WeightedItem {
 	public String type;
 	public String name;
 	public String icon;
-	public NbtCompound tag;
 	public Range level;
 	public Range number;
+	public NbtCompound tag;
+	public NbtCompound iconTag;
 	public int unitWorth;
 	public int unitTime;
 	public int unitExp;
@@ -18,12 +19,6 @@ public class QuestPoolData implements WeightedItem {
 
 	public int getWeight() {
 		return this.weight;
-	}
-
-	public NbtCompound saveNbt(NbtCompound nbt) {
-		nbt.putString("Name", "minecraft:creeper");
-		nbt.putInt("Needed", 5);
-		return nbt;
 	}
 
 	public boolean isAvailableFor(int level) {

@@ -1,0 +1,371 @@
+{
+	"name": "guild:bee_items",
+	"data": [
+		{
+			"type": "item",
+			"name": "minecraft:honey_bottle",
+			"number": {
+				"min": 3,
+				"max": 6
+			},
+			"unit_worth": 150,
+			"unit_time": 300,
+			"unit_exp": 15,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:honeycomb",
+			"number": {
+				"min": 6,
+				"max": 12
+			},
+			"unit_worth": 50,
+			"unit_time": 150,
+			"unit_exp": 5,
+			"weight": 100
+		},
+		{
+			"type": "item",
+			"name": "minecraft:sugar",
+			"number": {
+				"min": 9,
+				"max": 18
+			},
+			"unit_worth": 50,
+			"unit_time": 80,
+			"unit_exp": 4,
+			"weight": 70
+		},
+		{
+			"type": "item",
+			"name": "minecraft:honey_block",
+			"level": {
+			  	"min": 5
+			},
+			"number": {
+				"min": 1,
+				"max": 3
+			},
+			"unit_worth": 750,
+			"unit_time": 900,
+			"unit_exp": 60,
+			"weight": 30
+		},
+		{
+			"type": "item",
+			"name": "minecraft:honeycomb_block",
+      		"level": {
+			  	"min": 5
+			},
+			"number": {
+				"min": 3,
+				"max": 6
+			},
+			"unit_worth": 250,
+			"unit_time": 450,
+			"unit_exp": 20,
+			"weight": 40
+		},
+		{
+			"type": "item",
+			"name": "minecraft:campfire",
+      		"level": {
+			  	"min": 5
+			},
+			"number": {
+				"min": 3,
+				"max": 6
+			},
+			"unit_worth": 250,
+			"unit_time": 450,
+			"unit_exp": 20,
+			"weight": 40
+		},
+		{
+			"type": "item",
+			"name": "minecraft:soul_campfire",
+      		"level": {
+			  	"min": 10
+			},
+			"number": {
+				"min": 2,
+				"max": 4
+			},
+			"unit_worth": 450,
+			"unit_time": 600,
+			"unit_exp": 30,
+			"weight": 40
+		},
+		{
+			"type": "item",
+			"name": "minecraft:candle",
+      		"level": {
+			  "min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 150,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 20
+		},
+		{
+			"type": "item",
+			"name": "minecraft:white_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:orange_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:magenta_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:light_blue_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:yellow_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:lime_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:pink_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:gray_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:light_gray_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:cyan_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:purple_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:blue_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:brown_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:green_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:red_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:black_candle",
+			"level": {
+				"min": 10
+			},
+			"number": {
+				"min": 4,
+				"max": 8
+			},
+			"unit_worth": 200,
+			"unit_time": 450,
+			"unit_exp": 10,
+			"weight": 5
+		},
+		{
+			"type": "item",
+			"name": "minecraft:beehive",
+      		"level": {
+			  "min": 15
+			},
+			"number": {
+				"min": 1,
+				"max": 2
+			},
+			"unit_worth": 600,
+			"unit_time": 1200,
+			"unit_exp": 40,
+			"weight": 10
+		}
+	]
+}

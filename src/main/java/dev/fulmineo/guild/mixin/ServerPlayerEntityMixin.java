@@ -43,7 +43,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 
 	public void onKilledOther(ServerWorld world, LivingEntity killedEntity) {
 		super.onKilledOther(world, killedEntity);
-		QuestHelper.updateQuestEntity(this, killedEntity);
+		QuestHelper.updateQuestSlay(this, killedEntity);
 	}
 
 	public List<Quest> getAcceptedQuests() {

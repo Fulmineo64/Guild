@@ -9,6 +9,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.fulmineo.guild.Guild;
 import dev.fulmineo.guild.data.Quest;
 import dev.fulmineo.guild.data.QuestProfession;
+import dev.fulmineo.guild.data.Quest.QuestData;
 import dev.fulmineo.guild.screen.QuestsScreenHandler.ProfessionData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,10 +21,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -94,6 +91,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		this.accepted.clear();
 
 		for(int i = 0; i < this.professionQuests.size(); i++){
+			this.professionQuests.get(i).updateTasksAndRewards();
+			QuestsScreen.this.itemRenderer.zOffset = 0.0F;
 			AvailableQuestButton btn = this.addDrawableChild(new AvailableQuestButton(w + 5, y, i, (button) -> {
 				int index = ((AvailableQuestButton)button).index;
 				if (this.deleteMode) {
@@ -111,6 +110,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		}
 		y = h + 52;
 		for(int i = 0; i < this.handler.acceptedQuests.size(); i++){
+			this.handler.acceptedQuests.get(i).updateTasksAndRewards();
 			AcceptedQuestButton btn = this.addDrawableChild(new AcceptedQuestButton(w + 143, y, i, (button) -> {
 				int index = ((AcceptedQuestButton)button).index;
 				if (this.deleteMode) {
@@ -307,92 +307,17 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			int xi = this.x + 3;
 			int yi = this.y + 1;
 
-			NbtList itemList = quest.getItemList();
-			for (NbtElement elm: itemList) {
-				NbtCompound entry = (NbtCompound)elm;
-				ItemStack stack;
-				if (entry.contains("Icon")) {
-					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
-				} else {
-					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))));
-					if (entry.contains("Tag")) {
-						stack.setNbt(entry.getCompound("Tag"));
-					}
-				}
-				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				QuestsScreen.this.itemRenderer.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi - 10, yi - 9, "✉");
-				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entry.getInt("Needed") - entry.getInt("Count"));
-				xi += 20;
-			}
-
-			NbtList slayList = quest.getSlayList();
-			for (NbtElement elm: slayList) {
-				NbtCompound entry = (NbtCompound)elm;
-				ItemStack stack;
-				if (entry.contains("Icon")) {
-					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
-				} else {
-					Item spawnEgg = Registry.ITEM.get(new Identifier(entry.getString("Name")+"_spawn_egg"));
-					if (spawnEgg == null) {
-						spawnEgg = Items.DIAMOND_SWORD;
-					}
-					stack = new ItemStack(spawnEgg);
-				}
-				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				QuestsScreen.this.itemRenderer.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi - 10, yi - 8, "🗡");
-				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entry.getInt("Needed") - entry.getInt("Count"));
-				xi += 20;
-			}
-
-			NbtList cureList = quest.getCureList();
-			for (NbtElement elm: cureList) {
-				NbtCompound entry = (NbtCompound)elm;
-				ItemStack stack;
-				if (entry.contains("Icon")) {
-					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
-				} else {
-					Item spawnEgg = Registry.ITEM.get(new Identifier(entry.getString("Name")+"_spawn_egg"));
-					if (spawnEgg == null) {
-						spawnEgg = Items.GOLDEN_APPLE;
-					}
-					stack = new ItemStack(spawnEgg);
-				}
-				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				QuestsScreen.this.itemRenderer.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi - 10, yi - 8, "✙");
-				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi+2, yi, entry.getInt("Needed") - entry.getInt("Count"));
-				xi += 20;
-			}
-
-			NbtList summonList = quest.getSummonList();
-			for (NbtElement elm: summonList) {
-				NbtCompound entry = (NbtCompound)elm;
-				ItemStack stack;
-				if (entry.contains("Icon")) {
-					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
-				} else {
-					stack = new ItemStack(Items.CARVED_PUMPKIN);
-				}
-				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				QuestsScreen.this.itemRenderer.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi - 10, yi - 8, "✦");
-				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi+2, yi, entry.getInt("Needed") - entry.getInt("Count"));
+			for (QuestData data: quest.tasks) {
+				QuestsScreen.this.itemRenderer.renderInGui(data.stack, xi, yi);
+				QuestsScreen.this.itemRenderer.renderGuiItemOverlay(QuestsScreen.this.textRenderer, data.stack, xi - 10, yi - 9, data.icon);
+				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, data.stack, xi, yi, data.needed - data.count);
 				xi += 20;
 			}
 
 			xi = x + 108;
-			NbtList rewards = quest.getRewardList();
-			for (NbtElement elm: rewards) {
-				NbtCompound entry = (NbtCompound)elm;
-				ItemStack stack;
-				if (entry.contains("Icon")) {
-					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
-				} else {
-					stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))));
-					if (entry.contains("Tag")) {
-						stack.setNbt(entry.getCompound("Tag"));
-					}
-				}
-				QuestsScreen.this.itemRenderer.renderInGui(stack, xi, yi);
-				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, xi, yi, entry.getInt("Count"));
+			for (QuestData data: quest.rewards) {
+				QuestsScreen.this.itemRenderer.renderInGui(data.stack, xi, yi);
+				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, data.stack, xi, yi, data.count);
 				xi -= 18;
 			}
 
@@ -408,7 +333,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				Quest quest = this.getQuest();
 				if (quest == null) return;
 				List<Text> tooltip = new ArrayList<>();
-				MutableText text = new TranslatableText("item.guild.quest_scroll.tasks").formatted(Formatting.BLUE).append("      ");
+				MutableText text = new TranslatableText("screen.guild.quests.tasks").formatted(Formatting.BLUE).append("      ");
 				long time = QuestsScreen.this.handler.world.getTime();
 				String accTime = quest.getAcceptationTime(time);
 				String remTime = quest.getRemainingTime(time);
@@ -422,81 +347,28 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 					text.append(new LiteralText("⌚ "+remTime).formatted(remTime == "00:00" ? Formatting.RED : Formatting.GRAY));
 				}
 				tooltip.add(text);
-				NbtList itemList = quest.getItemList();
-				for (NbtElement elem : itemList) {
-					NbtCompound entry = (NbtCompound)elem;
+				for (QuestData task: quest.tasks) {
 					tooltip.add(
-						new LiteralText("✉").formatted(Formatting.GRAY)
+						new LiteralText(task.icon).formatted(Formatting.GRAY)
 						.append(" ")
-						.append(getItemText(entry))
+						.append(task.stack.getName())
 						.append(" ")
-						.append(String.valueOf(entry.getInt("Count")))
+						.append(String.valueOf(task.count))
 						.append(" / ")
-						.append(String.valueOf(entry.getInt("Needed")))
+						.append(String.valueOf(task.needed))
 					);
 				}
-				NbtList entityList = quest.getSlayList();
-				for (NbtElement elem : entityList) {
-					NbtCompound entry = (NbtCompound)elem;
-					tooltip.add(
-						new LiteralText("🗡").formatted(Formatting.GRAY)
-						.append(" ")
-						.append(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getName())
-						.append(" ")
-						.append(String.valueOf(entry.getInt("Count")))
-						.append(" / ")
-						.append(String.valueOf(entry.getInt("Needed")))
-					);
-				}
-				NbtList cureList = quest.getCureList();
-				for (NbtElement elem : cureList) {
-					NbtCompound entry = (NbtCompound)elem;
-					tooltip.add(
-						new LiteralText("✙").formatted(Formatting.GRAY)
-						.append(" ")
-						.append(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getName())
-						.append(" ")
-						.append(String.valueOf(entry.getInt("Count")))
-						.append(" / ")
-						.append(String.valueOf(entry.getInt("Needed")))
-					);
-				}
-				NbtList summonList = quest.getSummonList();
-				for (NbtElement elem : summonList) {
-					NbtCompound entry = (NbtCompound)elem;
-					tooltip.add(
-						new LiteralText("✦").formatted(Formatting.GRAY)
-						.append(" ")
-						.append(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getName())
-						.append(" ")
-						.append(String.valueOf(entry.getInt("Count")))
-						.append(" / ")
-						.append(String.valueOf(entry.getInt("Needed")))
-					);
-				}
-				tooltip.add(new TranslatableText("item.guild.quest_scroll.rewards").formatted(Formatting.GREEN));
-				NbtList rewardList = quest.getRewardList();
-				for (NbtElement elem : rewardList) {
-					NbtCompound entry = (NbtCompound)elem;
+				tooltip.add(new TranslatableText("screen.guild.quests.rewards").formatted(Formatting.GREEN));
+				for (QuestData reward: quest.rewards) {
 					tooltip.add(
 						new LiteralText("").formatted(Formatting.GRAY)
-						.append(getItemText(entry))
+						.append(reward.stack.getName())
 						.append(" ")
-						.append(String.valueOf(entry.getInt("Count")))
+						.append(String.valueOf(reward.count))
 					);
 				}
 				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
-		}
-
-		public static MutableText getItemText(NbtCompound entry) {
-			Item item = Registry.ITEM.get(new Identifier(entry.getString("Name")));
-			if (entry.contains("Tag")) {
-				ItemStack stack = new ItemStack(item);
-				stack.setNbt(entry.getCompound("Tag"));
-				return (MutableText)stack.getName();
-			}
-			return (MutableText)item.getName();
 		}
 	}
 }

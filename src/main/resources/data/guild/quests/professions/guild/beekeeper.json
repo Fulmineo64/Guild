@@ -1,0 +1,12 @@
+{
+	"name": "guild:beekeeper",
+	"icon": "minecraft:honey_bottle",
+	"guild_master_level": 2,
+	"levels_pool": "guild:common_levels",
+	"task_pools": [
+		"guild:bee_items"
+	],
+	"reward_pools": [
+		"guild:common_rewards"
+	]
+}

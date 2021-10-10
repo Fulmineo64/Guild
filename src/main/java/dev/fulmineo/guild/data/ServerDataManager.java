@@ -24,6 +24,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtFloat;
 import net.minecraft.nbt.NbtInt;
+import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.resource.ResourceManager;
@@ -43,11 +44,20 @@ public class ServerDataManager {
 		public NbtElement jsonToNbt(JsonElement json) {
 			if (json.isJsonArray()) {
 				JsonArray arr = json.getAsJsonArray();
-				NbtList list = new NbtList();
-				for (int i = 0; i < arr.size(); i++) {
-					list.add(jsonToNbt(arr.get(i)));
+				if (arr.size() > 0 && arr.get(0).isJsonPrimitive() && arr.get(0).getAsString().startsWith("I;")) {
+					int[] intArr = new int[arr.size()];
+					intArr[0] = Integer.parseInt(arr.get(0).getAsString().replace("I;", ""));
+					for (int i = 1; i < arr.size(); i++) {
+						intArr[i] = arr.get(i).getAsInt();
+					}
+					return new NbtIntArray(intArr);
+				} else {
+					NbtList list = new NbtList();
+					for (int i = 0; i < arr.size(); i++) {
+						list.add(jsonToNbt(arr.get(i)));
+					}
+					return list;
 				}
-				return list;
 			} else if (json.isJsonObject()) {
 				JsonObject obj = json.getAsJsonObject();
 				NbtCompound nbt = new NbtCompound();

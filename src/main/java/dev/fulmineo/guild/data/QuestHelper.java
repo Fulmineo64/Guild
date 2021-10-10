@@ -16,11 +16,11 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
 public class QuestHelper {
-	public static void updateQuestEntity(PlayerEntity player, LivingEntity killedEntity) {
+	public static void updateQuestSlay(PlayerEntity player, LivingEntity killedEntity) {
 		List<Quest> guildQuests = ((GuildServerPlayerEntity)player).getAcceptedQuests();
 		String entityIdentifier = EntityType.getId(killedEntity.getType()).toString();
 		for (Quest quest: guildQuests) {
-			quest.updateEntity(entityIdentifier, player);
+			quest.updateSlay(entityIdentifier, killedEntity, player);
 		}
 	}
 
@@ -28,7 +28,7 @@ public class QuestHelper {
 		List<Quest> guildQuests = ((GuildServerPlayerEntity)player).getAcceptedQuests();
 		String entityIdentifier = EntityType.getId(curedEntity.getType()).toString();
 		for (Quest quest: guildQuests) {
-			quest.updateCure(entityIdentifier, player);
+			quest.updateCure(entityIdentifier, curedEntity, player);
 		}
 	}
 
@@ -36,7 +36,7 @@ public class QuestHelper {
 		List<Quest> guildQuests = ((GuildServerPlayerEntity)player).getAcceptedQuests();
 		String entityIdentifier = EntityType.getId(summonedEntity.getType()).toString();
 		for (Quest quest: guildQuests) {
-			quest.updateSummon(entityIdentifier, player);
+			quest.updateSummon(entityIdentifier, summonedEntity, player);
 		}
 	}
 

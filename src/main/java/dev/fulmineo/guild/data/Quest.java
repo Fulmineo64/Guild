@@ -12,11 +12,15 @@ import java.util.Random;
 import com.google.common.collect.ImmutableList;
 
 import dev.fulmineo.guild.Guild;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -28,6 +32,10 @@ import net.minecraft.util.registry.Registry;
 public class Quest {
 	public static int MAX_TASK_ROLLS = 3;
 	protected NbtCompound nbt;
+	@Environment(EnvType.CLIENT)
+	public List<QuestData> tasks = new ArrayList<>();
+	@Environment(EnvType.CLIENT)
+	public List<QuestData> rewards = new ArrayList<>();
 
 	public Quest() {
 		this.nbt = new NbtCompound();
@@ -68,7 +76,12 @@ public class Quest {
 		for (QuestPoolData task : groupedTasks.values()) {
 			NbtCompound nbt = new NbtCompound();
 			nbt.putString("Name", task.name);
-			if (task.icon != null) nbt.putString("Icon", task.icon);
+			if (task.icon != null) {
+				nbt.putString("Icon", task.icon);
+				if (task.iconTag != null) {
+					nbt.put("IconTag", task.iconTag);
+				}
+			}
 			if (task.tag != null) {
 				nbt.put("Tag", task.tag);
 			}
@@ -117,9 +130,14 @@ public class Quest {
 			if (reward.getMinWorth() <= worth) {
 				NbtCompound nbt = new NbtCompound();
 				nbt.putString("Name", reward.name);
-				if (reward.icon != null) nbt.putString("Icon", reward.icon);
 				if (reward.tag != null) {
 					nbt.put("Tag", reward.tag);
+				}
+				if (reward.icon != null) {
+					nbt.putString("Icon", reward.icon);
+					if (reward.iconTag != null) {
+						nbt.put("IconTag", reward.iconTag);
+					}
 				}
 				int count = reward.getCountByWorth(worth);
 				nbt.putInt("Count", count);
@@ -244,24 +262,24 @@ public class Quest {
 		return false;
 	}
 
-	public void updateEntity(String entityIdentifier, PlayerEntity player) {
-		this.updateNbt("Slay", entityIdentifier, player);
+	public void updateSlay(String entityIdentifier, LivingEntity entity, PlayerEntity player) {
+		this.updateEntityNbt("Slay", entityIdentifier, entity, player);
 	}
 
-	public void updateCure(String entityIdentifier, PlayerEntity player) {
-		this.updateNbt("Cure", entityIdentifier, player);
+	public void updateCure(String entityIdentifier, LivingEntity entity, PlayerEntity player) {
+		this.updateEntityNbt("Cure", entityIdentifier, entity, player);
 	}
 
-	public void updateSummon(String entityIdentifier, PlayerEntity player) {
-		this.updateNbt("Summon", entityIdentifier, player);
+	public void updateSummon(String entityIdentifier, LivingEntity entity, PlayerEntity player) {
+		this.updateEntityNbt("Summon", entityIdentifier, entity, player);
 	}
 
-	private void updateNbt(String listName, String identifier, PlayerEntity player) {
+	private void updateEntityNbt(String listName, String identifier, LivingEntity entity, PlayerEntity player) {
 		if (this.nbt.contains(listName)) {
 			NbtList entities = this.nbt.getList(listName, NbtElement.COMPOUND_TYPE);
 			for (NbtElement elem : entities) {
 				NbtCompound entry = (NbtCompound)elem;
-				if (entry.getInt("Count") < entry.getInt("Needed") && entry.getString("Name").equals(identifier)) {
+				if (entry.getInt("Count") < entry.getInt("Needed") && entry.getString("Name").equals(identifier) && (!entry.contains("Tag") || matchesNbt(entity.writeNbt(new NbtCompound()), entry.getCompound("Tag")))) {
 					entry.putInt("Count", entry.getInt("Count") + 1);
 					break;
 				}
@@ -293,7 +311,7 @@ public class Quest {
 				DefaultedList<ItemStack> defaultedList = (DefaultedList<ItemStack>) iterator.next();
 				for (int i = 0; i < defaultedList.size(); ++i) {
 					ItemStack stack = defaultedList.get(i);
-					if (stack.isOf(item) && (!entry.contains("Tag") || matchesNbt(stack, entry.getCompound("Tag")))){
+					if (stack.isOf(item) && (!entry.contains("Tag") || matchesNbt(stack.getOrCreateNbt(), entry.getCompound("Tag")))){
 						stacks.add(stack);
 						needed -= stack.getCount();
 						if (needed <= 0) break;
@@ -371,12 +389,116 @@ public class Quest {
         }
     }
 
-	public static boolean matchesNbt(ItemStack stack, NbtCompound nbt) {
-		NbtCompound stackNbt = stack.getOrCreateNbt();
+	public static boolean matchesNbt(NbtCompound nbtToMatch, NbtCompound nbt) {
 		for (String key: nbt.getKeys()) {
-			NbtElement elm = stackNbt.get(key);
+			NbtElement elm = nbtToMatch.get(key);
 			if (elm == null || !elm.equals(nbt.get(key))) return false;
 		}
 		return true;
+	}
+
+	public class QuestData {
+		public String icon;
+		public ItemStack stack;
+		public int count;
+		public int needed;
+	}
+
+	@Environment(EnvType.CLIENT)
+	private void addItemTask(String icon, NbtCompound entry) {
+		ItemStack stack;
+		if (entry.contains("Icon")) {
+			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
+			if (entry.contains("IconTag")) {
+				stack.setNbt(entry.getCompound("IconTag"));
+			}
+		} else {
+			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))));
+			if (entry.contains("Tag")) {
+				stack.setNbt(entry.getCompound("Tag"));
+			}
+		}
+		QuestData data = new QuestData();
+		data.icon = icon;
+		data.stack = stack;
+		data.count = entry.getInt("Count");
+		data.needed = entry.getInt("Needed");
+		this.tasks.add(data);
+	}
+
+	@Environment(EnvType.CLIENT)
+	private void addEntityTask(String icon, NbtCompound entry) {
+		ItemStack stack;
+		if (entry.contains("Icon")) {
+			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
+			if (entry.contains("IconTag")) {
+				stack.setNbt(entry.getCompound("IconTag"));
+			}
+		} else {
+			Item spawnEgg = Registry.ITEM.get(new Identifier(entry.getString("Name")+"_spawn_egg"));
+			if (spawnEgg == Items.AIR) {
+				stack = new ItemStack(Items.DIAMOND_SWORD);
+			} else {
+				stack = new ItemStack(spawnEgg);
+				stack.setCustomName(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getName());
+			}
+		}
+		QuestData data = new QuestData();
+		data.icon = icon;
+		data.stack = stack;
+		data.count = entry.getInt("Count");
+		data.needed = entry.getInt("Needed");
+		this.tasks.add(data);
+	}
+
+	@Environment(EnvType.CLIENT)
+	private void addReward(NbtCompound entry) {
+		ItemStack stack;
+		if (entry.contains("Icon")) {
+			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
+			if (entry.contains("IconTag")) {
+				stack.setNbt(entry.getCompound("IconTag"));
+			}
+		} else {
+			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))));
+			if (entry.contains("Tag")) {
+				stack.setNbt(entry.getCompound("Tag"));
+			}
+		}
+		QuestData data = new QuestData();
+		data.stack = stack;
+		data.count = entry.getInt("Count");
+		this.rewards.add(data);
+	}
+
+	@Environment(EnvType.CLIENT)
+	public void updateTasksAndRewards() {
+		this.tasks.clear();
+		this.rewards.clear();
+
+		NbtList itemList = this.getItemList();
+		for (NbtElement elm: itemList) {
+			this.addItemTask("✉", (NbtCompound)elm);
+		}
+
+		NbtList slayList = this.getSlayList();
+		for (NbtElement elm: slayList) {
+			this.addEntityTask("🗡", (NbtCompound)elm);
+		}
+
+		NbtList cureList = this.getCureList();
+		for (NbtElement elm: cureList) {
+			this.addEntityTask("✙", (NbtCompound)elm);
+		}
+
+		NbtList summonList = this.getSummonList();
+		for (NbtElement elm: summonList) {
+			this.addEntityTask("✦", (NbtCompound)elm);
+		}
+
+		NbtList rewards = this.getRewardList();
+		for (NbtElement elm: rewards) {
+			this.addReward((NbtCompound)elm);
+		}
 	}
 }

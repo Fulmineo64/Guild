@@ -1,4 +1,4 @@
-# The Guild example datapack
+# The Guild datapack's guide
 
 ## Introduction
 
@@ -96,6 +96,10 @@ Properties of a Quest Pool Data:
 - **level**, an optional property, establishes the Profession's level range required to access the Quest Pool Data. Specify the values through the **min** and **max** child properties.
 
 - **number**, establishes the unit count range for the Quest Pool Data. Specify the values through the **min** and **max** child properties.
+
+- **tag**, an optional property, for tasks sets the required Nbt tag that item or entity must have to be counted, for rewards sets the Nbt for the rewarded stack.
+
+- **icon_tag**, an optional property, set the stack's tag to be displayed in the Quests Screen, useful to display custom items or player heads.
 
 - **unit_worth**, the value of a single unit of the Quest Pool Data, used to determine the value of tasks and rewards. Example: if a "minecraft:stone" item task has an "unit_worth" of 20 and a "minecraft:emerald" reward has an "unit_worth" of 100 the player will need to bring 5 stones to receive an emerald as reward.
 
