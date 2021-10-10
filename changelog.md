@@ -1,3 +1,7 @@
+# 0.3.1
+- Changed Beekeeper Guild Master's trade level from 2 to 3
+- Added workaround for mods that call readCustomDataFromNbt on ServerPlayerEntity multiple times
+
 # 0.3.0
 - Added Beekeeper profession
 - Added nbt support for entities, useful to specify a subset of entities or even players

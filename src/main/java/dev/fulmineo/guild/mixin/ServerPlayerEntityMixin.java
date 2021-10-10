@@ -159,6 +159,9 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	public void readCustomDataFromNbtMixin(NbtCompound nbt, CallbackInfo info) {
 		this.availableQuests = QuestHelper.fromMapNbt(nbt);
 		this.acceptedQuests = QuestHelper.fromNbt(nbt);
+		// Workaround for mods like LevelZ that call this function multiple times
+		this.professions.clear();
+		this.professionsExp.clear();
 		NbtList professions = nbt.getList("Professions", NbtElement.STRING_TYPE);
 		for (NbtElement professionName: professions) {
 			NbtString name = (NbtString)professionName;

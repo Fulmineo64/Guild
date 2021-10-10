@@ -1,7 +1,7 @@
 {
 	"name": "guild:beekeeper",
 	"icon": "minecraft:honey_bottle",
-	"guild_master_level": 2,
+	"guild_master_level": 3,
 	"levels_pool": "guild:common_levels",
 	"task_pools": [
 		"guild:bee_items"
