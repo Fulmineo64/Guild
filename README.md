@@ -1,4 +1,4 @@
 # The guild
-A Fabric Minecraft mod.
+A Fabric Minecraft mod that adds quests, adventures and expeditions!
 
-This mod adds quests, adventures and expeditions!
+https://www.curseforge.com/minecraft/mc-mods/guild
