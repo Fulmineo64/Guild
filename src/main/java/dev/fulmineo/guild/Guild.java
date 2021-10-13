@@ -25,6 +25,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import dev.fulmineo.guild.config.GuildConfig;
 import dev.fulmineo.guild.data.ServerDataManager;
 import dev.fulmineo.guild.init.ServerEventInit;
 import dev.fulmineo.guild.init.CommandInit;
@@ -32,10 +33,13 @@ import dev.fulmineo.guild.item.QuestProfessionLicence;
 import dev.fulmineo.guild.item.QuestProfessionResignment;
 import dev.fulmineo.guild.network.ServerNetworkManager;
 import dev.fulmineo.guild.screen.QuestsScreenHandler;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 
 public class Guild implements ModInitializer {
 
 	public static Logger LOGGER = LogManager.getLogger();
+	public static GuildConfig CONFIG;
 
 	// Constants
 
@@ -48,11 +52,6 @@ public class Guild implements ModInitializer {
 	// Configurables
 	// All finals for now
 
-	public static final int EXPIRATION_TICKS = 108000;
-	public static final int QUEST_GENERATION_TICKS = 3600;
-	// public static final int QUEST_GENERATION_TICKS = 1;
-	public static final int MAX_QUEST_TO_GENERATE = 10;
-	public static final boolean DISPLAY_UNLOCKED_POOLS = true;
 
     // Identifiers
 
@@ -90,6 +89,9 @@ public class Guild implements ModInitializer {
 
     @Override
     public void onInitialize() {
+		AutoConfig.register(GuildConfig.class, JanksonConfigSerializer::new);
+		CONFIG = AutoConfig.getConfigHolder(GuildConfig.class).getConfig();
+
 		// Blocks
 
 		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "guild_master_table"), GUILD_MASTER_TABLE);

@@ -1,3 +1,7 @@
+# 0.3.2
+- Added configuration for the following values: "Available quests expiration ticks", "Quest generation ticks", "Max quests per generation" and "Display unlocked tasks and rewards"
+- Added ModMenu integration
+
 # 0.3.1
 - Changed Beekeeper Guild Master's trade level from 2 to 3
 - Added workaround for mods that call readCustomDataFromNbt on ServerPlayerEntity multiple times

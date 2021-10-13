@@ -117,7 +117,7 @@ public class ServerNetworkManager {
 				if (level != newLevel) {
 					newLevel++;
 					player.sendMessage(new TranslatableText("profession.level_up", newLevel, QuestProfession.getTranslatedText(professionName)), false);
-					if (Guild.DISPLAY_UNLOCKED_POOLS) {
+					if (Guild.CONFIG.displayUnlockedPools) {
 						boolean sentDescription = false;
 						for (QuestPoolData task: profession.tasks) {
 							if (task.level != null && task.level.min == newLevel) {

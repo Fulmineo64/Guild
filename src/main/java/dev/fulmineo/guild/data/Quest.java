@@ -153,8 +153,8 @@ public class Quest {
 		if (time > 0) {
 			nbt.putInt("Time", time);
 		}
-		if (Guild.EXPIRATION_TICKS != 0) {
-			nbt.putLong("AvailableUntil", player.world.getTime() + Guild.EXPIRATION_TICKS);
+		if (Guild.CONFIG.expirationTicks != 0) {
+			nbt.putLong("AvailableUntil", player.world.getTime() + Guild.CONFIG.expirationTicks);
 		}
 		nbt.putInt("Exp", exp);
 		nbt.put("Slay", slayList);

@@ -193,9 +193,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
 				tooltip.add(new TranslatableText("screen.guild.quests.legend").formatted(Formatting.AQUA));
-				if (Guild.EXPIRATION_TICKS != 0) {
+				if (Guild.CONFIG.expirationTicks != 0) {
 					tooltip.add(new LiteralText("⌚").formatted(Formatting.DARK_AQUA).append(" ").append(new TranslatableText("screen.guild.quests.quest_expiration")));
-					tooltip.add(new TranslatableText("screen.guild.quests.quest_expiration.description", (int)(Guild.EXPIRATION_TICKS / 60 / 20)).formatted(Formatting.DARK_GRAY));
+					tooltip.add(new TranslatableText("screen.guild.quests.quest_expiration.description", (int)(Guild.CONFIG.expirationTicks / 60 / 20)).formatted(Formatting.DARK_GRAY));
 				}
 				tooltip.add(new LiteralText("⌚").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.time_available")));
 				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description").formatted(Formatting.DARK_GRAY));

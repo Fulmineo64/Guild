@@ -23,6 +23,9 @@
 		"client": [
 			"dev.fulmineo.guild.GuildClient"
 		],
+		"modmenu": [
+			"dev.fulmineo.guild.config.GuildModMenuIntegration"
+		],
 		"server": []
 	},
 	"mixins": [

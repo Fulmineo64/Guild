@@ -63,5 +63,9 @@
 	"screen.guild.quests.time_available": "Time available",
 	"screen.guild.quests.time_available.description": "Complete a quest within its available time to get the full reward.",
 	"screen.guild.quests.time_available.description2": "Expired quests can still be completed but with a lesser reward.",
-	"screen.guild.quests.time_available.description3": "Use the Luck effect to get a bonus roll on the lesser reward."
+	"screen.guild.quests.time_available.description3": "Use the Luck effect to get a bonus roll on the lesser reward.",
+	"text.autoconfig.guild.option.expirationTicks": "Available quests expiration ticks",
+	"text.autoconfig.guild.option.questGenerationTicks": "Quest generation ticks",
+	"text.autoconfig.guild.option.maxQuestsPerGeneration": "Max quests per generation",
+	"text.autoconfig.guild.option.displayUnlockedPools": "Display unlocked tasks and rewards"
 }

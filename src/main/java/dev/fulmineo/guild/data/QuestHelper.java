@@ -65,10 +65,10 @@ public class QuestHelper {
 
 		if (professions.size() > 0) {
 			long lastGenTime = guildPlayer.getLastQuestGenTime();
-			long lastGenTimeFrame = lastGenTime % Guild.QUEST_GENERATION_TICKS;
-			long currentGenTimeFrame = time % Guild.QUEST_GENERATION_TICKS;
+			long lastGenTimeFrame = lastGenTime % Guild.CONFIG.questGenerationTicks;
+			long currentGenTimeFrame = time % Guild.CONFIG.questGenerationTicks;
 
-			int questsToGenerate = Math.min((int)(((time - currentGenTimeFrame) - (lastGenTime - lastGenTimeFrame)) / Guild.QUEST_GENERATION_TICKS), Guild.MAX_QUEST_TO_GENERATE);
+			int questsToGenerate = Math.min((int)(((time - currentGenTimeFrame) - (lastGenTime - lastGenTimeFrame)) / Guild.CONFIG.questGenerationTicks), Guild.CONFIG.maxQuestsPerGeneration);
 
 			for (List<Quest> quests: availableQuests.values()) {
 				Iterator<Quest> iterator = quests.iterator();
