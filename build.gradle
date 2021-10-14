@@ -123,6 +123,8 @@ curseforge {
 
 		relations {
 			requiredLibrary 'fabric-api'
+			optionalDependency 'cloth-config'
+			optionalDependency 'modmenu'
 		}
 
 		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
