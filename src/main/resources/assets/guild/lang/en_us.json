@@ -67,5 +67,6 @@
 	"text.autoconfig.guild.option.expirationTicks": "Available quests expiration ticks",
 	"text.autoconfig.guild.option.questGenerationTicks": "Quest generation ticks",
 	"text.autoconfig.guild.option.maxQuestsPerGeneration": "Max quests per generation",
-	"text.autoconfig.guild.option.displayUnlockedPools": "Display unlocked tasks and rewards"
+	"text.autoconfig.guild.option.displayUnlockedPools": "Display unlocked tasks and rewards",
+	"text.autoconfig.guild.title": "The Guild's configuration"
 }

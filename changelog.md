@@ -1,3 +1,6 @@
+# 0.3.3
+- Added missing title to The Guild's configuration screen
+
 # 0.3.2
 - Added configuration for the following values: "Available quests expiration ticks", "Quest generation ticks", "Max quests per generation" and "Display unlocked tasks and rewards"
 - Added ModMenu integration
