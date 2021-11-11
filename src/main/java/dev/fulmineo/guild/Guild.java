@@ -49,10 +49,6 @@ public class Guild implements ModInitializer {
 
 	public static List<String> errors = new ArrayList<>();
 
-	// Configurables
-	// All finals for now
-
-
     // Identifiers
 
     public static final String MOD_ID = "guild";
@@ -64,7 +60,7 @@ public class Guild implements ModInitializer {
     public static final Identifier REQUEST_CLIENT_DATA_ID = new Identifier(MOD_ID, "request_client_data_packet");
     public static final Identifier TRANSFER_CLIENT_DATA_ID = new Identifier(MOD_ID, "transfer_client_data_packet");
     public static final ScreenHandlerType<QuestsScreenHandler> QUESTS_SCREEN_HANDLER = ScreenHandlerRegistry.registerExtended(new Identifier(MOD_ID, "quest_screen"), QuestsScreenHandler::new);
-	public static final ItemGroup GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID,"group"), () -> new ItemStack(Registry.ITEM.get(new Identifier(MOD_ID, "quest_scroll"))));
+	public static final ItemGroup GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID,"group"), () -> new ItemStack(Registry.ITEM.get(new Identifier(MOD_ID, "guild_master_table"))));
 
 	public static final String[] SCREEN_TITLES = {"screen.guild.quest"};
 

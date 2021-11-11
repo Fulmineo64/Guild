@@ -1,10 +1,11 @@
 package dev.fulmineo.guild.config;
 
+import dev.fulmineo.guild.Guild;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 
-@Config(name = "guild")
+@Config(name = Guild.MOD_ID)
 public class GuildConfig implements ConfigData {
 
     public int expirationTicks = 108000;

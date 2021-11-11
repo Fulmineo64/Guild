@@ -85,7 +85,6 @@ public class ClientNetworkManager {
 	}
 
 	public static void requestClientData() {
-		PacketByteBuf buf = PacketByteBufs.create();
-		ClientPlayNetworking.send(Guild.REQUEST_CLIENT_DATA_ID, buf);
+		ClientPlayNetworking.send(Guild.REQUEST_CLIENT_DATA_ID, PacketByteBufs.create());
 	}
 }

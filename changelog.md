@@ -1,3 +1,6 @@
+# 0.3.4
+- Updated Chinese translations thanks to 103sakamoto!
+
 # 0.3.3
 - Added missing title to The Guild's configuration screen
 
