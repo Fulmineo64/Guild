@@ -1,3 +1,6 @@
+# 0.3.5
+- Updated to Minecraft 1.18
+
 # 0.3.4
 - Updated Chinese translations thanks to 103sakamoto!
 
