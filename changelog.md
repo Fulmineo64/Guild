@@ -1,3 +1,7 @@
+# 0.3.6
+- Updated to Minecraft 1.18.1
+- Update the textures of the Guild Master and the Guild Master's Table thanks to Alexander210806!
+
 # 0.3.5
 - Updated to Minecraft 1.18
 
