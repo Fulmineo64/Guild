@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -35,6 +36,7 @@ import dev.fulmineo.guild.network.ServerNetworkManager;
 import dev.fulmineo.guild.screen.QuestsScreenHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import org.jetbrains.annotations.Nullable;
 
 public class Guild implements ModInitializer {
 
@@ -48,6 +50,9 @@ public class Guild implements ModInitializer {
 	// Global variables
 
 	public static List<String> errors = new ArrayList<>();
+	public static boolean OCTO_ECON_API_LOADED = false;
+	@Nullable
+	public static EconomyDependency economyDependency;
 
     // Identifiers
 
@@ -87,6 +92,10 @@ public class Guild implements ModInitializer {
     public void onInitialize() {
 		AutoConfig.register(GuildConfig.class, JanksonConfigSerializer::new);
 		CONFIG = AutoConfig.getConfigHolder(GuildConfig.class).getConfig();
+
+		// Global Variables
+
+		OCTO_ECON_API_LOADED = FabricLoader.getInstance().isModLoaded("octo-economy-api");
 
 		// Blocks
 
