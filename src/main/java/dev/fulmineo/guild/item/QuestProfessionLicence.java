@@ -50,7 +50,7 @@ public class QuestProfessionLicence extends Item {
 				newStack.setNbt(tag);
 				return TypedActionResult.success(newStack);
 			} else {
-				if (((GuildServerPlayerEntity)user).getProfessions().size() <= 7) {
+				if (((GuildServerPlayerEntity)user).getProfessions().size() < Guild.CONFIG.getMaxProfessions()) {
 					QuestProfession profession = ServerDataManager.professions.get(professionName);
 					if (profession == null) {
 						user.sendMessage(new TranslatableText("profession.guild.invalid_profession", QuestProfession.getTranslatedText(professionName)), false);
@@ -78,7 +78,7 @@ public class QuestProfessionLicence extends Item {
 						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.fail", QuestProfession.getTranslatedText(profession.name)), false);
 					}
 				} else {
-					user.sendMessage(new TranslatableText("item.guild.profession_licence.too_many_professions", 7), false);
+					user.sendMessage(new TranslatableText("item.guild.profession_licence.too_many_professions", Guild.CONFIG.getMaxProfessions()), false);
 				}
 			}
 			return TypedActionResult.fail(stack);

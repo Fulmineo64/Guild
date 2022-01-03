@@ -1,3 +1,9 @@
+# 0.3.7
+- Added new configurable values maxProfessions and maxQuestsPerProfession that limit the max acceptable Professions and the max available quest for said Professions.
+Both of these values are capped at 7.
+- Updated russian translations thanks to Shelbikk [#12](https://github.com/Fulmineo64/Guild/issues/12)!
+- Updated the textures for the Guild Master and the Guild Master Table thanks to Alexander210806!
+
 # 0.3.6
 - Updated to Minecraft 1.18.1
 - Update the textures of the Guild Master and the Guild Master's Table thanks to Alexander210806!

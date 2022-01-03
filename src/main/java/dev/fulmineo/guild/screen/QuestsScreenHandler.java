@@ -37,6 +37,7 @@ public class QuestsScreenHandler extends ScreenHandler {
 	public List<Quest> acceptedQuests;
 	public List<QuestProfession> professions;
 	public Map<String, ProfessionData> professionsData;
+	public int maxAcceptedQuests;
 	public World world;
 	private PlayerInventory playerInventory;
 
@@ -60,6 +61,7 @@ public class QuestsScreenHandler extends ScreenHandler {
 			this.professions.add(profession);
 			this.professionsData.put(profession.name, data);
 		}
+		this.maxAcceptedQuests = nbt.getInt("MaxAcceptedQuests");
 		this.world = playerInventory.player.world;
 		this.playerInventory = playerInventory;
 		this.updateItemCompletion();

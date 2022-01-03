@@ -82,7 +82,7 @@ public class QuestHelper {
 			List<QuestProfession> availableProfessions = new ArrayList<>();
 			for (QuestProfession profession: professions) {
 				List<Quest> professionsQuest = availableQuests.get(profession.name);
-				if (professionsQuest == null || professionsQuest.size() < Guild.MAX_QUESTS_BY_PROFESSION) {
+				if (professionsQuest == null || professionsQuest.size() < Guild.CONFIG.getMaxQuestsPerProfession()) {
 					availableProfessions.add(profession);
 				}
 			}
@@ -108,7 +108,7 @@ public class QuestHelper {
 			}
 			quests.add(Quest.create(profession, player));
 			availableQuests.put(profession.name, quests);
-			if (quests.size() == Guild.MAX_QUESTS_BY_PROFESSION) {
+			if (quests.size() == Guild.CONFIG.getMaxQuestsPerProfession()) {
 				availableProfessions.remove(professionIndex);
 			}
 		}

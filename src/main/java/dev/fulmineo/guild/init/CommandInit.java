@@ -109,7 +109,7 @@ public class CommandInit {
 									source.sendFeedback(new TranslatableText("command.guild.licence.invalid_profession", professionName), false);
 								} else {
 									List<Quest> professionQuests = ((GuildServerPlayerEntity)player).getAvailableQuests().get(professionName);
-									if (professionQuests == null || professionQuests.size() < Guild.MAX_QUESTS_BY_PROFESSION) {
+									if (professionQuests == null || professionQuests.size() < Guild.CONFIG.getMaxQuestsPerProfession()) {
 										List<QuestProfession> availableProfessions = new ArrayList<>();
 										availableProfessions.add(profession);
 										QuestHelper.generateQuests(player, availableProfessions, 1);

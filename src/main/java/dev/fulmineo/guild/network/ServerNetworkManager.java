@@ -70,6 +70,7 @@ public class ServerNetworkManager {
 								professionsInfo.add(QuestHelper.writeProfessionData(tag, guildPlayer, profession));
 							}
 							nbt.put("Professions", professionsInfo);
+							nbt.putInt("MaxAcceptedQuests", Guild.CONFIG.getMaxAcceptedQuests());
 							packetByteBuf.writeNbt(nbt);
 						}
 
@@ -88,15 +89,17 @@ public class ServerNetworkManager {
 		});
 
 		ServerPlayNetworking.registerGlobalReceiver(Guild.ACCEPT_QUEST_PACKET_ID, (server, player, handler, buf, responseSender) -> {
-			String profession = buf.readString();
-			int index = buf.readInt();
 			GuildServerPlayerEntity guildPlayer = (GuildServerPlayerEntity)player;
-			Map<String, List<Quest>> availableQuests = guildPlayer.getAvailableQuests();
-			List<Quest> quests = availableQuests.get(profession);
-			Quest quest = quests.remove(index);
-			quest.accept(player.world.getTime());
 			List<Quest> acceptedQuests = guildPlayer.getAcceptedQuests();
-			acceptedQuests.add(quest);
+			if (acceptedQuests.size() < Guild.CONFIG.getMaxAcceptedQuests()) {
+				String profession = buf.readString();
+				int index = buf.readInt();
+				Map<String, List<Quest>> availableQuests = guildPlayer.getAvailableQuests();
+				List<Quest> quests = availableQuests.get(profession);
+				Quest quest = quests.remove(index);
+				quest.accept(player.world.getTime());
+				acceptedQuests.add(quest);
+			}
 		});
 
 		ServerPlayNetworking.registerGlobalReceiver(Guild.TRY_COMPLETE_QUEST_PACKET_ID, (server, player, handler, buf, responseSender) -> {

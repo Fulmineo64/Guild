@@ -41,10 +41,6 @@ public class Guild implements ModInitializer {
 	public static Logger LOGGER = LogManager.getLogger();
 	public static GuildConfig CONFIG;
 
-	// Constants
-
-	public static final int MAX_QUESTS_BY_PROFESSION = 7;
-
 	// Global variables
 
 	public static List<String> errors = new ArrayList<>();

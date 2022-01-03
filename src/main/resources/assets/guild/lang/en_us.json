@@ -17,7 +17,7 @@
 	"item.guild.profession_licence.missing_requirements": "You do not meet the requirements for the %s profession",
 	"item.guild.profession_licence.level": " level ",
 	"item.guild.profession_licence.requirements": "Requirements",
-	"item.guild.profession_licence.too_many_professions": "You can have a maxium of %d professions at a time",
+	"item.guild.profession_licence.too_many_professions": "You can have a maximum of %d professions at a time",
 	"item.guild.profession_licence.introduction": "Congratulations on becoming a member of the Guild! You can now accept and complete quests through the Guild GUI (J by default) from everywhere you are, thanks to cutting edge End technology! Completing quests will grant you fame, giving you access to elite quests and prestige professions. May luck follow you on your journey adventurer!",
 	"item.guild.profession_resignment": "Profession Resignment",
 	"item.guild.profession_resignment.description": "Use to abandon the profession.",
@@ -66,6 +66,9 @@
 	"screen.guild.quests.time_available.description3": "Use the Luck effect to get a bonus roll on the lesser reward.",
 	"text.autoconfig.guild.option.expirationTicks": "Available quests expiration ticks",
 	"text.autoconfig.guild.option.questGenerationTicks": "Quest generation ticks",
+	"text.autoconfig.guild.option.maxAcceptedQuests": "Max accepted quests",
+	"text.autoconfig.guild.option.maxProfessions": "Max accepted professions",
+	"text.autoconfig.guild.option.maxQuestsPerProfession": "Max acceptable quests per profession",
 	"text.autoconfig.guild.option.maxQuestsPerGeneration": "Max quests per generation",
 	"text.autoconfig.guild.option.displayUnlockedPools": "Display unlocked tasks and rewards",
 	"text.autoconfig.guild.title": "The Guild's configuration"

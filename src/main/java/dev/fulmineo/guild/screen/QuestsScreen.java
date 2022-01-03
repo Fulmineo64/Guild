@@ -57,7 +57,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			this.deleteMode = !this.deleteMode;
 			button.setMessage(this.deleteMode ? new TranslatableText("button.guild.quest.cancel") : new TranslatableText("button.guild.quest.delete"));
 			for(int i = 0; i < this.available.size(); ++i) {
-				this.available.get(i).active = this.deleteMode ? true : this.handler.acceptedQuests.size() < 7;
+				this.available.get(i).active = this.deleteMode ? true : this.handler.acceptedQuests.size() < this.handler.maxAcceptedQuests;
 			}
 		}));
 		int y = h + 41;
@@ -98,13 +98,13 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				if (this.deleteMode) {
 					this.handler.deleteAvailableQuest(this.professionName, index);
 				} else {
-					if (!button.active || this.handler.acceptedQuests.size() == 7) return;
+					if (!button.active || this.handler.acceptedQuests.size() == this.handler.maxAcceptedQuests) return;
 					this.handler.acceptQuest(this.professionName, index);
 					this.professionQuests = handler.availableQuests.get(this.professionName);
 				}
 				this.initButtons();
 			}));
-			btn.active = this.handler.acceptedQuests.size() < 7;
+			btn.active = this.handler.acceptedQuests.size() < this.handler.maxAcceptedQuests;
 			this.available.add(btn);
 			y += 20;
 		}
