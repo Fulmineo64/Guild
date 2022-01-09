@@ -129,6 +129,7 @@ public class Quest {
 		for (QuestPoolData reward : primaryRewards){
 			if (reward.getMinWorth() <= worth) {
 				NbtCompound nbt = new NbtCompound();
+				nbt.putString("Type", reward.type);
 				nbt.putString("Name", reward.name);
 				if (reward.tag != null) {
 					nbt.put("Tag", reward.tag);
@@ -363,23 +364,42 @@ public class Quest {
 		NbtList rewards = this.getRewardList();
 		for (NbtElement elm: rewards) {
 			NbtCompound entry = (NbtCompound)elm;
-			int count = entry.getInt("Count");
-			if (expired) {
-				int cnt1 = player.world.random.nextInt(count + 1);
-				if (player.hasStatusEffect(StatusEffects.LUCK)) {
-					int cnt2 = player.world.random.nextInt(count + 1);
-					count = Math.max(cnt1, cnt2);
-				} else {
-					count = cnt1;
+			if (entry.contains("Type")) {
+				String type = entry.getString("Type");
+				switch (type) {
+					case "item": {
+						giveItem(expired, entry, player);
+					}
+					case "currency": {
+						if (Guild.economyDependency != null) {
+							Guild.economyDependency.giveReward(expired, entry, player);
+						}
+					}
 				}
+			} else {
+				// backwards compatibility, old version won't have the Type entry and it can be assumed they're just items.
+				giveItem(expired, entry, player);
 			}
-			ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))), count);
-			if (entry.contains("Tag")) {
-				stack.setNbt(entry.getCompound("Tag"));
+		}
+	}
+
+	private void giveItem(boolean expired, NbtCompound entry, ServerPlayerEntity player) {
+		int count = entry.getInt("Count");
+		if (expired) {
+			int cnt1 = player.world.random.nextInt(count + 1);
+			if (player.hasStatusEffect(StatusEffects.LUCK)) {
+				int cnt2 = player.world.random.nextInt(count + 1);
+				count = Math.max(cnt1, cnt2);
+			} else {
+				count = cnt1;
 			}
-			if (!player.giveItemStack(stack)) {
-				player.dropItem(stack, false);
-			}
+		}
+		ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))), count);
+		if (entry.contains("Tag")) {
+			stack.setNbt(entry.getCompound("Tag"));
+		}
+		if (!player.giveItemStack(stack)) {
+			player.dropItem(stack, false);
 		}
 	}
 
@@ -463,6 +483,16 @@ public class Quest {
 			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))));
 			if (entry.contains("Tag")) {
 				stack.setNbt(entry.getCompound("Tag"));
+			}
+		}
+		if (entry.contains("Type")) {
+			String type = entry.getString("Type");
+			switch (type) {
+				case "currency" -> {
+					if (Guild.economyDependency != null) {
+						Guild.economyDependency.addRewardName(stack, entry);
+					}
+				}
 			}
 		}
 		QuestData data = new QuestData();

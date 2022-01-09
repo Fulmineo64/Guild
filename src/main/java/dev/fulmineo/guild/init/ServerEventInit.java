@@ -2,6 +2,9 @@ package dev.fulmineo.guild.init;
 
 import java.util.List;
 
+import com.epherical.octoecon.api.event.EconomyEvents;
+import dev.fulmineo.guild.EconomyDependency;
+import dev.fulmineo.guild.Guild;
 import dev.fulmineo.guild.network.ServerNetworkManager;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.nbt.NbtCompound;
@@ -20,5 +23,10 @@ public class ServerEventInit {
 				}
 			}
 		});
+		if (Guild.OCTO_ECON_API_LOADED) {
+			EconomyEvents.ECONOMY_CHANGE_EVENT.register(economy -> {
+				Guild.economyDependency = new EconomyDependency(economy);
+			});
+		}
 	}
 }
