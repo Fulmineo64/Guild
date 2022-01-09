@@ -25,6 +25,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
@@ -142,6 +143,9 @@ public class Quest {
 				}
 				int count = reward.getCountByWorth(worth);
 				nbt.putInt("Count", count);
+				if (reward.type.equals("currency") && Guild.economyDependency != null) {
+					nbt.putString("Label", Guild.economyDependency.getCurrencyName(reward.name, count));
+				}
 				rewardList.add(nbt);
 				worth -= reward.unitWorth * count;
 			}
@@ -364,42 +368,33 @@ public class Quest {
 		NbtList rewards = this.getRewardList();
 		for (NbtElement elm: rewards) {
 			NbtCompound entry = (NbtCompound)elm;
-			if (entry.contains("Type")) {
-				String type = entry.getString("Type");
-				switch (type) {
-					case "item": {
-						giveItem(expired, entry, player);
-					}
-					case "currency": {
-						if (Guild.economyDependency != null) {
-							Guild.economyDependency.giveReward(expired, entry, player);
-						}
+			String type = entry.getString("Type");
+			int count = entry.getInt("Count");
+			if (expired) {
+				int cnt1 = player.world.random.nextInt(count + 1);
+				if (player.hasStatusEffect(StatusEffects.LUCK)) {
+					int cnt2 = player.world.random.nextInt(count + 1);
+					count = Math.max(cnt1, cnt2);
+				} else {
+					count = cnt1;
+				}
+			}
+			switch (type) {
+				case "currency": {
+					if (Guild.economyDependency != null) {
+						Guild.economyDependency.giveReward(count, entry, player);
 					}
 				}
-			} else {
-				// backwards compatibility, old version won't have the Type entry and it can be assumed they're just items.
-				giveItem(expired, entry, player);
+				default: {
+					ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))), count);
+					if (entry.contains("Tag")) {
+						stack.setNbt(entry.getCompound("Tag"));
+					}
+					if (!player.giveItemStack(stack)) {
+						player.dropItem(stack, false);
+					}
+				}
 			}
-		}
-	}
-
-	private void giveItem(boolean expired, NbtCompound entry, ServerPlayerEntity player) {
-		int count = entry.getInt("Count");
-		if (expired) {
-			int cnt1 = player.world.random.nextInt(count + 1);
-			if (player.hasStatusEffect(StatusEffects.LUCK)) {
-				int cnt2 = player.world.random.nextInt(count + 1);
-				count = Math.max(cnt1, cnt2);
-			} else {
-				count = cnt1;
-			}
-		}
-		ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))), count);
-		if (entry.contains("Tag")) {
-			stack.setNbt(entry.getCompound("Tag"));
-		}
-		if (!player.giveItemStack(stack)) {
-			player.dropItem(stack, false);
 		}
 	}
 
@@ -485,15 +480,8 @@ public class Quest {
 				stack.setNbt(entry.getCompound("Tag"));
 			}
 		}
-		if (entry.contains("Type")) {
-			String type = entry.getString("Type");
-			switch (type) {
-				case "currency" -> {
-					if (Guild.economyDependency != null) {
-						Guild.economyDependency.addRewardName(stack, entry);
-					}
-				}
-			}
+		if (entry.contains("Label")) {
+			stack.setCustomName(new LiteralText(entry.getString("Label")));
 		}
 		QuestData data = new QuestData();
 		data.stack = stack;

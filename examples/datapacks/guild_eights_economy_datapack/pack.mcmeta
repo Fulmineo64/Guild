@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "pack_format": 8,
+    "description": "Guild data pack for integrating currencies as rewards for quests, based on the EightsEconomy mod."
+  }
+}

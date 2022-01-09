@@ -53,7 +53,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
 		this.addDrawableChild(new InfoButton(w + 6, h + 16, (button) -> {}));
-		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 66, h + 16, 60, 20, new TranslatableText("button.guild.quest.delete"), (button) -> {
+		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 56, h + 16, 50, 20, new TranslatableText("button.guild.quest.delete"), (button) -> {
 			this.deleteMode = !this.deleteMode;
 			button.setMessage(this.deleteMode ? new TranslatableText("button.guild.quest.cancel") : new TranslatableText("button.guild.quest.delete"));
 			for(int i = 0; i < this.available.size(); ++i) {
@@ -62,7 +62,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		}));
 		int y = h + 41;
 		int profNum = this.handler.professions.size();
-		int x = (this.width / 2) - (((profNum * 20) + ((profNum-1) * 2)) / 2);
+		int x = (this.width / 2) - ((profNum*20 + (profNum-1)*2) / 2);
 		for(int i = 0; i < profNum; ++i) {
 			this.professions[i] = this.addDrawableChild(new ProfessionButton(x, y - 25, i, (button) -> {
 				if (!button.active) return;
@@ -93,7 +93,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		for(int i = 0; i < this.professionQuests.size(); i++){
 			this.professionQuests.get(i).updateTasksAndRewards();
 			QuestsScreen.this.itemRenderer.zOffset = 0.0F;
-			AvailableQuestButton btn = this.addDrawableChild(new AvailableQuestButton(w + 5, y, i, (button) -> {
+			AvailableQuestButton btn = this.addDrawableChild(new AvailableQuestButton(w + 6, y, i, (button) -> {
 				int index = ((AvailableQuestButton)button).index;
 				if (this.deleteMode) {
 					this.handler.deleteAvailableQuest(this.professionName, index);

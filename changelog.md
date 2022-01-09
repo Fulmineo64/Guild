@@ -1,3 +1,10 @@
+# 0.3.8
+- Added support to the OctoEconomyAPI thanks to ExcessiveAmountsOfZombies (aka TheThonk)!
+- Added example datapack for a drag-and-drop integration with EightsEconomy (OctoEconomyAPI's implementation)
+- Improved handling of reward pools without the "max" value in the "number" property (although specifying it is always recommended)
+- Accepted professions of removed datapacks will be now discarded, avoiding them to clutter the profession cap.
+- Slightly adjusted the positioning of the Quests Screen's elements 
+
 # 0.3.7
 - Added new configurable values maxProfessions and maxQuestsPerProfession that limit the max acceptable Professions and the max available quest for said Professions.
 Both of these values are capped at 7.

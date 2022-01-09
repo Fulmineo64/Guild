@@ -4,10 +4,6 @@ package dev.fulmineo.guild;
 import com.epherical.octoecon.api.Currency;
 import com.epherical.octoecon.api.Economy;
 import com.epherical.octoecon.api.user.UniqueUser;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -32,17 +28,7 @@ public class EconomyDependency {
 		return addError;
 	}
 
-	public void giveReward(boolean expired, NbtCompound entry, ServerPlayerEntity player) {
-		int count = entry.getInt("Count");
-		if (expired) {
-			int cnt1 = player.world.random.nextInt(count + 1);
-			if (player.hasStatusEffect(StatusEffects.LUCK)) {
-				int cnt2 = player.world.random.nextInt(count + 1);
-				count = Math.max(cnt1, cnt2);
-			} else {
-				count = cnt1;
-			}
-		}
+	public void giveReward(int count, NbtCompound entry, ServerPlayerEntity player) {
 		Currency currency = economy.getCurrency(new Identifier(entry.getString("Name")));
 		if (currency == null) {
 			currency = economy.getDefaultCurrency();
@@ -53,17 +39,16 @@ public class EconomyDependency {
 			user.depositMoney(currency, count, "Guild reward");
 		}
 	}
-	@Environment(EnvType.CLIENT)
-	public void addRewardName(ItemStack stack, NbtCompound entry) {
-		Currency currency = economy.getCurrency(new Identifier(entry.getString("Name")));
+
+	public String getCurrencyName(String name, int count) {
+		Currency currency = economy.getCurrency(new Identifier(name));
 		if (currency == null) {
 			currency = economy.getDefaultCurrency();
 		}
-		int amount = entry.getInt("Count");
-		if (amount > 1) {
-			stack.setCustomName(currency.getCurrencyPluralName());
+		if (count > 1) {
+			return currency.getCurrencyPluralName().asString();
 		} else {
-			stack.setCustomName(currency.getCurrencySingularName());
+			return currency.getCurrencySingularName().asString();
 		}
 	}
 }

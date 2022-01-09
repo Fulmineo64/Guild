@@ -2,6 +2,7 @@ package dev.fulmineo.guild.mixin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -85,9 +86,15 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 
 	public List<QuestProfession> getQuestProfessions() {
 		List<QuestProfession> professions = new ArrayList<>();
-		for (String professionName: this.professions) {
+		Iterator<String> iterator = this.professions.iterator();
+		while (iterator.hasNext()) {
+			String professionName = iterator.next();
 			QuestProfession profession = ServerDataManager.professions.get(professionName);
-			if (profession != null) professions.add(profession);
+			if (profession == null) {
+				iterator.remove();
+			} else {
+				professions.add(profession);
+			}
 		}
 		return professions;
 	}

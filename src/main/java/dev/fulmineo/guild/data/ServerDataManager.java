@@ -135,11 +135,13 @@ public class ServerDataManager {
 					try(InputStream stream = manager.getResource(id).getInputStream()) {
 						try {
 							QuestPool pool = (QuestPool)GSON.fromJson(new String(stream.readAllBytes()), QuestPool.class);
-							String invalidKey = pool.validate();
-							if (invalidKey.length() == 0) {
-								pools.put(pool.name, pool);
-							} else {
-								Guild.errors.add("Invalid key "+invalidKey.toString()+" in quest pool "+id.toString());
+							if (!pools.containsKey(pool.name)) {
+								String invalidKey = pool.validate();
+								if (invalidKey.length() == 0) {
+									pools.put(pool.name, pool);
+								} else {
+									Guild.errors.add("Invalid key "+invalidKey.toString()+" in quest pool "+id.toString());
+								}
 							}
 						} catch (Exception e) {
 							Guild.errors.add("Couldn't parse quest pool "+id.toString());

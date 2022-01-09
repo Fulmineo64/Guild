@@ -36,7 +36,18 @@ public class QuestPoolData implements WeightedItem {
 	}
 
 	public int getCountByWorth(int worth) {
-		return Math.min(number.max, worth / unitWorth);
+		Integer max = this.getMax();
+		return max != null ? Math.min(max, worth / unitWorth) : worth / unitWorth;
+	}
+
+	public Integer getMax() {
+		if (this.number.max != null) {
+			return this.number.max;
+		} else if (this.type == "item") {
+			return Registry.ITEM.get(new Identifier(this.name)).getMaxCount();
+		} else {
+			return null;
+		}
 	}
 
 	public String validate() {
