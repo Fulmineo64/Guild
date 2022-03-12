@@ -1,3 +1,10 @@
+# 0.4.0
+- Added the possibility to specify an exp reward for the player 
+- Now the rewarded player exp and profession exp are shown on the quest tooltip
+- Added an exp reward to all current existing quests
+- Player exp, as with all other values, can be configured with datapacks
+- Updated to Minecraft 1.18.2
+
 # 0.3.8
 - Added support to the OctoEconomyAPI thanks to ExcessiveAmountsOfZombies (aka TheThonk)!
 - Added example datapack for a drag-and-drop integration with EightsEconomy (OctoEconomyAPI's implementation)

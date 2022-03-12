@@ -11,6 +11,7 @@
 			"unit_worth": 40,
 			"unit_time": 80,
 			"unit_exp": 3,
+			"unit_player_exp": 0.3,
 			"weight": 80
 		},
 		{
@@ -23,6 +24,7 @@
 			"unit_worth": 50,
 			"unit_time": 100,
 			"unit_exp": 3,
+			"unit_player_exp": 0.3,
 			"weight": 70
 		},
 		{
@@ -35,6 +37,7 @@
 			"unit_worth": 40,
 			"unit_time": 100,
 			"unit_exp": 3,
+			"unit_player_exp": 0.3,
 			"weight": 60
 		},
 		{
@@ -47,6 +50,7 @@
 			"unit_worth": 40,
 			"unit_time": 100,
 			"unit_exp": 3,
+			"unit_player_exp": 0.3,
 			"weight": 80
 		},
 		{
@@ -59,6 +63,7 @@
 			"unit_worth": 40,
 			"unit_time": 100,
 			"unit_exp": 3,
+			"unit_player_exp": 0.3,
 			"weight": 80
 		},
 		{
@@ -74,6 +79,7 @@
 			"unit_worth": 60,
 			"unit_time": 120,
 			"unit_exp": 4,
+			"unit_player_exp": 0.4,
 			"weight": 60
 		},
 		{
@@ -89,6 +95,7 @@
 			"unit_worth": 50,
 			"unit_time": 80,
 			"unit_exp": 5,
+			"unit_player_exp": 0.5,
 			"weight": 60
 		},
 		{
@@ -104,6 +111,7 @@
 			"unit_worth": 60,
 			"unit_time": 100,
 			"unit_exp": 5,
+			"unit_player_exp": 0.5,
 			"weight": 50
 		},
 		{
@@ -119,6 +127,7 @@
 			"unit_worth": 50,
 			"unit_time": 100,
 			"unit_exp": 5,
+			"unit_player_exp": 0.5,
 			"weight": 40
 		},
 		{
@@ -134,6 +143,7 @@
 			"unit_worth": 50,
 			"unit_time": 100,
 			"unit_exp": 5,
+			"unit_player_exp": 0.5,
 			"weight": 60
 		},
 		{
@@ -149,6 +159,7 @@
 			"unit_worth": 50,
 			"unit_time": 100,
 			"unit_exp": 5,
+			"unit_player_exp": 0.5,
 			"weight": 60
 		},
 		{
@@ -164,6 +175,7 @@
 			"unit_worth": 70,
 			"unit_time": 120,
 			"unit_exp": 6,
+			"unit_player_exp": 0.6,
 			"weight": 40
 		}
 	]

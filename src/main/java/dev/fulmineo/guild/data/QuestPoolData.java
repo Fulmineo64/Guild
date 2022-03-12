@@ -15,7 +15,8 @@ public class QuestPoolData implements WeightedItem {
 	public NbtCompound iconTag;
 	public int unitWorth;
 	public int unitTime;
-	public int unitExp;
+	public float unitExp;
+	public float unitPlayerExp;
 	public int weight;
 
 	public int getWeight() {

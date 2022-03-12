@@ -46,6 +46,7 @@
 			"unit_worth": 400,
 			"unit_time": 1800,
 			"unit_exp": 10,
+			"unit_player_exp": 1,
 			"weight": 30
 		}
 	]

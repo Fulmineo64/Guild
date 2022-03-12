@@ -60,7 +60,8 @@ public class Quest {
 
 		int time = 0;
 		int worth = 0;
-		int exp = 0;
+		float exp = 0;
+		float playerExp = 0;
 
 		Map<String, QuestPoolData> groupedTasks = new HashMap<>();
 		for (QuestPoolData task : tasks) {
@@ -91,6 +92,7 @@ public class Quest {
 			time += needed * task.unitTime;
 			worth += needed * task.unitWorth;
 			exp += needed * task.unitExp;
+			playerExp += needed * task.unitPlayerExp;
 			switch (task.type) {
 				case "item": {
 					itemList.add(nbt);
@@ -116,6 +118,7 @@ public class Quest {
 			time = time * (1 + timeVariationPercentage);
 			worth = worth * (1 + (timeVariationPercentage * -1));
 			exp = exp * (1 + (timeVariationPercentage * -1));
+			playerExp = playerExp * (1 + (timeVariationPercentage * -1));
 		}
 
 		List<QuestPoolData> rewardsCopy = new ArrayList<>(profession.rewards);
@@ -161,7 +164,8 @@ public class Quest {
 		if (Guild.CONFIG.expirationTicks != 0) {
 			nbt.putLong("AvailableUntil", player.world.getTime() + Guild.CONFIG.expirationTicks);
 		}
-		nbt.putInt("Exp", exp);
+		nbt.putInt("Exp", Math.round(exp));
+		nbt.putInt("PlayerExp", Math.round(playerExp));
 		nbt.put("Slay", slayList);
 		nbt.put("Cure", cureList);
 		nbt.put("Summon", summonList);
@@ -360,6 +364,9 @@ public class Quest {
 			guildPlayer.setProfessionExp(professionName, exp);
 		}
 		this.giveRewards(player);
+		// TODO: Remove me!
+		Guild.info("added "+this.nbt.getInt("PlayerExp")+" exp");
+		player.addExperience(this.nbt.getInt("PlayerExp"));
 		return true;
 	}
 

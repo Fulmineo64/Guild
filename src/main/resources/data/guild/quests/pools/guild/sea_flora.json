@@ -14,6 +14,7 @@
 			"unit_worth": 10,
 			"unit_time": 20,
 			"unit_exp": 1,
+			"unit_player_exp": 0.1,
 			"weight": 60
 		},
 		{
@@ -29,6 +30,7 @@
 			"unit_worth": 15,
 			"unit_time": 50,
 			"unit_exp": 1,
+			"unit_player_exp": 0.1,
 			"weight": 40
 		},
 		{
@@ -44,6 +46,7 @@
 			"unit_worth": 40,
 			"unit_time": 100,
 			"unit_exp": 4,
+			"unit_player_exp": 0.4,
 			"weight": 40
 		}
 	]

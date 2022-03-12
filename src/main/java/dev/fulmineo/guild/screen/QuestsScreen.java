@@ -1,6 +1,7 @@
 package dev.fulmineo.guild.screen;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -210,6 +212,10 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				tooltip.add(new TranslatableText("screen.guild.quests.summon.description").formatted(Formatting.DARK_GRAY));
 				/*tooltip.add(new LiteralText("⚒").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.build")));
 				tooltip.add(new TranslatableText("screen.guild.quests.build.description").formatted(Formatting.DARK_GRAY));*/
+				tooltip.add(new LiteralText("♦").formatted(Formatting.DARK_GREEN).append(" ").append(new TranslatableText("screen.guild.quests.player_exp")));
+				tooltip.add(new TranslatableText("screen.guild.quests.player_exp.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new LiteralText("♦").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.exp")));
+				tooltip.add(new TranslatableText("screen.guild.quests.exp.description").formatted(Formatting.DARK_GRAY));
 				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
 		}
@@ -305,7 +311,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			int xi = this.x + 3;
 			int yi = this.y + 1;
 
-			for (QuestData data: quest.tasks) {
+			Iterator<QuestData> iterator = quest.tasks.iterator();
+			while (iterator.hasNext()) {
+				QuestData data = iterator.next();
 				QuestsScreen.this.itemRenderer.renderInGui(data.stack, xi, yi);
 				QuestsScreen.this.itemRenderer.renderGuiItemOverlay(QuestsScreen.this.textRenderer, data.stack, xi - 10, yi - 9, data.icon);
 				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, data.stack, xi, yi, data.needed - data.count);
@@ -313,7 +321,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			}
 
 			xi = x + 108;
-			for (QuestData data: quest.rewards) {
+			iterator = quest.rewards.iterator();
+			while (iterator.hasNext()) {
+				QuestData data = iterator.next();
 				QuestsScreen.this.itemRenderer.renderInGui(data.stack, xi, yi);
 				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, data.stack, xi, yi, data.count);
 				xi -= 18;
@@ -333,16 +343,23 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				List<Text> tooltip = new ArrayList<>();
 				MutableText text = new TranslatableText("screen.guild.quests.tasks").formatted(Formatting.BLUE).append("      ");
 				long time = QuestsScreen.this.handler.world.getTime();
+				int timeLen = 2;
 				String accTime = quest.getAcceptationTime(time);
 				String remTime = quest.getRemainingTime(time);
 				if (accTime.length() > 0) {
 					text.append(new LiteralText("⌚ "+accTime).formatted(accTime == "00:00" ? Formatting.RED : Formatting.DARK_AQUA));
+					timeLen += 2 + accTime.length();
 				} else {
 					text.append("           ");
+					timeLen += 8;
 				}
 				if (remTime.length() > 0) {
-					if (accTime.length() > 0) text.append("  ");
+					if (accTime.length() > 0) {
+						text.append(" ");
+						timeLen++;
+					}
 					text.append(new LiteralText("⌚ "+remTime).formatted(remTime == "00:00" ? Formatting.RED : Formatting.GRAY));
+					timeLen += 2 + remTime.length();
 				}
 				tooltip.add(text);
 				for (QuestData task: quest.tasks) {
@@ -356,7 +373,29 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 						.append(String.valueOf(task.needed))
 					);
 				}
-				tooltip.add(new TranslatableText("screen.guild.quests.rewards").formatted(Formatting.GREEN));
+				text = new TranslatableText("screen.guild.quests.rewards").formatted(Formatting.GREEN).append("    ");
+				NbtCompound nbt = quest.getNbt();
+				int exp = nbt.getInt("Exp");
+				int playerExp = nbt.getInt("PlayerExp");
+				if (exp > 0) {
+					if (playerExp > 0) timeLen--;
+					timeLen -= 2 + String.valueOf(exp).length();
+				}
+				if (playerExp > 0) {
+					timeLen -= 2 + String.valueOf(playerExp).length();
+				}
+				while (timeLen > 0) {
+					text.append(" ");
+					timeLen--;
+				}
+				if (playerExp > 0) {
+					text.append(new LiteralText("♦ "+playerExp).formatted(Formatting.DARK_GREEN));
+				}
+				if (exp > 0) {
+					if (playerExp > 0) text.append(" ");
+					text.append(new LiteralText("♦ "+exp).formatted(Formatting.GRAY));
+				}
+				tooltip.add(text);
 				for (QuestData reward: quest.rewards) {
 					tooltip.add(
 						new LiteralText("").formatted(Formatting.GRAY)

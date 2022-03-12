@@ -69,6 +69,7 @@ Inside you'll find a structure like this:
 			"unit_worth": 20,
 			"unit_time": 60,
 			"unit_exp": 5,
+			"unit_player_exp": 0.5,
 			"weight": 100
 		}
 	]
