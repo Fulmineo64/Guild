@@ -22,7 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -53,20 +53,20 @@ public class QuestProfessionLicence extends Item {
 				if (((GuildServerPlayerEntity)user).getQuestProfessions().size() < Guild.CONFIG.getMaxProfessions()) {
 					QuestProfession profession = ServerDataManager.professions.get(professionName);
 					if (profession == null) {
-						user.sendMessage(new TranslatableText("profession.guild.invalid_profession", QuestProfession.getTranslatedText(professionName)), false);
+						user.sendMessage(new TranslatableTextContent("profession.guild.invalid_profession", QuestProfession.getTranslatedText(professionName)), false);
 						return TypedActionResult.fail(stack);
 					}
 					Map<String, Integer> professionsExp = ((GuildServerPlayerEntity)user).getProfessionExp();
 					if (!profession.checkRequirements(professionsExp)) {
-						user.sendMessage(new TranslatableText("item.guild.profession_licence.missing_requirements", QuestProfession.getTranslatedText(professionName)), false);
+						user.sendMessage(new TranslatableTextContent("item.guild.profession_licence.missing_requirements", QuestProfession.getTranslatedText(professionName)), false);
 						return TypedActionResult.fail(stack);
 					}
 					if (((GuildServerPlayerEntity)user).addQuestProfession(professionName)) {
 						stack.damage(1, (LivingEntity)user, (Consumer<LivingEntity>)((p) -> { p.sendToolBreakStatus(hand); }));
 						if (((GuildServerPlayerEntity)user).getQuestProfessions().size() == 1){
-							user.sendMessage(new TranslatableText("item.guild.profession_licence.introduction"), false);
+							user.sendMessage(new TranslatableTextContent("item.guild.profession_licence.introduction"), false);
 						}
-						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.success", QuestProfession.getTranslatedText(profession.name)), false);
+						user.sendMessage(new TranslatableTextContent("item.guild.profession_licence.licence.success", QuestProfession.getTranslatedText(profession.name)), false);
 						ItemStack newStack = new ItemStack(Guild.QUEST_PROFESSION_RESIGNMENT_ITEM);
 						NbtCompound tag = stack.getOrCreateNbt();
 						tag.putString("Profession", nbt.getString("Profession"));
@@ -75,10 +75,10 @@ public class QuestProfessionLicence extends Item {
 						newStack.setNbt(tag);
 						return TypedActionResult.success(newStack);
 					} else {
-						user.sendMessage(new TranslatableText("item.guild.profession_licence.licence.fail", QuestProfession.getTranslatedText(profession.name)), false);
+						user.sendMessage(new TranslatableTextContent("item.guild.profession_licence.licence.fail", QuestProfession.getTranslatedText(profession.name)), false);
 					}
 				} else {
-					user.sendMessage(new TranslatableText("item.guild.profession_licence.too_many_professions", Guild.CONFIG.getMaxProfessions()), false);
+					user.sendMessage(new TranslatableTextContent("item.guild.profession_licence.too_many_professions", Guild.CONFIG.getMaxProfessions()), false);
 				}
 			}
 			return TypedActionResult.fail(stack);
@@ -90,14 +90,14 @@ public class QuestProfessionLicence extends Item {
 		NbtCompound nbt = stack.getOrCreateNbt();
 		String professionName = nbt.getString("Profession");
 		if (professionName.length() > 0) {
-			tooltip.add(new TranslatableText("profession.profession").append(" ").append(QuestProfession.getTranslatedText(professionName)).formatted(Formatting.GOLD));
+			tooltip.add(new TranslatableTextContent("profession.profession").append(" ").append(QuestProfession.getTranslatedText(professionName)).formatted(Formatting.GOLD));
 			QuestProfessionRequirement[] requirements = ClientDataManager.professionRequirements.get(professionName);
 			if (requirements != null) {
-				tooltip.add(new TranslatableText("item.guild.profession_licence.requirements").formatted(Formatting.GREEN));
+				tooltip.add(new TranslatableTextContent("item.guild.profession_licence.requirements").formatted(Formatting.GREEN));
 				for (QuestProfessionRequirement req: requirements) {
-					MutableText text = req.profession != null ? QuestProfession.getTranslatedText(req.profession) : new TranslatableText("item.guild.profession_licence.any_profession");
+					MutableText text = req.profession != null ? QuestProfession.getTranslatedText(req.profession) : new TranslatableTextContent("item.guild.profession_licence.any_profession");
 					if (req.level != null) {
-						text = text.append(new TranslatableText("item.guild.profession_licence.level"));
+						text = text.append(new TranslatableTextContent("item.guild.profession_licence.level"));
 						if (req.level.min != null) {
 							text = text.append(">= "+req.level.min+" ");
 						}
@@ -108,8 +108,8 @@ public class QuestProfessionLicence extends Item {
 					tooltip.add(text.formatted(Formatting.GREEN));
 				}
 			}
-			tooltip.add(new TranslatableText("item.guild.profession_licence.description").formatted(Formatting.DARK_GRAY));
-			tooltip.add(new TranslatableText("item.guild.profession_licence.description2").formatted(Formatting.DARK_GRAY));
+			tooltip.add(new TranslatableTextContent("item.guild.profession_licence.description").formatted(Formatting.DARK_GRAY));
+			tooltip.add(new TranslatableTextContent("item.guild.profession_licence.description2").formatted(Formatting.DARK_GRAY));
 		}
 	}
 }

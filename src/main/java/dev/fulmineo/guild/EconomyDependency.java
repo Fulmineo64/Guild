@@ -46,9 +46,9 @@ public class EconomyDependency {
 			currency = economy.getDefaultCurrency();
 		}
 		if (count > 1) {
-			return currency.getCurrencyPluralName().asString();
+			return currency.getCurrencyPluralName().getContent();
 		} else {
-			return currency.getCurrencySingularName().asString();
+			return currency.getCurrencySingularName().getContent();
 		}
 	}
 }

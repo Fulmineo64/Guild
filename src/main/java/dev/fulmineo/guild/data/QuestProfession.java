@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 
 public class QuestProfession {
 	public String name;
@@ -100,6 +99,6 @@ public class QuestProfession {
 
 	public static MutableText getTranslatedText(String name) {
 		String label = ClientDataManager.professionsLabels.get(name);
-		return label != null ? new LiteralText(label) : new TranslatableText(QuestProfession.getTranslationKey(name));
+		return label != null ? new LiteralTextContent(label) : new TranslatableTextContent(QuestProfession.getTranslationKey(name));
 	}
 }

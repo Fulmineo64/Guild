@@ -19,9 +19,9 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.screen.ScreenHandler;
@@ -38,17 +38,17 @@ public class ServerNetworkManager {
 			server.execute(new Runnable() {
 				public void run(){
 					if (Guild.errors.size() > 0) {
-						player.sendMessage(new TranslatableText("lang.guild.errors"), false);
+						player.sendMessage(new TranslatableTextContent("lang.guild.errors"), false);
 						for (String error: Guild.errors) {
-							player.sendMessage(new LiteralText(" - ").append(error), false);
+							player.sendMessage(new LiteralTextContent(" - ").append(error), false);
 						}
-						player.sendMessage(new TranslatableText("lang.guild.errors_info"), false);
+						player.sendMessage(new TranslatableTextContent("lang.guild.errors_info"), false);
 						return;
 					}
 
 					GuildServerPlayerEntity guildPlayer = ((GuildServerPlayerEntity)player);
 					if (guildPlayer.getQuestProfessions().size() == 0) {
-						player.sendMessage(new TranslatableText("profession.missing"), false);
+						player.sendMessage(new TranslatableTextContent("profession.missing"), false);
 						return;
 					}
 
@@ -76,7 +76,7 @@ public class ServerNetworkManager {
 
 						@Override
 						public Text getDisplayName() {
-							return new TranslatableText("screen.guild.quests");
+							return new TranslatableTextContent("screen.guild.quests");
 						}
 
 						@Override
@@ -119,14 +119,14 @@ public class ServerNetworkManager {
 				int newLevel = QuestHelper.getCurrentLevel(levels, guildPlayer.getProfessionExp(professionName));
 				if (level != newLevel) {
 					newLevel++;
-					player.sendMessage(new TranslatableText("profession.level_up", newLevel, QuestProfession.getTranslatedText(professionName)), false);
+					player.sendMessage(new TranslatableTextContent("profession.level_up", newLevel, QuestProfession.getTranslatedText(professionName)), false);
 					if (Guild.CONFIG.displayUnlockedPools) {
 						boolean sentDescription = false;
 						for (QuestPoolData task: profession.tasks) {
 							if (task.level != null && task.level.min == newLevel) {
 								if (!sentDescription) {
 									sentDescription = true;
-									player.sendMessage(new TranslatableText("profession.unlocked_tasks"), false);
+									player.sendMessage(new TranslatableTextContent("profession.unlocked_tasks"), false);
 								}
 								String icon = "";
 								String translationKey = "";
@@ -152,7 +152,7 @@ public class ServerNetworkManager {
 										break;
 									}
 								}
-								player.sendMessage(new LiteralText(" "+icon+" ").append(new TranslatableText(translationKey)), false);
+								player.sendMessage(new LiteralTextContent(" "+icon+" ").append(new TranslatableTextContent(translationKey)), false);
 							}
 						}
 						sentDescription = false;
@@ -160,9 +160,9 @@ public class ServerNetworkManager {
 							if (reward.level != null && reward.level.min == newLevel) {
 								if (!sentDescription) {
 									sentDescription = true;
-									player.sendMessage(new TranslatableText("profession.unlocked_rewards"), false);
+									player.sendMessage(new TranslatableTextContent("profession.unlocked_rewards"), false);
 								}
-								player.sendMessage((new TranslatableText(Registry.ITEM.get(new Identifier(reward.name)).getTranslationKey())), false);
+								player.sendMessage((new TranslatableTextContent(Registry.ITEM.get(new Identifier(reward.name)).getTranslationKey())), false);
 							}
 						}
 					}

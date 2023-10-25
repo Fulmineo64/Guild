@@ -1,3 +1,6 @@
+# 0.4.1
+- Updated to Minecraft 1.19
+
 # 0.4.0
 - Added the possibility to specify an exp reward for the player 
 - Now the rewarded player exp and profession exp are shown on the quest tooltip

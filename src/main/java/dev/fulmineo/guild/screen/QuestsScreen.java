@@ -23,10 +23,10 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -55,9 +55,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
 		this.addDrawableChild(new InfoButton(w + 6, h + 16, (button) -> {}));
-		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 56, h + 16, 50, 20, new TranslatableText("button.guild.quest.delete"), (button) -> {
+		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 56, h + 16, 50, 20, new TranslatableTextContent("button.guild.quest.delete"), (button) -> {
 			this.deleteMode = !this.deleteMode;
-			button.setMessage(this.deleteMode ? new TranslatableText("button.guild.quest.cancel") : new TranslatableText("button.guild.quest.delete"));
+			button.setMessage(this.deleteMode ? new TranslatableTextContent("button.guild.quest.cancel") : new TranslatableTextContent("button.guild.quest.delete"));
 			for(int i = 0; i < this.available.size(); ++i) {
 				this.available.get(i).active = this.deleteMode ? true : this.handler.acceptedQuests.size() < this.handler.maxAcceptedQuests;
 			}
@@ -131,8 +131,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		float x = (float)((70 - this.textRenderer.getWidth(this.title)) / 2);
 		this.textRenderer.draw(matrices, this.title, x, (float)this.titleY, 4210752);
 
-		this.textRenderer.draw(matrices, new TranslatableText("screen.guild.quests.available"), 6, 40, 4210752);
-		MutableText accepted = new TranslatableText("screen.guild.quests.accepted");
+		this.textRenderer.draw(matrices, new TranslatableTextContent("screen.guild.quests.available"), 6, 40, 4210752);
+		MutableText accepted = new TranslatableTextContent("screen.guild.quests.accepted");
 		this.textRenderer.draw(matrices, accepted, this.backgroundWidth - 6 - this.textRenderer.getWidth(accepted), 40, 4210752);
 	}
 
@@ -186,36 +186,36 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	@Environment(EnvType.CLIENT)
 	class InfoButton extends ButtonWidget {
 		public InfoButton(int x, int y, ButtonWidget.PressAction onPress) {
-			super(x, y, 20, 20, new LiteralText("?"), onPress);
+			super(x, y, 20, 20, new LiteralTextContent("?"), onPress);
 		}
 
 		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
-				tooltip.add(new TranslatableText("screen.guild.quests.legend").formatted(Formatting.AQUA));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.legend").formatted(Formatting.AQUA));
 				if (Guild.CONFIG.expirationTicks != 0) {
-					tooltip.add(new LiteralText("⌚").formatted(Formatting.DARK_AQUA).append(" ").append(new TranslatableText("screen.guild.quests.quest_expiration")));
-					tooltip.add(new TranslatableText("screen.guild.quests.quest_expiration.description", (int)(Guild.CONFIG.expirationTicks / 60 / 20)).formatted(Formatting.DARK_GRAY));
+					tooltip.add(new LiteralTextContent("⌚").formatted(Formatting.DARK_AQUA).append(" ").append(new TranslatableTextContent("screen.guild.quests.quest_expiration")));
+					tooltip.add(new TranslatableTextContent("screen.guild.quests.quest_expiration.description", (int)(Guild.CONFIG.expirationTicks / 60 / 20)).formatted(Formatting.DARK_GRAY));
 				}
-				tooltip.add(new LiteralText("⌚").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.time_available")));
-				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description").formatted(Formatting.DARK_GRAY));
-				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description2").formatted(Formatting.DARK_GRAY));
-				tooltip.add(new TranslatableText("screen.guild.quests.time_available.description3").formatted(Formatting.DARK_GRAY));
-				tooltip.add(new LiteralText("✉").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.item")));
-				tooltip.add(new TranslatableText("screen.guild.quests.item.description").formatted(Formatting.DARK_GRAY));
-				tooltip.add(new TranslatableText("screen.guild.quests.item.description2").formatted(Formatting.DARK_GRAY));
-				tooltip.add(new LiteralText("🗡").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.slay")));
-				tooltip.add(new TranslatableText("screen.guild.quests.slay.description").formatted(Formatting.DARK_GRAY));
-				tooltip.add(new LiteralText("✙").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.cure")));
-				tooltip.add(new TranslatableText("screen.guild.quests.cure.description").formatted(Formatting.DARK_GRAY));
-				tooltip.add(new LiteralText("✦").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.summon")));
-				tooltip.add(new TranslatableText("screen.guild.quests.summon.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new LiteralTextContent("⌚").formatted(Formatting.GRAY).append(" ").append(new TranslatableTextContent("screen.guild.quests.time_available")));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.time_available.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.time_available.description2").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.time_available.description3").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new LiteralTextContent("✉").formatted(Formatting.GRAY).append(" ").append(new TranslatableTextContent("screen.guild.quests.item")));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.item.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.item.description2").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new LiteralTextContent("🗡").formatted(Formatting.GRAY).append(" ").append(new TranslatableTextContent("screen.guild.quests.slay")));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.slay.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new LiteralTextContent("✙").formatted(Formatting.GRAY).append(" ").append(new TranslatableTextContent("screen.guild.quests.cure")));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.cure.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new LiteralTextContent("✦").formatted(Formatting.GRAY).append(" ").append(new TranslatableTextContent("screen.guild.quests.summon")));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.summon.description").formatted(Formatting.DARK_GRAY));
 				/*tooltip.add(new LiteralText("⚒").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.build")));
 				tooltip.add(new TranslatableText("screen.guild.quests.build.description").formatted(Formatting.DARK_GRAY));*/
-				tooltip.add(new LiteralText("♦").formatted(Formatting.DARK_GREEN).append(" ").append(new TranslatableText("screen.guild.quests.player_exp")));
-				tooltip.add(new TranslatableText("screen.guild.quests.player_exp.description").formatted(Formatting.DARK_GRAY));
-				tooltip.add(new LiteralText("♦").formatted(Formatting.GRAY).append(" ").append(new TranslatableText("screen.guild.quests.exp")));
-				tooltip.add(new TranslatableText("screen.guild.quests.exp.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new LiteralTextContent("♦").formatted(Formatting.DARK_GREEN).append(" ").append(new TranslatableTextContent("screen.guild.quests.player_exp")));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.player_exp.description").formatted(Formatting.DARK_GRAY));
+				tooltip.add(new LiteralTextContent("♦").formatted(Formatting.GRAY).append(" ").append(new TranslatableTextContent("screen.guild.quests.exp")));
+				tooltip.add(new TranslatableTextContent("screen.guild.quests.exp.description").formatted(Formatting.DARK_GRAY));
 				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
 			}
 		}
@@ -227,7 +227,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		final int index;
 		private Item item;
 		public ProfessionButton(int x, int y, int index, ButtonWidget.PressAction onPress) {
-			super(x, y, 20, 20, LiteralText.EMPTY, onPress);
+			super(x, y, 20, 20, LiteralTextContent.EMPTY, onPress);
 			this.index = index;
 		}
 
@@ -290,7 +290,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		final int index;
 
 		public QuestButton(int x, int y, int index, ButtonWidget.PressAction onPress) {
-			super(x, y, 126, 20, LiteralText.EMPTY, onPress);
+			super(x, y, 126, 20, LiteralTextContent.EMPTY, onPress);
 			this.index = index;
 		}
 
@@ -341,13 +341,13 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				Quest quest = this.getQuest();
 				if (quest == null) return;
 				List<Text> tooltip = new ArrayList<>();
-				MutableText text = new TranslatableText("screen.guild.quests.tasks").formatted(Formatting.BLUE).append("      ");
+				MutableText text = new TranslatableTextContent("screen.guild.quests.tasks").formatted(Formatting.BLUE).append("      ");
 				long time = QuestsScreen.this.handler.world.getTime();
 				int timeLen = 2;
 				String accTime = quest.getAcceptationTime(time);
 				String remTime = quest.getRemainingTime(time);
 				if (accTime.length() > 0) {
-					text.append(new LiteralText("⌚ "+accTime).formatted(accTime == "00:00" ? Formatting.RED : Formatting.DARK_AQUA));
+					text.append(new LiteralTextContent("⌚ "+accTime).formatted(accTime == "00:00" ? Formatting.RED : Formatting.DARK_AQUA));
 					timeLen += 2 + accTime.length();
 				} else {
 					text.append("           ");
@@ -358,13 +358,13 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 						text.append(" ");
 						timeLen++;
 					}
-					text.append(new LiteralText("⌚ "+remTime).formatted(remTime == "00:00" ? Formatting.RED : Formatting.GRAY));
+					text.append(new LiteralTextContent("⌚ "+remTime).formatted(remTime == "00:00" ? Formatting.RED : Formatting.GRAY));
 					timeLen += 2 + remTime.length();
 				}
 				tooltip.add(text);
 				for (QuestData task: quest.tasks) {
 					tooltip.add(
-						new LiteralText(task.icon).formatted(Formatting.GRAY)
+						new LiteralTextContent(task.icon).formatted(Formatting.GRAY)
 						.append(" ")
 						.append(task.stack.getName())
 						.append(" ")
@@ -373,7 +373,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 						.append(String.valueOf(task.needed))
 					);
 				}
-				text = new TranslatableText("screen.guild.quests.rewards").formatted(Formatting.GREEN).append("    ");
+				text = new TranslatableTextContent("screen.guild.quests.rewards").formatted(Formatting.GREEN).append("    ");
 				NbtCompound nbt = quest.getNbt();
 				int exp = nbt.getInt("Exp");
 				int playerExp = nbt.getInt("PlayerExp");
@@ -389,16 +389,16 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 					timeLen--;
 				}
 				if (playerExp > 0) {
-					text.append(new LiteralText("♦ "+playerExp).formatted(Formatting.DARK_GREEN));
+					text.append(new LiteralTextContent("♦ "+playerExp).formatted(Formatting.DARK_GREEN));
 				}
 				if (exp > 0) {
 					if (playerExp > 0) text.append(" ");
-					text.append(new LiteralText("♦ "+exp).formatted(Formatting.GRAY));
+					text.append(new LiteralTextContent("♦ "+exp).formatted(Formatting.GRAY));
 				}
 				tooltip.add(text);
 				for (QuestData reward: quest.rewards) {
 					tooltip.add(
-						new LiteralText("").formatted(Formatting.GRAY)
+						new LiteralTextContent("").formatted(Formatting.GRAY)
 						.append(reward.stack.getName())
 						.append(" ")
 						.append(String.valueOf(reward.count))
