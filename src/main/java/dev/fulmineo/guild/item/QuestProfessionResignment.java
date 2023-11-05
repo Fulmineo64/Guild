@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -37,14 +36,14 @@ public class QuestProfessionResignment extends Item {
 			String professionName = nbt.getString("Profession");
 			QuestProfession profession = ServerDataManager.professions.get(professionName);
 			if (profession == null) {
-				user.sendMessage(new TranslatableTextContent("profession.guild.invalid_profession", professionName), false);
+				user.sendMessage(Text.translatable("profession.guild.invalid_profession", professionName), false);
 				return TypedActionResult.fail(stack);
 			}
 			if (((GuildServerPlayerEntity)user).removeQuestProfession(professionName)) {
-				user.sendMessage(new TranslatableTextContent("item.guild.profession_resignment.resignment.success", QuestProfession.getTranslatedText(professionName)), false);
+				user.sendMessage(Text.translatable("item.guild.profession_resignment.resignment.success", QuestProfession.getTranslatedText(professionName)), false);
 				return TypedActionResult.success(new ItemStack(Items.AIR));
 			} else {
-				user.sendMessage(new TranslatableTextContent("item.guild.profession_resignment.resignment.fail", QuestProfession.getTranslatedText(professionName)), false);
+				user.sendMessage(Text.translatable("item.guild.profession_resignment.resignment.fail", QuestProfession.getTranslatedText(professionName)), false);
 			}
 			return TypedActionResult.fail(stack);
         }
@@ -55,8 +54,8 @@ public class QuestProfessionResignment extends Item {
 		NbtCompound nbt = stack.getOrCreateNbt();
 		String professionName = nbt.getString("Profession");
 		if (professionName.length() > 0) {
-			tooltip.add(new TranslatableTextContent("profession.profession").append(" ").append(QuestProfession.getTranslatedText(professionName)).formatted(Formatting.GOLD));
-			tooltip.add(new TranslatableTextContent("item.guild.profession_resignment.description").formatted(Formatting.DARK_GRAY));
+			tooltip.add(Text.translatable("profession.profession").append(" ").append(QuestProfession.getTranslatedText(professionName)).formatted(Formatting.GOLD));
+			tooltip.add(Text.translatable("item.guild.profession_resignment.description").formatted(Formatting.DARK_GRAY));
 		}
 	}
 }

@@ -75,6 +75,11 @@ public class QuestsScreenHandler extends ScreenHandler {
 		return true;
     }
 
+    public ItemStack transferSlot(PlayerEntity player, int index) {
+		// TODO: Check this
+		return null;
+	}
+
 	@Environment(EnvType.CLIENT)
 	public void acceptQuest(String profession, int index) {
 		List<Quest> professionsQuest = this.availableQuests.get(profession);

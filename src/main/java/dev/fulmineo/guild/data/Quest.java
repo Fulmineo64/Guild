@@ -25,7 +25,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralTextContent;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
@@ -488,7 +488,7 @@ public class Quest {
 			}
 		}
 		if (entry.contains("Label")) {
-			stack.setCustomName(new LiteralTextContent(entry.getString("Label")));
+			stack.setCustomName(Text.literal(entry.getString("Label")));
 		}
 		QuestData data = new QuestData();
 		data.stack = stack;

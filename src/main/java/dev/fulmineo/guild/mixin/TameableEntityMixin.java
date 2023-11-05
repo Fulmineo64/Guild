@@ -22,13 +22,14 @@ public abstract class TameableEntityMixin extends AnimalEntity {
 		super(entityType, world);
 	}
 
-	public void onKilledOther(ServerWorld world, LivingEntity killedEntity) {
-		super.onKilledOther(world, killedEntity);
+	public boolean onKilledOther(ServerWorld world, LivingEntity killedEntity) {
+		boolean result = super.onKilledOther(world, killedEntity);
 
 		LivingEntity owner = this.getOwner();
 		if (owner != null && owner instanceof PlayerEntity) {
 			QuestHelper.updateQuestSlay((PlayerEntity)owner, killedEntity);
 		}
+		return result;
 	}
 
 }

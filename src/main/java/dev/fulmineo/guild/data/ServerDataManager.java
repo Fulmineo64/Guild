@@ -101,8 +101,8 @@ public class ServerDataManager {
 
 				Map<String, QuestPool> pools = new HashMap<>();
 
-				for(Identifier id : manager.findResources("quests/levels", path -> path.endsWith(".json"))) {
-					try(InputStream stream = manager.getResource(id).getInputStream()) {
+				for(Identifier id : manager.findResources("quests/levels", path -> path.toString().endsWith(".json")).keySet()) {
+					try(InputStream stream = manager.getResource(id).get().getInputStream()) {
 						try {
 							QuestLevels data = (QuestLevels)GSON.fromJson(new String(stream.readAllBytes()), QuestLevels.class);
 							levels.put(data.name, data.levels);
@@ -114,8 +114,8 @@ public class ServerDataManager {
 					}
 				}
 
-				for(Identifier id : manager.findResources("quests/professions", path -> path.endsWith(".json"))) {
-					try(InputStream stream = manager.getResource(id).getInputStream()) {
+				for(Identifier id : manager.findResources("quests/professions", path -> path.toString().endsWith(".json")).keySet()) {
+					try(InputStream stream = manager.getResource(id).get().getInputStream()) {
 						try {
 							QuestProfession profession = (QuestProfession)GSON.fromJson(new String(stream.readAllBytes()), QuestProfession.class);
 							if (professions.containsKey(profession.name)) {
@@ -131,8 +131,8 @@ public class ServerDataManager {
 					}
 				}
 
-				for(Identifier id : manager.findResources("quests/pools", path -> path.endsWith(".json"))) {
-					try(InputStream stream = manager.getResource(id).getInputStream()) {
+				for(Identifier id : manager.findResources("quests/pools", path -> path.toString().endsWith(".json")).keySet()) {
+					try(InputStream stream = manager.getResource(id).get().getInputStream()) {
 						try {
 							QuestPool pool = (QuestPool)GSON.fromJson(new String(stream.readAllBytes()), QuestPool.class);
 							if (!pools.containsKey(pool.name)) {

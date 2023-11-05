@@ -3,6 +3,8 @@ package dev.fulmineo.guild;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.object.builder.v1.villager.VillagerProfessionBuilder;
+import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.AbstractBlock;
@@ -16,6 +18,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.poi.PointOfInterestType;
 
@@ -25,6 +28,9 @@ import java.util.List;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
+
+import com.google.common.collect.ImmutableSet;
 
 import dev.fulmineo.guild.config.GuildConfig;
 import dev.fulmineo.guild.data.ServerDataManager;
@@ -36,7 +42,6 @@ import dev.fulmineo.guild.network.ServerNetworkManager;
 import dev.fulmineo.guild.screen.QuestsScreenHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import org.jetbrains.annotations.Nullable;
 
 public class Guild implements ModInitializer {
 
@@ -53,6 +58,7 @@ public class Guild implements ModInitializer {
     // Identifiers
 
     public static final String MOD_ID = "guild";
+	public static final Identifier GUILD_MASTER_ID = new Identifier(MOD_ID,"guild_master");
 	public static final Identifier OPEN_QUESTS_SCREEN_PACKET_ID = new Identifier(MOD_ID, "quest_screen_packet");
     public static final Identifier ACCEPT_QUEST_PACKET_ID = new Identifier(MOD_ID, "accept_quest_packet");
     public static final Identifier TRY_COMPLETE_QUEST_PACKET_ID = new Identifier(MOD_ID, "complete_quest_packet");
@@ -71,12 +77,11 @@ public class Guild implements ModInitializer {
 
 	// Points of Interest
 
-	public static final PointOfInterestType GUILD_MASTER_POI = PointOfInterestType.register("guild_master", PointOfInterestType.getAllStatesOf(GUILD_MASTER_TABLE), 1, 1);
+	public static PointOfInterestType GUILD_MASTER_POI;
 
 	// Villager Professions
 
-	public static final VillagerProfession GUILD_MASTER = VillagerProfession.register("guild_master", GUILD_MASTER_POI, SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER);
-
+	public static VillagerProfession GUILD_MASTER;
 	// Items
 
 	public static final Item GUILD_MASTER_TABLE_ITEM = new BlockItem(GUILD_MASTER_TABLE, new Item.Settings().group(GROUP));
@@ -102,6 +107,22 @@ public class Guild implements ModInitializer {
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "guild_master_table"), GUILD_MASTER_TABLE_ITEM);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "profession_licence"), QUEST_PROFESSION_LICENCE_ITEM);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "profession_resignment"), QUEST_PROFESSION_RESIGNMENT_ITEM);
+
+		// Points of Interest
+
+		GUILD_MASTER_POI = PointOfInterestHelper.register(new Identifier(MOD_ID,"guild_master_poi"), 1, 1, ImmutableSet.copyOf(GUILD_MASTER_TABLE.getStateManager().getStates()));
+
+		// Villager Professions
+
+		GUILD_MASTER = Registry.register(
+			Registry.VILLAGER_PROFESSION,
+			GUILD_MASTER_ID, 
+			VillagerProfessionBuilder.create()
+			.id(GUILD_MASTER_ID)
+			.workstation(RegistryKey.of(Registry.POINT_OF_INTEREST_TYPE_KEY, new Identifier(MOD_ID,"guild_master_poi")))
+			.workSound(SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER)
+			.build()		
+		);
 
 		// Networking
 

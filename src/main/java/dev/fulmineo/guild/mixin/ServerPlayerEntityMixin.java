@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import com.mojang.authlib.GameProfile;
 
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,6 +26,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -38,13 +40,14 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 	protected List<String> professions = new ArrayList<>();
 	protected Map<String, Integer> professionsExp = new HashMap<>();
 
-	public ServerPlayerEntityMixin(MinecraftServer server, ServerWorld world, GameProfile profile) {
-		super(world, world.getSpawnPos(), world.getSpawnAngle(), profile);
+	public ServerPlayerEntityMixin(MinecraftServer server, ServerWorld world, GameProfile profile, @Nullable PlayerPublicKey publicKey) {
+		super(world, world.getSpawnPos(), world.getSpawnAngle(), profile, publicKey);
 	}
 
-	public void onKilledOther(ServerWorld world, LivingEntity killedEntity) {
-		super.onKilledOther(world, killedEntity);
+	public boolean onKilledOther(ServerWorld world, LivingEntity killedEntity) {
+		boolean result = super.onKilledOther(world, killedEntity);
 		QuestHelper.updateQuestSlay(this, killedEntity);
+		return result;
 	}
 
 	public List<Quest> getAcceptedQuests() {

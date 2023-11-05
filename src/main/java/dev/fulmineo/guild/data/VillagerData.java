@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
 
 import com.google.common.collect.ImmutableMap;
@@ -18,6 +17,7 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.entity.Entity;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOffers;
@@ -69,6 +69,5 @@ public class VillagerData {
 			nbt.putString("Profession", this.profession);
 		   	return new TradeOffer(new ItemStack(Items.EMERALD, this.price), stack, 99999, this.experience, 0.05F);
 		}
-	 }
-
+	}
 }
