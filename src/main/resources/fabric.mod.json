@@ -33,9 +33,9 @@
 	],
 	"accessWidener": "guild.accesswidener",
 	"depends": {
-		"fabricloader": ">=0.11.3",
+		"fabricloader": ">=0.14.24",
 		"minecraft": "1.19.x",
 		"java": ">=17",
-		"cloth-config2": ">=7.0.72"
+		"cloth-config2": ">=8.3.103"
 	}
 }
