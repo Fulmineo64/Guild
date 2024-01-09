@@ -23,11 +23,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	private static final Identifier TEXTURE = new Identifier(Guild.MOD_ID, "textures/gui/container/guild.png");
@@ -53,13 +53,22 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		int w = (this.width - this.backgroundWidth) / 2;
 		int h = (this.height - this.backgroundHeight) / 2;
 		this.addDrawableChild(new InfoButton(w + 6, h + 16, (button) -> {}));
-		this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 56, h + 16, 50, 20, Text.translatable("button.guild.quest.delete"), (button) -> {
+		this.addDrawableChild(ButtonWidget.builder(Text.translatable("button.guild.quest.delete"), (button) -> {
 			this.deleteMode = !this.deleteMode;
 			button.setMessage(this.deleteMode ? Text.translatable("button.guild.quest.cancel") : Text.translatable("button.guild.quest.delete"));
 			for(int i = 0; i < this.available.size(); ++i) {
 				this.available.get(i).active = this.deleteMode ? true : this.handler.acceptedQuests.size() < this.handler.maxAcceptedQuests;
 			}
-		}));
+		})
+		.dimensions(w + this.backgroundWidth - 56, h + 16, 50, 20)
+		.build());
+		// this.addDrawableChild(new ButtonWidget(w + this.backgroundWidth - 56, h + 16, 50, 20, Text.translatable("button.guild.quest.delete"), (button) -> {
+		// 	this.deleteMode = !this.deleteMode;
+		// 	button.setMessage(this.deleteMode ? Text.translatable("button.guild.quest.cancel") : Text.translatable("button.guild.quest.delete"));
+		// 	for(int i = 0; i < this.available.size(); ++i) {
+		// 		this.available.get(i).active = this.deleteMode ? true : this.handler.acceptedQuests.size() < this.handler.maxAcceptedQuests;
+		// 	}
+		// }));
 		int y = h + 41;
 		int profNum = this.handler.professions.size();
 		int x = (this.width / 2) - ((profNum*20 + (profNum-1)*2) / 2);
@@ -135,7 +144,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	}
 
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 
@@ -155,7 +164,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	}
 
 	private void drawLevelInfo(MatrixStack matrices, int x, int y) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 216.0F, 102, 5, 512, 256);
 		drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 221.0F, this.professionData.levelPerc+ 1, 5, 512, 256);
@@ -184,7 +193,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	@Environment(EnvType.CLIENT)
 	class InfoButton extends ButtonWidget {
 		public InfoButton(int x, int y, ButtonWidget.PressAction onPress) {
-			super(x, y, 20, 20, Text.literal("?"), onPress);
+			super(x, y, 20, 20, Text.literal("?"), onPress, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
 		}
 
 		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
@@ -225,7 +234,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		final int index;
 		private Item item;
 		public ProfessionButton(int x, int y, int index, ButtonWidget.PressAction onPress) {
-			super(x, y, 20, 20, Text.empty(), onPress);
+			super(x, y, 20, 20, Text.empty(), onPress, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
 			this.index = index;
 		}
 
@@ -239,10 +248,10 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			super.renderButton(matrices, mouseX, mouseY, delta);
 			QuestsScreen.this.itemRenderer.zOffset = 100.0F;
 			if (this.item == null) {
-				this.item = Registry.ITEM.get(new Identifier(profession.icon));
+				this.item = Registries.ITEM.get(new Identifier(profession.icon));
 			}
 			ItemStack stack = new ItemStack(this.item);
-			QuestsScreen.this.itemRenderer.renderInGui(stack, this.x + 2, this.y + 2);
+			QuestsScreen.this.itemRenderer.renderInGui(stack, this.getX() + 2, this.getY() + 2);
 		}
 
 		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
@@ -288,7 +297,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		final int index;
 
 		public QuestButton(int x, int y, int index, ButtonWidget.PressAction onPress) {
-			super(x, y, 126, 20, Text.empty(), onPress);
+			super(x, y, 126, 20, Text.empty(), onPress, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
 			this.index = index;
 		}
 
@@ -306,8 +315,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			super.renderButton(matrices, mouseX, mouseY, delta);
 			QuestsScreen.this.itemRenderer.zOffset = 100.0F;
 
-			int xi = this.x + 3;
-			int yi = this.y + 1;
+			int xi = this.getX() + 3;
+			int yi = this.getY() + 1;
 
 			Iterator<QuestData> iterator = quest.tasks.iterator();
 			while (iterator.hasNext()) {
@@ -318,7 +327,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				xi += 20;
 			}
 
-			xi = x + 108;
+			xi = this.getX() + 108;
 			iterator = quest.rewards.iterator();
 			while (iterator.hasNext()) {
 				QuestData data = iterator.next();

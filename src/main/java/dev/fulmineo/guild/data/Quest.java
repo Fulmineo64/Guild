@@ -24,11 +24,11 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
 
 public class Quest {
 	public static int MAX_TASK_ROLLS = 3;
@@ -313,7 +313,7 @@ public class Quest {
 		for (NbtElement elem: items) {
 			NbtCompound entry = (NbtCompound)elem;
 			List<ItemStack> stacks = new ArrayList<>();
-			Item item = Registry.ITEM.get(new Identifier(entry.getString("Name")));
+			Item item = Registries.ITEM.get(new Identifier(entry.getString("Name")));
 			int needed = entry.getInt("Needed");
 			Iterator<DefaultedList<ItemStack>> iterator = mainAndOffhand.iterator();
 			while (needed > 0 && iterator.hasNext()) {
@@ -393,7 +393,7 @@ public class Quest {
 					}
 				}
 				default: {
-					ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))), count);
+					ItemStack stack = new ItemStack(Registries.ITEM.get(new Identifier(entry.getString("Name"))), count);
 					if (entry.contains("Tag")) {
 						stack.setNbt(entry.getCompound("Tag"));
 					}
@@ -430,12 +430,12 @@ public class Quest {
 	private void addItemTask(String icon, NbtCompound entry) {
 		ItemStack stack;
 		if (entry.contains("Icon")) {
-			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
+			stack = new ItemStack(Registries.ITEM.get(new Identifier(entry.getString("Icon"))));
 			if (entry.contains("IconTag")) {
 				stack.setNbt(entry.getCompound("IconTag"));
 			}
 		} else {
-			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))));
+			stack = new ItemStack(Registries.ITEM.get(new Identifier(entry.getString("Name"))));
 			if (entry.contains("Tag")) {
 				stack.setNbt(entry.getCompound("Tag"));
 			}
@@ -452,17 +452,17 @@ public class Quest {
 	private void addEntityTask(String icon, NbtCompound entry) {
 		ItemStack stack;
 		if (entry.contains("Icon")) {
-			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
+			stack = new ItemStack(Registries.ITEM.get(new Identifier(entry.getString("Icon"))));
 			if (entry.contains("IconTag")) {
 				stack.setNbt(entry.getCompound("IconTag"));
 			}
 		} else {
-			Item spawnEgg = Registry.ITEM.get(new Identifier(entry.getString("Name")+"_spawn_egg"));
+			Item spawnEgg = Registries.ITEM.get(new Identifier(entry.getString("Name")+"_spawn_egg"));
 			if (spawnEgg == Items.AIR) {
 				stack = new ItemStack(Items.DIAMOND_SWORD);
 			} else {
 				stack = new ItemStack(spawnEgg);
-				stack.setCustomName(Registry.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getName());
+				stack.setCustomName(Registries.ENTITY_TYPE.get(new Identifier(entry.getString("Name"))).getName());
 			}
 		}
 		QuestData data = new QuestData();
@@ -477,12 +477,12 @@ public class Quest {
 	private void addReward(NbtCompound entry) {
 		ItemStack stack;
 		if (entry.contains("Icon")) {
-			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Icon"))));
+			stack = new ItemStack(Registries.ITEM.get(new Identifier(entry.getString("Icon"))));
 			if (entry.contains("IconTag")) {
 				stack.setNbt(entry.getCompound("IconTag"));
 			}
 		} else {
-			stack = new ItemStack(Registry.ITEM.get(new Identifier(entry.getString("Name"))));
+			stack = new ItemStack(Registries.ITEM.get(new Identifier(entry.getString("Name"))));
 			if (entry.contains("Tag")) {
 				stack.setNbt(entry.getCompound("Tag"));
 			}

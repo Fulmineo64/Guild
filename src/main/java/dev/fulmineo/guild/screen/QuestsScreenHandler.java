@@ -25,9 +25,9 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class QuestsScreenHandler extends ScreenHandler {
@@ -75,8 +75,7 @@ public class QuestsScreenHandler extends ScreenHandler {
 		return true;
     }
 
-    public ItemStack transferSlot(PlayerEntity player, int index) {
-		// TODO: Check this
+    public ItemStack quickMove(PlayerEntity player, int index) {
 		return null;
 	}
 
@@ -133,7 +132,7 @@ public class QuestsScreenHandler extends ScreenHandler {
 			for (int i = 0; i < defaultedList.size(); ++i) {
 				ItemStack stack = defaultedList.get(i);
 				if (!stack.isOf(Items.AIR)) {
-					String id = Registry.ITEM.getId(stack.getItem()).toString();
+					String id = Registries.ITEM.getId(stack.getItem()).toString();
 					List<ItemStack> list = itemsById.get(id);
 					if (list == null) {
 						list = new ArrayList<>();

@@ -18,10 +18,10 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.screen.ScreenHandler;
 import dev.fulmineo.guild.data.ServerDataManager;
 import dev.fulmineo.guild.data.GuildServerPlayerEntity;
@@ -131,22 +131,22 @@ public class ServerNetworkManager {
 								switch (task.type) {
 									case "item": {
 										icon = "✉";
-										translationKey = Registry.ITEM.get(new Identifier(task.name)).getTranslationKey();
+										translationKey = Registries.ITEM.get(new Identifier(task.name)).getTranslationKey();
 										break;
 									}
 									case "slay": {
 										icon = "🗡";
-										translationKey = Registry.ENTITY_TYPE.get(new Identifier(task.name)).getTranslationKey();
+										translationKey = Registries.ENTITY_TYPE.get(new Identifier(task.name)).getTranslationKey();
 										break;
 									}
 									case "cure": {
 										icon = "✙";
-										translationKey = Registry.ENTITY_TYPE.get(new Identifier(task.name)).getTranslationKey();
+										translationKey = Registries.ENTITY_TYPE.get(new Identifier(task.name)).getTranslationKey();
 										break;
 									}
 									case "summon": {
 										icon = "✦";
-										translationKey = Registry.ENTITY_TYPE.get(new Identifier(task.name)).getTranslationKey();
+										translationKey = Registries.ENTITY_TYPE.get(new Identifier(task.name)).getTranslationKey();
 										break;
 									}
 								}
@@ -160,7 +160,7 @@ public class ServerNetworkManager {
 									sentDescription = true;
 									player.sendMessage(Text.translatable("profession.unlocked_rewards"), false);
 								}
-								player.sendMessage((Text.translatable(Registry.ITEM.get(new Identifier(reward.name)).getTranslationKey())), false);
+								player.sendMessage((Text.translatable(Registries.ITEM.get(new Identifier(reward.name)).getTranslationKey())), false);
 							}
 						}
 					}

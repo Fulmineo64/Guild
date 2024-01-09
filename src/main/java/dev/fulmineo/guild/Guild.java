@@ -1,9 +1,9 @@
 package dev.fulmineo.guild;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.object.builder.v1.villager.VillagerProfessionBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
@@ -17,8 +17,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.poi.PointOfInterestType;
 
@@ -58,7 +59,6 @@ public class Guild implements ModInitializer {
     // Identifiers
 
     public static final String MOD_ID = "guild";
-	public static final Identifier GUILD_MASTER_ID = new Identifier(MOD_ID,"guild_master");
 	public static final Identifier OPEN_QUESTS_SCREEN_PACKET_ID = new Identifier(MOD_ID, "quest_screen_packet");
     public static final Identifier ACCEPT_QUEST_PACKET_ID = new Identifier(MOD_ID, "accept_quest_packet");
     public static final Identifier TRY_COMPLETE_QUEST_PACKET_ID = new Identifier(MOD_ID, "complete_quest_packet");
@@ -67,7 +67,6 @@ public class Guild implements ModInitializer {
     public static final Identifier REQUEST_CLIENT_DATA_ID = new Identifier(MOD_ID, "request_client_data_packet");
     public static final Identifier TRANSFER_CLIENT_DATA_ID = new Identifier(MOD_ID, "transfer_client_data_packet");
     public static final ScreenHandlerType<QuestsScreenHandler> QUESTS_SCREEN_HANDLER = ScreenHandlerRegistry.registerExtended(new Identifier(MOD_ID, "quest_screen"), QuestsScreenHandler::new);
-	public static final ItemGroup GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID,"group"), () -> new ItemStack(Registry.ITEM.get(new Identifier(MOD_ID, "guild_master_table"))));
 
 	public static final String[] SCREEN_TITLES = {"screen.guild.quest"};
 
@@ -82,9 +81,16 @@ public class Guild implements ModInitializer {
 	// Villager Professions
 
 	public static VillagerProfession GUILD_MASTER;
+	
 	// Items
 
-	public static final Item GUILD_MASTER_TABLE_ITEM = new BlockItem(GUILD_MASTER_TABLE, new Item.Settings().group(GROUP));
+	public static final Item GUILD_MASTER_TABLE_ITEM = new BlockItem(GUILD_MASTER_TABLE, new Item.Settings());
+
+	// Item groups
+	
+	public static final ItemGroup ITEM_GROUP = FabricItemGroup.builder(new Identifier(MOD_ID, "group"))
+	.icon(() -> new ItemStack(GUILD_MASTER_TABLE_ITEM))
+	.build();
 
     public static final Item QUEST_PROFESSION_LICENCE_ITEM = new QuestProfessionLicence(new FabricItemSettings().maxCount(1));
     public static final Item QUEST_PROFESSION_RESIGNMENT_ITEM = new QuestProfessionResignment(new FabricItemSettings().maxCount(1));
@@ -100,13 +106,19 @@ public class Guild implements ModInitializer {
 
 		// Blocks
 
-		Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "guild_master_table"), GUILD_MASTER_TABLE);
+		Registry.register(Registries.BLOCK, new Identifier(MOD_ID, "guild_master_table"), GUILD_MASTER_TABLE);
 
 		// Items
 
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "guild_master_table"), GUILD_MASTER_TABLE_ITEM);
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "profession_licence"), QUEST_PROFESSION_LICENCE_ITEM);
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "profession_resignment"), QUEST_PROFESSION_RESIGNMENT_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(MOD_ID, "guild_master_table"), GUILD_MASTER_TABLE_ITEM);
+        Registry.register(Registries.ITEM, new Identifier(MOD_ID, "profession_licence"), QUEST_PROFESSION_LICENCE_ITEM);
+        Registry.register(Registries.ITEM, new Identifier(MOD_ID, "profession_resignment"), QUEST_PROFESSION_RESIGNMENT_ITEM);
+
+		// Item groups
+
+		ItemGroupEvents.modifyEntriesEvent(ITEM_GROUP).register(content -> {
+			content.add(GUILD_MASTER_TABLE_ITEM);
+		});
 
 		// Points of Interest
 
@@ -114,15 +126,7 @@ public class Guild implements ModInitializer {
 
 		// Villager Professions
 
-		GUILD_MASTER = Registry.register(
-			Registry.VILLAGER_PROFESSION,
-			GUILD_MASTER_ID, 
-			VillagerProfessionBuilder.create()
-			.id(GUILD_MASTER_ID)
-			.workstation(RegistryKey.of(Registry.POINT_OF_INTEREST_TYPE_KEY, new Identifier(MOD_ID,"guild_master_poi")))
-			.workSound(SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER)
-			.build()		
-		);
+		GUILD_MASTER = VillagerProfession.register("guild_master", RegistryKey.of(Registries.POINT_OF_INTEREST_TYPE.getKey(), new Identifier(MOD_ID,"guild_master_poi")), SoundEvents.ENTITY_VILLAGER_WORK_CARTOGRAPHER);
 
 		// Networking
 

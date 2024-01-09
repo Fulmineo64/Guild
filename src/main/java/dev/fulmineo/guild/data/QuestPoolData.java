@@ -2,8 +2,8 @@ package dev.fulmineo.guild.data;
 
 import dev.fulmineo.guild.Guild;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class QuestPoolData implements WeightedItem {
 	public String type;
@@ -45,7 +45,7 @@ public class QuestPoolData implements WeightedItem {
 		if (this.number.max != null) {
 			return this.number.max;
 		} else if (this.type == "item") {
-			return Registry.ITEM.get(new Identifier(this.name)).getMaxCount();
+			return Registries.ITEM.get(new Identifier(this.name)).getMaxCount();
 		} else {
 			return null;
 		}
@@ -54,10 +54,10 @@ public class QuestPoolData implements WeightedItem {
 	public String validate() {
 		switch (type) {
 			case "item": {
-				if (Registry.ITEM.containsId(new Identifier(name))) return "";
+				if (Registries.ITEM.containsId(new Identifier(name))) return "";
 			}
 			case "slay", "summon", "cure": {
-				if (Registry.ENTITY_TYPE.containsId(new Identifier(name))) return "";
+				if (Registries.ENTITY_TYPE.containsId(new Identifier(name))) return "";
 			}
 			case "currency": {
 				if (Guild.economyDependency != null) {
