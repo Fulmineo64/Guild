@@ -1,3 +1,8 @@
+# 0.4.5
+- Updated to Minecraft 1.19.4
+- Updated french translations, many thanks to Arona74 for their contribution!
+- Updated chinese translations, many thanks to GodGun968 for their contribution!
+
 # 0.4.4
 - Updated to Minecraft 1.19.3
 

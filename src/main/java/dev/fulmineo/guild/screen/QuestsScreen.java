@@ -101,7 +101,6 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 
 		for(int i = 0; i < this.professionQuests.size(); i++){
 			this.professionQuests.get(i).updateTasksAndRewards();
-			QuestsScreen.this.itemRenderer.zOffset = 0.0F;
 			AvailableQuestButton btn = this.addDrawableChild(new AvailableQuestButton(w + 6, y, i, (button) -> {
 				int index = ((AvailableQuestButton)button).index;
 				if (this.deleteMode) {
@@ -149,7 +148,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		RenderSystem.setShaderTexture(0, TEXTURE);
 
 		// Draws the background
-		drawTexture(matrices, this.x, this.y, this.getZOffset(), 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 512, 256);
+		drawTexture(matrices, this.x, this.y, 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 512, 256);
 	}
 
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
@@ -166,8 +165,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 	private void drawLevelInfo(MatrixStack matrices, int x, int y) {
 		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 		RenderSystem.setShaderTexture(0, TEXTURE);
-		drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 216.0F, 102, 5, 512, 256);
-		drawTexture(matrices, x + 85, y + 44, this.getZOffset(), 0.0F, 221.0F, this.professionData.levelPerc+ 1, 5, 512, 256);
+		drawTexture(matrices, x + 85, y + 44, 0.0F, 216.0F, 102, 5, 512, 256);
+		drawTexture(matrices, x + 85, y + 44, 0.0F, 221.0F, this.professionData.levelPerc+ 1, 5, 512, 256);
 
 		int tx = x + 138;
 		int ty = y + 38;
@@ -246,12 +245,11 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			QuestProfession profession = this.getQuestProfession();
 			if (profession == null) return;
 			super.renderButton(matrices, mouseX, mouseY, delta);
-			QuestsScreen.this.itemRenderer.zOffset = 100.0F;
 			if (this.item == null) {
 				this.item = Registries.ITEM.get(new Identifier(profession.icon));
 			}
 			ItemStack stack = new ItemStack(this.item);
-			QuestsScreen.this.itemRenderer.renderInGui(stack, this.getX() + 2, this.getY() + 2);
+			QuestsScreen.this.itemRenderer.renderInGui(matrices, stack, this.getX() + 2, this.getY() + 2);
 		}
 
 		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
@@ -313,7 +311,6 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			Quest quest = this.getQuest();
 			if (quest == null) return;
 			super.renderButton(matrices, mouseX, mouseY, delta);
-			QuestsScreen.this.itemRenderer.zOffset = 100.0F;
 
 			int xi = this.getX() + 3;
 			int yi = this.getY() + 1;
@@ -321,9 +318,9 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			Iterator<QuestData> iterator = quest.tasks.iterator();
 			while (iterator.hasNext()) {
 				QuestData data = iterator.next();
-				QuestsScreen.this.itemRenderer.renderInGui(data.stack, xi, yi);
-				QuestsScreen.this.itemRenderer.renderGuiItemOverlay(QuestsScreen.this.textRenderer, data.stack, xi - 10, yi - 9, data.icon);
-				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, data.stack, xi, yi, data.needed - data.count);
+				QuestsScreen.this.itemRenderer.renderInGui(matrices, data.stack, xi, yi);
+				QuestsScreen.this.itemRenderer.renderGuiItemOverlay(matrices, QuestsScreen.this.textRenderer, data.stack, xi - 10, yi - 9, data.icon);
+				this.renderGuiItemOverlay(matrices, QuestsScreen.this.textRenderer, data.stack, xi, yi, data.needed - data.count);
 				xi += 20;
 			}
 
@@ -331,16 +328,15 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			iterator = quest.rewards.iterator();
 			while (iterator.hasNext()) {
 				QuestData data = iterator.next();
-				QuestsScreen.this.itemRenderer.renderInGui(data.stack, xi, yi);
-				this.renderGuiItemOverlay(QuestsScreen.this.textRenderer, data.stack, xi, yi, data.count);
+				QuestsScreen.this.itemRenderer.renderInGui(matrices, data.stack, xi, yi);
+				this.renderGuiItemOverlay(matrices, QuestsScreen.this.textRenderer, data.stack, xi, yi, data.count);
 				xi -= 18;
 			}
 
-			QuestsScreen.this.itemRenderer.zOffset = 0.0F;
 		}
 
-		protected void renderGuiItemOverlay(TextRenderer renderer, ItemStack stack, int x, int y, int val) {
-			QuestsScreen.this.itemRenderer.renderGuiItemOverlay(QuestsScreen.this.textRenderer, stack, x, y, val > 0 ? String.valueOf(val) : "✔");
+		protected void renderGuiItemOverlay(MatrixStack matrices, TextRenderer renderer, ItemStack stack, int x, int y, int val) {
+			QuestsScreen.this.itemRenderer.renderGuiItemOverlay(matrices, QuestsScreen.this.textRenderer, stack, x, y, val > 0 ? String.valueOf(val) : "✔");
 		}
 
 		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
