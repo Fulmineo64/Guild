@@ -29,13 +29,14 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.world.World;
 
 public class Quest {
 	public static int MAX_TASK_ROLLS = 3;
 	protected NbtCompound nbt;
-	@Environment(EnvType.CLIENT)
+	// @Environment(EnvType.CLIENT)
 	public List<QuestData> tasks = new ArrayList<>();
-	@Environment(EnvType.CLIENT)
+	// @Environment(EnvType.CLIENT)
 	public List<QuestData> rewards = new ArrayList<>();
 
 	public Quest() {
@@ -162,7 +163,7 @@ public class Quest {
 			nbt.putInt("Time", time);
 		}
 		if (Guild.CONFIG.expirationTicks != 0) {
-			nbt.putLong("AvailableUntil", player.world.getTime() + Guild.CONFIG.expirationTicks);
+			nbt.putLong("AvailableUntil", player.getWorld().getTime() + Guild.CONFIG.expirationTicks);
 		}
 		nbt.putInt("Exp", Math.round(exp));
 		nbt.putInt("PlayerExp", Math.round(playerExp));
@@ -371,16 +372,17 @@ public class Quest {
 	}
 
 	public void giveRewards(ServerPlayerEntity player) {
-		boolean expired = this.isExpired(player.world.getTime());
+		World world = player.getWorld();
+		boolean expired = this.isExpired(world.getTime());
 		NbtList rewards = this.getRewardList();
 		for (NbtElement elm: rewards) {
 			NbtCompound entry = (NbtCompound)elm;
 			String type = entry.getString("Type");
 			int count = entry.getInt("Count");
 			if (expired) {
-				int cnt1 = player.world.random.nextInt(count + 1);
+				int cnt1 = world.random.nextInt(count + 1);
 				if (player.hasStatusEffect(StatusEffects.LUCK)) {
-					int cnt2 = player.world.random.nextInt(count + 1);
+					int cnt2 = world.random.nextInt(count + 1);
 					count = Math.max(cnt1, cnt2);
 				} else {
 					count = cnt1;

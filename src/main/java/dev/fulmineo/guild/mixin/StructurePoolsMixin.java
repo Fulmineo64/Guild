@@ -8,12 +8,12 @@ import com.mojang.datafixers.util.Pair;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(StructurePools.class)
 public class StructurePoolsMixin {
     @Inject(method = "register", at = @At("HEAD"), cancellable = true)
-    private static void registerMixin(Registerable<StructurePool> structurePoolsRegisterable, String id, StructurePool pool, CallbackInfoReturnable<StructurePool> cir) {
+    private static void registerMixin(Registerable<StructurePool> structurePoolsRegisterable, String id, StructurePool pool, CallbackInfo cir) {
        	tryAddElementToPool("village/plains/houses", id, pool, "guild:village/plains/houses/guild", StructurePool.Projection.RIGID, 2);
        	tryAddElementToPool("village/desert/houses", id, pool, "guild:village/plains/houses/guild", StructurePool.Projection.RIGID, 2);
        	tryAddElementToPool("village/savanna/houses", id, pool, "guild:village/plains/houses/guild", StructurePool.Projection.RIGID, 2);
@@ -21,7 +21,6 @@ public class StructurePoolsMixin {
        	tryAddElementToPool("village/snowy/houses", id, pool, "guild:village/plains/houses/guild", StructurePool.Projection.RIGID, 2);
     }
 
-    // TODO: Check if this works
     private static void tryAddElementToPool(String targetPool, String currentPool, StructurePool pool, String elementId, StructurePool.Projection projection, int weight) {
         if (targetPool.equals(currentPool)) {
             StructurePoolElement element = StructurePoolElement.ofLegacySingle(elementId).apply(projection);

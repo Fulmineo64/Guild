@@ -38,7 +38,7 @@ public class CommandInit {
 						if (source != null) {
 							ServerPlayerEntity player = source.getPlayerOrThrow();
 							((GuildServerPlayerEntity)player).resetQuestsAndProfessions();
-							context.getSource().sendFeedback(Text.translatable("command.guild.reset.success"), false);
+							context.getSource().sendFeedback(() -> Text.translatable("command.guild.reset.success"), false);
 						}
 						return 1;
 					})
@@ -53,7 +53,7 @@ public class CommandInit {
 						if (source != null) {
 							ServerPlayerEntity player = source.getPlayerOrThrow();
 							((GuildServerPlayerEntity)player).clearQuests();
-							context.getSource().sendFeedback(Text.translatable("command.guild.clear.success"), false);
+							context.getSource().sendFeedback(() -> Text.translatable("command.guild.clear.success"), false);
 						}
 						return 1;
 					})
@@ -74,7 +74,7 @@ public class CommandInit {
 								String professionName = StringArgumentType.getString(context, "profession");
 								QuestProfession profession = ServerDataManager.professions.get(professionName);
 								if (profession == null) {
-									source.sendFeedback(Text.translatable("command.guild.licence.invalid_profession", professionName), false);
+									source.sendFeedback(() -> Text.translatable("command.guild.licence.invalid_profession", professionName), false);
 								} else {
 									ItemStack stack = new ItemStack(Guild.QUEST_PROFESSION_LICENCE_ITEM);
 									NbtCompound nbt = stack.getOrCreateNbt();
@@ -105,7 +105,7 @@ public class CommandInit {
 								String professionName = StringArgumentType.getString(context, "profession");
 								QuestProfession profession = ServerDataManager.professions.get(professionName);
 								if (profession == null) {
-									source.sendFeedback(Text.translatable("command.guild.licence.invalid_profession", professionName), false);
+									source.sendFeedback(() -> Text.translatable("command.guild.licence.invalid_profession", professionName), false);
 								} else {
 									List<Quest> professionQuests = ((GuildServerPlayerEntity)player).getAvailableQuests().get(professionName);
 									if (professionQuests == null || professionQuests.size() < Guild.CONFIG.getMaxQuestsPerProfession()) {
@@ -137,7 +137,7 @@ public class CommandInit {
 									String professionName = StringArgumentType.getString(context, "profession");
 									QuestProfession profession = ServerDataManager.professions.get(professionName);
 									if (profession == null) {
-										source.sendFeedback(Text.translatable("command.guild.licence.invalid_profession", professionName), false);
+										source.sendFeedback(() -> Text.translatable("command.guild.licence.invalid_profession", professionName), false);
 									} else {
 										int exp = IntegerArgumentType.getInteger(context, "exp");
 										((GuildServerPlayerEntity)player).setProfessionExp(professionName, exp);

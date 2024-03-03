@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.world.World;
 
 public class QuestHelper {
 	public static void updateQuestSlay(PlayerEntity player, LivingEntity killedEntity) {
@@ -59,7 +60,7 @@ public class QuestHelper {
 	}
 
 	public static void refreshAvailableQuests(List<QuestProfession> professions, PlayerEntity player) {
-		long time = player.world.getTime();
+		long time = player.getWorld().getTime();
 		GuildServerPlayerEntity guildPlayer = (GuildServerPlayerEntity)player;
 		Map<String, List<Quest>> availableQuests = guildPlayer.getAvailableQuests();
 
@@ -93,12 +94,13 @@ public class QuestHelper {
 	}
 
 	public static int generateQuests(PlayerEntity player, List<QuestProfession> availableProfessions, int questsToGenerate) {
+		World world = player.getWorld();
 		GuildServerPlayerEntity guildPlayer = (GuildServerPlayerEntity)player;
 		Map<String, List<Quest>> availableQuests = guildPlayer.getAvailableQuests();
 		int i;
 		for (i = 0; i < questsToGenerate; i++){
 			if (availableProfessions.size() == 0) break;
-			int professionIndex = player.world.random.nextInt(availableProfessions.size());
+			int professionIndex = world.random.nextInt(availableProfessions.size());
 			QuestProfession profession = availableProfessions.get(professionIndex);
 			List<Quest> quests;
 			if (availableQuests.containsKey(profession.name)) {

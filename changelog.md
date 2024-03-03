@@ -1,3 +1,6 @@
+# 0.4.6
+- Updated to Minecraft 1.20
+
 # 0.4.5
 - Updated to Minecraft 1.19.4
 - Updated french translations, many thanks to Arona74 for their contribution!

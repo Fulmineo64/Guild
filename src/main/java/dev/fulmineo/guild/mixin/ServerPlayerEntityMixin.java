@@ -34,7 +34,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Gu
 
 	protected List<Quest> acceptedQuests = new ArrayList<>();
 	protected Map<String, List<Quest>> availableQuests = new HashMap<>();
-	protected long lastQuestGenTime = world.getTime();
+	protected long lastQuestGenTime = getWorld().getTime();
 	protected List<String> professions = new ArrayList<>();
 	protected Map<String, Integer> professionsExp = new HashMap<>();
 

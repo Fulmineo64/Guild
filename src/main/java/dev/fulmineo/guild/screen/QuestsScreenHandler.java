@@ -62,7 +62,7 @@ public class QuestsScreenHandler extends ScreenHandler {
 			this.professionsData.put(profession.name, data);
 		}
 		this.maxAcceptedQuests = nbt.getInt("MaxAcceptedQuests");
-		this.world = playerInventory.player.world;
+		this.world = playerInventory.player.getWorld();
 		this.playerInventory = playerInventory;
 		this.updateItemCompletion();
     }
@@ -122,8 +122,6 @@ public class QuestsScreenHandler extends ScreenHandler {
 	}
 
 	private void updateItemCompletion() {
-		// TODO: Find a way to update the client invetory early like in this method
-        // ((ClientPlayerEntity)this.playerInventory.player).networkHandler.sendPacket(new CloseHandledScreenC2SPacket(this.syncId));
 		Map<String, List<ItemStack>> itemsById = new HashMap<>();
 		ImmutableList<DefaultedList<ItemStack>> mainAndOffhand = ImmutableList.of(this.playerInventory.main, this.playerInventory.offHand);
 		Iterator<DefaultedList<ItemStack>> iterator = mainAndOffhand.iterator();

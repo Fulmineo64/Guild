@@ -95,7 +95,7 @@ public class ServerNetworkManager {
 				Map<String, List<Quest>> availableQuests = guildPlayer.getAvailableQuests();
 				List<Quest> quests = availableQuests.get(profession);
 				Quest quest = quests.remove(index);
-				quest.accept(player.world.getTime());
+				quest.accept(player.getWorld().getTime());
 				acceptedQuests.add(quest);
 			}
 		});

@@ -3,7 +3,6 @@ package dev.fulmineo.guild.screen;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -15,10 +14,10 @@ import dev.fulmineo.guild.screen.QuestsScreenHandler.ProfessionData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,7 +41,6 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 
    	public QuestsScreen(QuestsScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
-		this.passEvents = false;
 		this.backgroundWidth = 276;
 		this.backgroundHeight = 200;
 		this.titleY = 4;
@@ -133,51 +131,51 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 		}
 	}
 
-	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-		float x = (float)((70 - this.textRenderer.getWidth(this.title)) / 2);
-		this.textRenderer.draw(matrices, this.title, x, (float)this.titleY, 4210752);
+	protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+		int x = (70 - this.textRenderer.getWidth(this.title)) / 2;
+		context.drawText(this.textRenderer, this.title, x, this.titleY, 4210752, false);
 
-		this.textRenderer.draw(matrices, Text.translatable("screen.guild.quests.available"), 6, 40, 4210752);
+		context.drawText(this.textRenderer, Text.translatable("screen.guild.quests.available"), 6, 40, 4210752, false);
 		MutableText accepted = Text.translatable("screen.guild.quests.accepted");
-		this.textRenderer.draw(matrices, accepted, this.backgroundWidth - 6 - this.textRenderer.getWidth(accepted), 40, 4210752);
+		context.drawText(this.textRenderer, accepted, this.backgroundWidth - 6 - this.textRenderer.getWidth(accepted), 40, 4210752, false);
 	}
 
-	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
 		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 
 		// Draws the background
-		drawTexture(matrices, this.x, this.y, 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 512, 256);
+		context.drawTexture(TEXTURE, this.x, this.y, 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 512, 256);
 	}
 
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.renderBackground(matrices);
-		super.render(matrices, mouseX, mouseY, delta);
-		this.drawMouseoverTooltip(matrices, mouseX, mouseY);
+	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+		this.renderBackground(context);
+		super.render(context, mouseX, mouseY, delta);
+		this.drawMouseoverTooltip(context, mouseX, mouseY);
 
 		int i = (this.width - this.backgroundWidth) / 2;
 		int j = (this.height - this.backgroundHeight) / 2;
 
-		this.drawLevelInfo(matrices, i, j);
+		this.drawLevelInfo(context, i, j);
 	}
 
-	private void drawLevelInfo(MatrixStack matrices, int x, int y) {
+	private void drawLevelInfo(DrawContext context, int x, int y) {
 		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 		RenderSystem.setShaderTexture(0, TEXTURE);
-		drawTexture(matrices, x + 85, y + 44, 0.0F, 216.0F, 102, 5, 512, 256);
-		drawTexture(matrices, x + 85, y + 44, 0.0F, 221.0F, this.professionData.levelPerc+ 1, 5, 512, 256);
+		context.drawTexture(TEXTURE, x + 85, y + 44, 0.0F, 216.0F, 102, 5, 512, 256);
+		context.drawTexture(TEXTURE, x + 85, y + 44, 0.0F, 221.0F, this.professionData.levelPerc+ 1, 5, 512, 256);
 
 		int tx = x + 138;
 		int ty = y + 38;
 		String val = String.valueOf(this.professionData.level + 1);
 		tx -= this.textRenderer.getWidth(val) / 2;
 
-		this.textRenderer.draw(matrices, val, (float)(tx + 1), (float)ty, 0);
-		this.textRenderer.draw(matrices, val, (float)(tx - 1), (float)ty, 0);
-		this.textRenderer.draw(matrices, val, (float)tx, (float)(ty + 1), 0);
-		this.textRenderer.draw(matrices, val, (float)tx, (float)(ty - 1), 0);
-		this.textRenderer.draw(matrices, val, (float)tx, (float)ty, 8453920);
+		context.drawText(this.textRenderer, val, tx + 1, ty, 0, false);
+		context.drawText(this.textRenderer, val, tx - 1, ty, 0, false);
+		context.drawText(this.textRenderer, val, tx, ty + 1, 0, false);
+		context.drawText(this.textRenderer, val, tx, ty - 1, 0, false);
+		context.drawText(this.textRenderer, val, tx, ty, 8453920, false);
 	}
 
 	private void selectProfession(int index) {
@@ -195,7 +193,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			super(x, y, 20, 20, Text.literal("?"), onPress, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
 		}
 
-		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
+		public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
+			super.renderButton(context, mouseX, mouseY, delta);
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
 				tooltip.add(Text.translatable("screen.guild.quests.legend").formatted(Formatting.AQUA));
@@ -222,7 +221,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 				tooltip.add(Text.translatable("screen.guild.quests.player_exp.description").formatted(Formatting.DARK_GRAY));
 				tooltip.add(Text.literal("♦").formatted(Formatting.GRAY).append(" ").append(Text.translatable("screen.guild.quests.exp")));
 				tooltip.add(Text.translatable("screen.guild.quests.exp.description").formatted(Formatting.DARK_GRAY));
-				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
+				context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
 			}
 		}
 	}
@@ -241,23 +240,24 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			return QuestsScreen.this.handler.professions.get(this.index);
 		}
 
-		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
 			QuestProfession profession = this.getQuestProfession();
 			if (profession == null) return;
-			super.renderButton(matrices, mouseX, mouseY, delta);
+			super.renderButton(context, mouseX, mouseY, delta);
 			if (this.item == null) {
 				this.item = Registries.ITEM.get(new Identifier(profession.icon));
 			}
 			ItemStack stack = new ItemStack(this.item);
-			QuestsScreen.this.itemRenderer.renderInGui(matrices, stack, this.getX() + 2, this.getY() + 2);
+			context.drawItem(stack, this.getX() + 2, this.getY() + 2);
+			this.renderTooltip(context, mouseX, mouseY);
 		}
 
-		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
+		public void renderTooltip(DrawContext context, int mouseX, int mouseY) {
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
 				QuestProfession profession = this.getQuestProfession();
 				tooltip.add(QuestProfession.getTranslatedText(profession.name).formatted(Formatting.GOLD));
-				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
+				context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
 			}
 		}
 	}
@@ -283,10 +283,10 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			return QuestsScreen.this.handler.acceptedQuests.size() > this.index ? QuestsScreen.this.handler.acceptedQuests.get(this.index) : null;
 		}
 
-		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
 			Quest quest = this.getQuest();
 			if (quest == null) return;
-			super.renderButton(matrices, mouseX, mouseY, delta);
+			super.renderButton(context, mouseX, mouseY, delta);
 		}
 	}
 
@@ -307,10 +307,10 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			return null;
 		}
 
-		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
 			Quest quest = this.getQuest();
 			if (quest == null) return;
-			super.renderButton(matrices, mouseX, mouseY, delta);
+			super.renderButton(context, mouseX, mouseY, delta);
 
 			int xi = this.getX() + 3;
 			int yi = this.getY() + 1;
@@ -318,9 +318,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			Iterator<QuestData> iterator = quest.tasks.iterator();
 			while (iterator.hasNext()) {
 				QuestData data = iterator.next();
-				QuestsScreen.this.itemRenderer.renderInGui(matrices, data.stack, xi, yi);
-				QuestsScreen.this.itemRenderer.renderGuiItemOverlay(matrices, QuestsScreen.this.textRenderer, data.stack, xi - 10, yi - 9, data.icon);
-				this.renderGuiItemOverlay(matrices, QuestsScreen.this.textRenderer, data.stack, xi, yi, data.needed - data.count);
+				context.drawItem(data.stack, xi, yi);
+				this.renderGuiItemOverlay(context, QuestsScreen.this.textRenderer, data.stack, xi, yi, data.needed - data.count);
 				xi += 20;
 			}
 
@@ -328,18 +327,19 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			iterator = quest.rewards.iterator();
 			while (iterator.hasNext()) {
 				QuestData data = iterator.next();
-				QuestsScreen.this.itemRenderer.renderInGui(matrices, data.stack, xi, yi);
-				this.renderGuiItemOverlay(matrices, QuestsScreen.this.textRenderer, data.stack, xi, yi, data.count);
+				context.drawItem(data.stack, xi, yi);
+				this.renderGuiItemOverlay(context, QuestsScreen.this.textRenderer, data.stack, xi, yi, data.count);
 				xi -= 18;
 			}
 
+			this.renderTooltip(context, mouseX, mouseY);
 		}
 
-		protected void renderGuiItemOverlay(MatrixStack matrices, TextRenderer renderer, ItemStack stack, int x, int y, int val) {
-			QuestsScreen.this.itemRenderer.renderGuiItemOverlay(matrices, QuestsScreen.this.textRenderer, stack, x, y, val > 0 ? String.valueOf(val) : "✔");
+		protected void renderGuiItemOverlay(DrawContext context, TextRenderer renderer, ItemStack stack, int x, int y, int val) {
+			context.drawItemInSlot(textRenderer, stack, x, y, val > 0 ? String.valueOf(val) : "✔");
 		}
 
-		public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
+		public void renderTooltip(DrawContext context, int mouseX, int mouseY) {
 			if (this.hovered) {
 				Quest quest = this.getQuest();
 				if (quest == null) return;
@@ -407,7 +407,7 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 						.append(String.valueOf(reward.count))
 					);
 				}
-				QuestsScreen.this.renderTooltip(matrices, tooltip, Optional.empty(), mouseX, mouseY);
+				context.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
 			}
 		}
 	}
