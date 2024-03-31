@@ -193,8 +193,8 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			super(x, y, 20, 20, Text.literal("?"), onPress, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
 		}
 
-		public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
-			super.renderButton(context, mouseX, mouseY, delta);
+		public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+			super.renderWidget(context, mouseX, mouseY, delta);
 			if (this.hovered) {
 				List<Text> tooltip = new ArrayList<>();
 				tooltip.add(Text.translatable("screen.guild.quests.legend").formatted(Formatting.AQUA));
@@ -240,10 +240,10 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			return QuestsScreen.this.handler.professions.get(this.index);
 		}
 
-		public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
+		public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
 			QuestProfession profession = this.getQuestProfession();
 			if (profession == null) return;
-			super.renderButton(context, mouseX, mouseY, delta);
+			super.renderWidget(context, mouseX, mouseY, delta);
 			if (this.item == null) {
 				this.item = Registries.ITEM.get(new Identifier(profession.icon));
 			}
@@ -283,10 +283,10 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			return QuestsScreen.this.handler.acceptedQuests.size() > this.index ? QuestsScreen.this.handler.acceptedQuests.get(this.index) : null;
 		}
 
-		public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
+		public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
 			Quest quest = this.getQuest();
 			if (quest == null) return;
-			super.renderButton(context, mouseX, mouseY, delta);
+			super.renderWidget(context, mouseX, mouseY, delta);
 		}
 	}
 
@@ -307,10 +307,10 @@ public class QuestsScreen extends HandledScreen<QuestsScreenHandler> {
 			return null;
 		}
 
-		public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
+		public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
 			Quest quest = this.getQuest();
 			if (quest == null) return;
-			super.renderButton(context, mouseX, mouseY, delta);
+			super.renderWidget(context, mouseX, mouseY, delta);
 
 			int xi = this.getX() + 3;
 			int yi = this.getY() + 1;

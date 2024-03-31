@@ -1,3 +1,6 @@
+# 0.4.9
+- Updated to Minecraft 1.20.3
+
 # 0.4.8
 - Updated to Minecraft 1.20.2
 
